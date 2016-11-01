@@ -5,7 +5,9 @@ public class Arms : MonoBehaviour
 {
 
     Vector3 mousePosition;
+    public ObjectPool bulletPool;
 
+    public Sprite ammoSprite;
 
     void Update()
     {
@@ -19,6 +21,16 @@ public class Arms : MonoBehaviour
 
         float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GameObject bullet = bulletPool.GetPooledObject();
+            bullet.transform.position = transform.position;
+            bullet.transform.rotation = transform.rotation;
+            bullet.GetComponent<SpriteRenderer>().sprite = ammoSprite;
+            bullet.SetActive(true);
+        }
 
     }
 
