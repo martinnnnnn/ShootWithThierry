@@ -3,23 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class BulletManager : MonoBehaviour
+public class EnemyWavesManager : MonoBehaviour
 {
 
-    ObjectPool bulletPool;
-    public GameObject bulletPrefab;
+    ObjectPool enemyPool;
+    public GameObject enemyPrefab;
     public int initialSize;
 
     void Start()
     {
-        bulletPool = new ObjectPool();
-        bulletPool.InitPool(bulletPrefab,initialSize);
+        enemyPool = new ObjectPool();
+        enemyPool.InitPool(enemyPrefab, initialSize);
     }
 
 
     public void SpawnBullet(Vector3 position, Quaternion rotation, WEAPON_TYPE type)
     {
-        GameObject bullet = bulletPool.GetPooledObject();
+        GameObject bullet = enemyPool.GetPooledObject();
         bullet.transform.position = position;
         bullet.transform.rotation = rotation;
         bullet.GetComponent<Bullet>().weaponType = type;

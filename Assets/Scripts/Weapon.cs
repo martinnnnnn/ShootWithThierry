@@ -31,7 +31,7 @@ public class Weapon : MonoBehaviour
         switch(t)
         {
             case WEAPON_TYPE.BASIC:
-                myRenderer.sprite = Resources.Load<Sprite>("IMG_" + WEAPON_TYPE.BASIC.ToString());
+                //myRenderer.sprite = Resources.Load<Sprite>("IMG_" + WEAPON_TYPE.BASIC.ToString());
                 break;
         }
     }

@@ -7,26 +7,35 @@ public class Bullet : MonoBehaviour
 {
 
 
-    public float speed = 100f;
+    public float speed = 500f;
+    public WEAPON_TYPE weaponType;
 
     private Rigidbody2D myRigidBody;
+    private SpriteRenderer myRenderer;
     private delegate void MoveMethod();
     MoveMethod currentMoveMethod;
-    private WEAPON_TYPE weaponType;
 
-    void Start()
-    {
-        myRigidBody = GetComponent<Rigidbody2D>();
-    }
+    //void OnAwake()
+    //{
+    //    myRigidBody = GetComponent<Rigidbody2D>();
+    //    myRenderer = GetComponent<SpriteRenderer>();
+    //}
 
     void OnEnable()
     {
-        switch(weaponType)
+       // Debug.Log("rotation : " + transform.rotation);
+        myRigidBody = GetComponent<Rigidbody2D>();
+        myRenderer = GetComponent<SpriteRenderer>();
+        myRigidBody.AddRelativeForce(Vector3.forward * speed);
+        switch (weaponType)
         {
             case WEAPON_TYPE.BASIC:
+                
                 currentMoveMethod = BasicMove;
+                myRenderer.sprite = Resources.Load<Sprite>("IMG_" + WEAPON_TYPE.BASIC.ToString());
                 break;
             default:
+                myRenderer.sprite = Resources.Load<Sprite>("IMG_BASIC");
                 currentMoveMethod = BasicMove;
                 break;
         }
@@ -41,6 +50,6 @@ public class Bullet : MonoBehaviour
 
     void BasicMove()
     {
-        myRigidBody.AddRelativeForce(Vector3.forward * speed);
+       // myRigidBody.AddRelativeForce(Vector3.forward * speed);
     }
 }
