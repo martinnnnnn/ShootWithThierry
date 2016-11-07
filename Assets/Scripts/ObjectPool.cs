@@ -9,10 +9,13 @@ public class ObjectPool : MonoBehaviour
     public int pooledAmount = 20;
 
     List<GameObject> pooledObjects;
-    
 
-    void Start()
+
+    public void InitPool(GameObject prefab, int initialSize)
     {
+        objectType = prefab;
+        pooledAmount = initialSize;
+
         pooledObjects = new List<GameObject>();
         for (int i = 0; i < pooledAmount; ++i)
         {
@@ -22,10 +25,6 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        //Debug.Log(pooledObjects[1].GetComponent<Rigidbody>().velocity);
-    }
 
     public GameObject GetPooledObject()
     {
@@ -36,12 +35,22 @@ public class ObjectPool : MonoBehaviour
                 return pooledObjects[i];
             }
         }
-        
-        GameObject obj = (GameObject)Instantiate(objectType);
+
+        GameObject obj = Instantiate(objectType);
         pooledObjects.Add(obj);
         return obj;
     }
 
-    
-    
+
+    //void OnAwake()
+    //{
+    //    pooledObjects = new List<GameObject>();
+    //    for (int i = 0; i < pooledAmount; ++i)
+    //    {
+    //        GameObject obj = Instantiate(objectType);
+    //        obj.SetActive(false);
+    //        pooledObjects.Add(obj);
+    //    }
+    //}
+
 }
