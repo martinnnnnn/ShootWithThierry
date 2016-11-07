@@ -44,12 +44,13 @@ public class Bullet : MonoBehaviour
     void FixedUpdate()
     {
         currentMoveMethod();
+
         
     }
 
 
     void BasicMove()
     {
-       // myRigidBody.AddRelativeForce(Vector3.forward * speed);
+        myRigidBody.AddRelativeForce(Vector3.forward * speed);
     }
 }
