@@ -7,8 +7,9 @@ public class Bullet : MonoBehaviour
 {
 
 
-    public float speed = 500f;
+    public float speed = 10f;
     public WEAPON_TYPE weaponType;
+    public int damage = 1;
 
     private Rigidbody2D myRigidBody;
     private SpriteRenderer myRenderer;
@@ -26,7 +27,6 @@ public class Bullet : MonoBehaviour
        // Debug.Log("rotation : " + transform.rotation);
         myRigidBody = GetComponent<Rigidbody2D>();
         myRenderer = GetComponent<SpriteRenderer>();
-        myRigidBody.AddRelativeForce(Vector3.forward * speed);
         switch (weaponType)
         {
             case WEAPON_TYPE.BASIC:
@@ -39,6 +39,9 @@ public class Bullet : MonoBehaviour
                 currentMoveMethod = BasicMove;
                 break;
         }
+
+        //Destroy(gameObject.GetComponent<BoxCollider2D>());
+        //gameObject.AddComponent<BoxCollider2D>();
     }
 
     void FixedUpdate()
@@ -49,8 +52,21 @@ public class Bullet : MonoBehaviour
     }
 
 
+    public void OnCollisionEnter2D(Collision2D c)
+    {
+        Debug.Log("CONTACT");
+        Enemy enemy = c.gameObject.GetComponent<Enemy>();
+        if (enemy)
+        {
+            Debug.Log("ENEMY");
+            enemy.LoseLife(damage);
+        }
+        
+    }
+
+
     void BasicMove()
     {
-        myRigidBody.AddRelativeForce(Vector3.forward * speed);
+        myRigidBody.AddForce(Vector3.forward * speed);
     }
 }

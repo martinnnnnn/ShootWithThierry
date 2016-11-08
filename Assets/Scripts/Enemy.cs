@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
     public float MaxDist = 10;
     public float MinDist = 5;
 
-
+    public int life = 10;
 
 
     void Start()
@@ -41,6 +41,16 @@ public class Enemy : MonoBehaviour
         //        //Here Call any function U want Like Shoot at here or something
         //    }
         }
+
+        if (life <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    public void LoseLife(int damage)
+    {
+        --life;
     }
 
 }
