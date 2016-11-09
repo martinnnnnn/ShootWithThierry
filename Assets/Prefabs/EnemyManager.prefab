@@ -22,7 +22,7 @@ GameObject:
   m_Layer: 0
   m_Name: SpawningPosition4
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -53,7 +53,7 @@ GameObject:
   m_Layer: 0
   m_Name: SpawningPosition2
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -68,7 +68,7 @@ GameObject:
   m_Layer: 0
   m_Name: SpawningPosition3
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -83,7 +83,7 @@ GameObject:
   m_Layer: 0
   m_Name: SpawningPosition1
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -167,10 +167,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a2f1d970516804890821591bed2a63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 1000010947100362, guid: 956eabbff4f0a2a42b9cf36cb76d0c06,
-    type: 2}
+  enemyPrefab: {fileID: 0}
   initialSize: 40
   spawningPosition1: {fileID: 4000011982418844}
   spawningPosition2: {fileID: 4000013089954484}
   spawningPosition3: {fileID: 4000014017973844}
   spawningPosition4: {fileID: 4000012727341638}
+  target: {fileID: 0}

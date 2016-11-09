@@ -66,6 +66,7 @@ public class HeroController : MonoBehaviour
                 }
 
                 go.transform.eulerAngles = new Vector3(go.transform.eulerAngles.x, go.transform.eulerAngles.y, deg);
+                Physics2D.IgnoreCollision(go.GetComponent<Collider2D>(), GetComponent<Collider2D>());
             }
             
             

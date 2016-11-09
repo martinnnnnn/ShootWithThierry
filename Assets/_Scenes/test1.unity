@@ -131,29 +131,14 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114000013733159204, guid: 69112f0a0aad0d4419bfe2041f21ca18,
         type: 2}
+      propertyPath: enemyPrefab
+      value: 
+      objectReference: {fileID: 428631199}
+    - target: {fileID: 114000013733159204, guid: 69112f0a0aad0d4419bfe2041f21ca18,
+        type: 2}
       propertyPath: target
       value: 
       objectReference: {fileID: 1997796820}
-    - target: {fileID: 1000013623847694, guid: 69112f0a0aad0d4419bfe2041f21ca18, type: 2}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000,
-        type: 0}
-    - target: {fileID: 1000012870031808, guid: 69112f0a0aad0d4419bfe2041f21ca18, type: 2}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000,
-        type: 0}
-    - target: {fileID: 1000013463310046, guid: 69112f0a0aad0d4419bfe2041f21ca18, type: 2}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000,
-        type: 0}
-    - target: {fileID: 1000010445489084, guid: 69112f0a0aad0d4419bfe2041f21ca18, type: 2}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000,
-        type: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 69112f0a0aad0d4419bfe2041f21ca18, type: 2}
   m_IsPrefabParent: 0
@@ -274,6 +259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   life: 30
+  aoeDamageRate: 1
 --- !u!61 &428631201
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -327,54 +313,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 4000010876350282, guid: 623ca84a62ef9c441b708afaab0b732b, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -3.87
+    - target: {fileID: 114000010252784676, guid: 623ca84a62ef9c441b708afaab0b732b,
+        type: 2}
+      propertyPath: life
+      value: 100
       objectReference: {fileID: 0}
-    - target: {fileID: 4000010876350282, guid: 623ca84a62ef9c441b708afaab0b732b, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -4.89
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012098809600, guid: 623ca84a62ef9c441b708afaab0b732b, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -5.14
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012098809600, guid: 623ca84a62ef9c441b708afaab0b732b, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 2.87
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012644393250, guid: 623ca84a62ef9c441b708afaab0b732b, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 3.76
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000014088092664, guid: 623ca84a62ef9c441b708afaab0b732b, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 5.64
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000014088092664, guid: 623ca84a62ef9c441b708afaab0b732b, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -4.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 1000010111522886, guid: 623ca84a62ef9c441b708afaab0b732b, type: 2}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000,
-        type: 0}
-    - target: {fileID: 1000012899827702, guid: 623ca84a62ef9c441b708afaab0b732b, type: 2}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000,
-        type: 0}
-    - target: {fileID: 1000013732687926, guid: 623ca84a62ef9c441b708afaab0b732b, type: 2}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000,
-        type: 0}
-    - target: {fileID: 1000012177012624, guid: 623ca84a62ef9c441b708afaab0b732b, type: 2}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000,
-        type: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 623ca84a62ef9c441b708afaab0b732b, type: 2}
   m_IsPrefabParent: 0

@@ -21,7 +21,8 @@ public class MonsterController : MonoBehaviour
 
     void Start()
     {
-        foreach (Transform t in GetComponentInChildren<Transform>())
+        firstStagePlaces = new List<Transform>();
+        foreach (Transform t in transform)
         {
             firstStagePlaces.Add(t);
         }
@@ -34,10 +35,10 @@ public class MonsterController : MonoBehaviour
             firstStagePlayed = true;
             foreach (Transform t in firstStagePlaces)
             {
-                GameObject go = Instantiate(lava, t) as GameObject;
+                GameObject go = Instantiate(lava, t.position,t.rotation) as GameObject;
             }
         }
-        
+
     }
 
     public void LoseLife(int damage)

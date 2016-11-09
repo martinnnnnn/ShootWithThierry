@@ -9,10 +9,7 @@ public class EnemyWavesManager : MonoBehaviour
     public GameObject enemyPrefab;
     public int initialSize;
 
-    public Transform spawningPosition1;
-    public Transform spawningPosition2;
-    public Transform spawningPosition3;
-    public Transform spawningPosition4;
+    private List<Transform> spawningPlaces;
 
     public Transform target;
 
@@ -22,7 +19,12 @@ public class EnemyWavesManager : MonoBehaviour
     {
         enemyPool = new ObjectPool();
         enemyPool.InitPool(enemyPrefab, initialSize);
-        
+
+        spawningPlaces = new List<Transform>();
+        foreach (Transform t in transform)
+        {
+            spawningPlaces.Add(t);
+        }
     }
 
 
@@ -33,16 +35,16 @@ public class EnemyWavesManager : MonoBehaviour
             switch(pos)
             {
                 case 0:
-                    SpawnWave(ENEMY_TYPE.BASIC, Random.Range(1,10), spawningPosition1.position);
+                    SpawnWave(ENEMY_TYPE.BASIC, Random.Range(1, 10), spawningPlaces[0].position);
                     break;
                 case 1:
-                    SpawnWave(ENEMY_TYPE.BASIC, Random.Range(1, 10), spawningPosition2.position);
+                    SpawnWave(ENEMY_TYPE.BASIC, Random.Range(1, 10), spawningPlaces[1].position);
                     break;
                 case 2:
-                    SpawnWave(ENEMY_TYPE.BASIC, Random.Range(1, 10), spawningPosition3.position);
+                    SpawnWave(ENEMY_TYPE.BASIC, Random.Range(1, 10), spawningPlaces[2].position);
                     break;
                 case 3:
-                    SpawnWave(ENEMY_TYPE.BASIC, Random.Range(1, 10), spawningPosition4.position);
+                    SpawnWave(ENEMY_TYPE.BASIC, Random.Range(1, 10), spawningPlaces[3].position);
                     break;
             }
             pos = pos + 1 % 4;
