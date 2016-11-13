@@ -5,19 +5,20 @@ using System.Collections;
 
 public enum ENEMY_TYPE
 {
-    BASIC
+    BASIC,
+    CLEANER,
+    FAT,
+    GORDON
 }
 
 
 public class Enemy : MonoBehaviour
 {
-
+        
     public Transform Target;
     public float MoveSpeed = 4;
     public float MaxDist = 10;
     public float MinDist = 5;
-
-    public int life = 10;
 
 
     void Start()
@@ -42,15 +43,9 @@ public class Enemy : MonoBehaviour
         //    }
         }
 
-        if (life <= 0)
-        {
-            Destroy(this.gameObject);
-        }
-    }
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
 
-    public void LoseLife(int damage)
-    {
-        --life;
+
     }
 
 }

@@ -68,8 +68,7 @@ public class HeroController : MonoBehaviour
                 go.transform.eulerAngles = new Vector3(go.transform.eulerAngles.x, go.transform.eulerAngles.y, deg);
                 Physics2D.IgnoreCollision(go.GetComponent<Collider2D>(), GetComponent<Collider2D>());
             }
-            
-            
+
             //float angle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg;
             //shootPoint.rotation = Quaternion.Euler(new Vector3(0, angle, 0));
             //bulletManager.SpawnBullet(transform.position, Quaternion.Euler(new Vector3(0, angle, 0)), WEAPON_TYPE.BASIC);

@@ -15,14 +15,36 @@
 //public class FiringController : MonoBehaviour
 //{
 
+//    private GameObject bulletPrefab;
+
 //    private delegate void FiringMethod(float deltaTime);
 //    FiringMethod currentFiringMethod;
-//    FIRING_TYPE firingType;
 
-//    public void InitFiring(FIRING_TYPE fType)
+//    private float currentFiringDelay;
+
+//    private FIRING_TYPE firingType;
+//    private float basicFireRate;
+//    private float specialFireRate;
+//    private int basicAmmoValue;
+//    private int specialAmmoValue;
+//    private float bulletSpeed;
+
+
+//    public void InitFiring(FIRING_TYPE fType, float delay, int ammo)
 //    {
 //        firingType = fType;
-//        switch(firingType)
+//        basicFireRate = delay;
+        
+//        if (fType == FIRING_TYPE.BASIC)
+//        {
+//            basicAmmoValue += ammo;
+//        }
+//        else
+//        {
+//            specialAmmoValue = ammo;
+//        }
+
+//        switch (firingType)
 //        {
 //            case FIRING_TYPE.BASIC:
 //                currentFiringMethod = basicFiring;
@@ -53,12 +75,13 @@
 //    private void basicFiring(float deltaTime)
 //    {
 //        currentFiringDelay += Time.deltaTime;
-//        if (Input.GetButton("Fire1") && primaryWeapon.bulletsLeft > 0 && currentFiringDelay >= fireRate)
+//        if (Input.GetButton("Fire1") && basicAmmoValue > 0 && currentFiringDelay >= basicFireRate)
 //        {
 //            currentFiringDelay = 0f;
-//            --primaryWeapon.bulletsLeft;
+//            --basicAmmoValue;
 //            float horizontal = Input.GetAxis("Horizontal2");
 //            float vertical = Input.GetAxis("Vertical2");
+
 //            if (horizontal != 0 || vertical != 0)
 //            {
 //                GameObject go = Instantiate(bullet, transform.position, transform.rotation) as GameObject;
@@ -83,11 +106,13 @@
 
 //    private void flameThrowerFiring(float deltaTime)
 //    {
+//        basicFiring(deltaTime);
 
 //    }
 
 //    private void shotgunFiring(float deltaTime)
 //    {
+//        basicFiring(deltaTime);
 
 //    }
 
