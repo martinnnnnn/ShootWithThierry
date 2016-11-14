@@ -24,6 +24,7 @@ public class Bullet : MonoBehaviour
 
     void OnEnable()
     {
+
        // Debug.Log("rotation : " + transform.rotation);
         myRigidBody = GetComponent<Rigidbody2D>();
         myRenderer = GetComponent<SpriteRenderer>();
@@ -54,14 +55,12 @@ public class Bullet : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D c)
     {
-        Debug.Log("CONTACT");
-        Enemy enemy = c.gameObject.GetComponent<Enemy>();
+        
+        MortalCharacter enemy = c.gameObject.GetComponent<MortalCharacter>();
         if (enemy)
         {
-            Debug.Log("ENEMY");
             enemy.LoseLife(damage);
         }
-        
     }
 
 

@@ -7,6 +7,7 @@ public class ObjectPool : Singleton<ObjectPool>
 
     public GameObject objectType;
     public int pooledAmount = 20;
+    
 
     List<GameObject> pooledObjects;
 

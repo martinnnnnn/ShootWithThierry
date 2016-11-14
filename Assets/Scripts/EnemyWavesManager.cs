@@ -43,20 +43,20 @@ public class EnemyWavesManager : MonoBehaviour
     void Update()
     {
 
-        timeSinceLastWave += Time.deltaTime;
-        if (timeSinceLastWave > startingTimeBetweenWaves)
-        {
-            if (startingTimeBetweenWaves > 0) --startingTimeBetweenWaves;
+        //timeSinceLastWave += Time.deltaTime;
+        //if (timeSinceLastWave > startingTimeBetweenWaves)
+        //{
+        //    if (startingTimeBetweenWaves > 0) --startingTimeBetweenWaves;
 
-            if (Time.timeSinceLevelLoad < timeCleaner)
-            {
-                SpawnWave(ENEMY_TYPE.BASIC, Random.Range(1, 10), spawningPlaces[0].position);
-            }
-            else if (Time.timeSinceLevelLoad < timeFat)
-            {
-                SpawnWave(ENEMY_TYPE.BASIC, Random.Range(1, 10), spawningPlaces[0].position);
-            }
-        }
+        //    if (Time.timeSinceLevelLoad < timeCleaner)
+        //    {
+        //        SpawnWave(ENEMY_TYPE.BASIC, Random.Range(1, 10), spawningPlaces[0].position);
+        //    }
+        //    else if (Time.timeSinceLevelLoad < timeFat)
+        //    {
+        //        SpawnWave(ENEMY_TYPE.BASIC, Random.Range(1, 10), spawningPlaces[0].position);
+        //    }
+        //}
 
 
         
