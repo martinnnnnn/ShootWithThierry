@@ -7,11 +7,11 @@ using System.Collections.Generic;
 
 public class MonsterController : MonoBehaviour
 {
-
-    public int life = 100;
     public int firstStage = 80;
     public int secondStage = 50;
     public int thirdSage = 20;
+
+    private MortalCharacter myLife;
 
     private List<Transform> firstStagePlaces;
     public GameObject lava;
@@ -21,6 +21,7 @@ public class MonsterController : MonoBehaviour
 
     void Start()
     {
+        myLife = GetComponent<MortalCharacter>();
         firstStagePlaces = new List<Transform>();
         foreach (Transform t in transform)
         {
@@ -30,7 +31,7 @@ public class MonsterController : MonoBehaviour
 
     void Update()
     {
-        if (life < firstStage && !firstStagePlayed)
+        if (myLife.life < firstStage && !firstStagePlayed)
         {
             firstStagePlayed = true;
             foreach (Transform t in firstStagePlaces)
@@ -39,11 +40,6 @@ public class MonsterController : MonoBehaviour
             }
         }
 
-    }
-
-    public void LoseLife(int damage)
-    {
-        --life;
     }
 
 }

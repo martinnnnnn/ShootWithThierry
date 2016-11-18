@@ -86,12 +86,13 @@ public class FiringController : MonoBehaviour
             if (horizontal != 0 || vertical != 0)
             {
                 GameObject go = Instantiate(bulletPrefab, transform.position, transform.rotation) as GameObject;
-                go.GetComponent<Rigidbody2D>().velocity = new Vector2(horizontal * bulletSpeed, vertical * bulletSpeed);
+                Vector2 direction = new Vector2(horizontal, vertical);
+                direction.Normalize();
+                go.GetComponent<Rigidbody2D>().velocity = new Vector2(direction.x * bulletSpeed, direction.y * bulletSpeed);
 
                 float deg = Vector2.Angle(new Vector2(1, 0), new Vector2(horizontal, vertical));
 
                 go.transform.eulerAngles = new Vector3(go.transform.eulerAngles.x, go.transform.eulerAngles.y, deg);
-                Physics2D.IgnoreCollision(go.GetComponent<Collider2D>(), GetComponent<Collider2D>());
             }
         }
     }

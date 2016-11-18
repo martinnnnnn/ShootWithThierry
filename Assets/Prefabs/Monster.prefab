@@ -37,6 +37,7 @@ GameObject:
   - 212: {fileID: 212000011364297394}
   - 61: {fileID: 61000011279277658}
   - 114: {fileID: 114000010252784676}
+  - 114: {fileID: 114000013674746886}
   m_Layer: 9
   m_Name: Monster
   m_TagString: Untagged
@@ -183,11 +184,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cabffae7377d00c459daf45ec00141b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 100
   firstStage: 80
   secondStage: 50
   thirdSage: 20
   lava: {fileID: 1000012718419260, guid: 960e89485d21bfc4eaf1033500e69006, type: 2}
+--- !u!114 &114000013674746886
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011006753160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de6c8db29318de948858ba75082a10a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  life: 100
 --- !u!212 &212000011364297394
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -8,7 +8,7 @@ public class MortalCharacter : MonoBehaviour
 
     public int life = 30;
     private int aoeDamage;
-    public float aoeDamageRate = 1f;
+    private float aoeDamageRate = 1f;
     private float currentFiringDelay;
 
     void Start()
@@ -33,14 +33,24 @@ public class MortalCharacter : MonoBehaviour
     }
 
 
-    public void LoseLife(int damage)
+    public void LoseLife(int amount)
     {
-        --life;
+        life -= amount;
     }
 
-    public void SetAoeDamage(int damagePerSecond)
+    public void GainLife(int amount)
     {
-        aoeDamage = damagePerSecond;
+        life += amount;
+    }
+
+    public void AddAoeDamage(int damagePerSecond)
+    {
+        aoeDamage += damagePerSecond;
+    }
+
+    public void RemoveAoeDamage(int damagePerSecond)
+    {
+        aoeDamage -= damagePerSecond;
     }
 
 }

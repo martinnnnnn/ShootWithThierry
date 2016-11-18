@@ -22,7 +22,7 @@ public class LavaController : MonoBehaviour
         MortalCharacter mC = c.gameObject.GetComponent<MortalCharacter>();
         if (mC != null)
         {
-            mC.SetAoeDamage(damagePerSecond);
+            mC.AddAoeDamage(damagePerSecond);
         }
     }
 
@@ -31,7 +31,7 @@ public class LavaController : MonoBehaviour
         MortalCharacter mC = c.gameObject.GetComponent<MortalCharacter>();
         if (mC != null)
         {
-            mC.SetAoeDamage(0);
+            mC.RemoveAoeDamage(damagePerSecond);
         }
     }
 

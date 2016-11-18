@@ -9,7 +9,7 @@ public class CameraManager : MonoBehaviour
     public Transform hero;
     private Camera camera;
 
-   // Vector3 cameraFocus;
+    Vector3 cameraFocus;
 
 
     void Start()
@@ -19,10 +19,10 @@ public class CameraManager : MonoBehaviour
 
     void FixedUpdate()
     {
-       // cameraFocus = hero.position;
-        //cameraFocus.z = camera.transform.position.z;
+        cameraFocus = hero.position;
+        cameraFocus.z = -10;
 
-        transform.position = new Vector3(hero.position.x, hero.position.y, -10);
+        transform.position = Vector3.Lerp(transform.position, cameraFocus, 1);
 
         //camera.transform.position;
         //Vector3 newZoomValue = new Vector3(
