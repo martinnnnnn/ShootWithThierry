@@ -87,7 +87,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   life: 2
-  aoeDamageRate: 1
 --- !u!114 &114000014221231516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -99,14 +98,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 878d069027986d8499f84d5bc013c298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 0}
+  Target: {fileID: 4000012767086828, guid: 1bfccd3f068487045903a9d238785efc, type: 2}
   MoveSpeed: 4
-  MaxDist: 10
   MinDist: 5
-  visionRadius: 0.1
-  newTarget:
-    serializedVersion: 2
-    m_Bits: 0
+  attackRate: 1
+  damage: 1
+  canMove: 0
+  type: 0
 --- !u!212 &212000012658826460
 SpriteRenderer:
   m_ObjectHideFlags: 1

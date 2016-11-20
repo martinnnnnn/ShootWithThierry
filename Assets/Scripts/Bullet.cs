@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 
 
+public enum WEAPON_TYPE
+{
+    PISTOL,
+    SNIPER,
+    ROCKET,
+    MONSTER,
+}
 
 public class Bullet : MonoBehaviour
 {
 
-
+    [HideInInspector]
     public WEAPON_TYPE bulletType;
     public int damage = 1;
     public float timeBeforeExplosion = 1f;
@@ -46,15 +53,15 @@ public class Bullet : MonoBehaviour
         myRigidBody = GetComponent<Rigidbody2D>();
         myRenderer = GetComponent<SpriteRenderer>();
         myRenderer.sprite = Resources.Load<Sprite>("IMG_" + bulletType.ToString());
-        Debug.Log("starting : " + bulletType.ToString());
     }
     
 
 
     public void OnCollisionEnter2D(Collision2D c)
     {
-        MortalCharacter enemy = c.gameObject.GetComponent<MortalCharacter>();
+        MortalCharacter mortal = c.gameObject.GetComponent<MortalCharacter>();
         MonsterController monster = c.gameObject.GetComponent<MonsterController>();
+        Enemy enemy = c.gameObject.GetComponent<Enemy>();
 
         if (c.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
@@ -64,31 +71,39 @@ public class Bullet : MonoBehaviour
         switch (bulletType)
         {
             case WEAPON_TYPE.PISTOL:
-                if (enemy)
+                if (mortal)
                 {
                     if (monster)
                     {
-                        enemy.GainLife(damage);
+                        mortal.GainLife(damage);
                     }
-                    else
+                    else if (enemy)
                     {
-                        enemy.LoseLife(damage);
+                        if (enemy.type == ENEMY_TYPE.FAT)
+                        {
+                            enemy.ResetLastHitTimer();
+                        }
+                        mortal.LoseLife(damage);
                     }
                 }
                 Destroy(gameObject);
                 break;
             case WEAPON_TYPE.SNIPER:
-                if (enemy)
+                if (mortal)
                 {
                     if (monster)
                     {
-                        enemy.GainLife(damage);
+                        mortal.GainLife(damage);
                         Destroy(gameObject);
                     }
-                    else
+                    else if (enemy)
                     {
-                        enemy.LoseLife(damage);
-                        if (enemy.life > 0)
+                        if (enemy.type == ENEMY_TYPE.FAT)
+                        {
+                            enemy.ResetLastHitTimer();
+                        }
+                        mortal.LoseLife(damage);
+                        if (mortal.life > 0)
                         {
                             Destroy(gameObject);
                         }

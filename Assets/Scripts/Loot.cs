@@ -13,24 +13,25 @@ public enum LOOT_TYPE
 
 public class Loot : MonoBehaviour
 {
-    private LOOT_TYPE dropType;
+    private LOOT_TYPE lootType;
     private int amount;
 
-    void Start ()
+    void Awake()
     {
-        
     }
 
 
-    void SetLoot(LOOT_TYPE type, int a)
+    public void SetLoot(LOOT_TYPE type, int a)
     {
-        dropType = type;
+        lootType = type;
         amount = a;
+        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("LOOT/IMG_LOOT_" + lootType.ToString());
+        gameObject.AddComponent<BoxCollider2D>();
     }
 
     public LOOT_TYPE GetLootType()
     {
-        return dropType;
+        return lootType;
     }
 
     public int GetLootAmount()

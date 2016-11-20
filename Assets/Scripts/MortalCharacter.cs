@@ -11,6 +11,7 @@ public class MortalCharacter : MonoBehaviour
     private float aoeDamageRate = 1f;
     private float currentFiringDelay;
 
+
     void Start()
     {
         currentFiringDelay = aoeDamageRate;
@@ -28,6 +29,12 @@ public class MortalCharacter : MonoBehaviour
         
         if (life <= 0)
         {
+            Enemy enemy = GetComponent<Enemy>();
+            if (enemy)
+            {
+                enemy.DropLoot();
+                gameObject.SetActive(false);
+            }
             Destroy(gameObject);
         }
     }
