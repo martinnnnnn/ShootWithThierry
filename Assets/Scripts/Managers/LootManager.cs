@@ -5,23 +5,24 @@ using System.Collections.Generic;
 public class LootManager : Singleton<LootManager>
 {
 
-    public GameObject lootPrefab;
-    public Transform lifeSpawnPosition;
-    public Transform ammoSpawnPosition;
+    private GameObject lootPrefab;
+    private Transform lifeSpawnPosition;
+    private Transform ammoSpawnPosition;
     public float timeBetweenLifeSpawns = 30f;
     private float nextLifeSpawnsTime;
-    public bool canSpawnLife;
 
     void Start()
     {
-        canSpawnLife = true;
         nextLifeSpawnsTime = timeBetweenLifeSpawns;
+        lootPrefab = GameManager.Instance.Loot;
+        lifeSpawnPosition = transform.FindChild("LifeSpawnPosition");
+        ammoSpawnPosition = transform.FindChild("AmmoSpawnPosition");
     }
 
     void Update()
     {
 
-        if (Time.timeSinceLevelLoad >= nextLifeSpawnsTime && canSpawnLife)
+        if (Time.timeSinceLevelLoad >= nextLifeSpawnsTime)
         {
             nextLifeSpawnsTime += timeBetweenLifeSpawns;
             SpawnLife();
@@ -42,9 +43,11 @@ public class LootManager : Singleton<LootManager>
         loot.GetComponent<Loot>().SetLoot(data.type, data.amount);
     }
 
-    public void SpawnRandomLoot(Transform spawn, int amount)
+    public void SpawnRandomLoot(Transform spawn, int amount = 0)
     {
         if (spawn == null) spawn = ammoSpawnPosition;
+        LOOT_TYPE type = (LOOT_TYPE)Random.Range(0, 4);
+        if (amount == 0) amount = GetAmount(type);
         GameObject loot = Instantiate(lootPrefab, spawn) as GameObject;
         loot.GetComponent<Loot>().SetLoot((LOOT_TYPE)Random.Range(0,4), amount);
     }
@@ -54,6 +57,23 @@ public class LootManager : Singleton<LootManager>
     {
         GameObject loot = Instantiate(lootPrefab, lifeSpawnPosition.position, new Quaternion()) as GameObject;
         loot.GetComponent<Loot>().SetLoot(LOOT_TYPE.SNIPER, 6);
-        canSpawnLife = false;
+    }
+
+    private int GetAmount(LOOT_TYPE type)
+    {
+        int amount = 0;
+        switch(type)
+        {
+            case LOOT_TYPE.PISTOL:
+                amount = GameManager.Instance.GordonLootPistolAmount;
+                break;
+            case LOOT_TYPE.SNIPER:
+                amount = GameManager.Instance.GordonLootSniperAmount;
+                break;
+            case LOOT_TYPE.ROCKET:
+                amount = GameManager.Instance.GordonLootRocketAmount;
+                break;
+        }
+        return amount;
     }
 }

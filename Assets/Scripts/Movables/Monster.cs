@@ -5,21 +5,22 @@ using System.Collections.Generic;
 
 
 
-public class MonsterController : MonoBehaviour
+public class Monster : MonoBehaviour
 {
-    public int cacStage = 80;
-    public int lavaStage = 50;
-    public int hellStage = 20;
-    public float timeBetweenCac = 15f;
-    public float timeBetweenLava = 15f;
-    public float timeBetweenHell = 15f;
+    private int MonsterLife;
+
+    private int cacStage;
+    private int lavaStage;
+    private int hellStage;
+    private float timeBetweenCac;
+    private float timeBetweenLava;
+    private float timeBetweenHell;
     private float timeLastCac;
     private float timeLastLava;
     private float timeLastHell;
 
 
     public int numberOfHellWaves = 10;
-    private MortalCharacter myLife;
 
     private List<Transform> cacStagePlaces;
     public GameObject lava;
@@ -30,9 +31,16 @@ public class MonsterController : MonoBehaviour
     private bool temp = false;
 
 
-    void Start()
+    void Awake()
     {
-        myLife = GetComponent<MortalCharacter>();
+        MonsterLife = GameManager.Instance.MonsterStartingLife;
+        cacStage = GameManager.Instance.MonsterCaCStage;
+        lavaStage = GameManager.Instance.MonsterLavaStage;
+        hellStage = GameManager.Instance.MonsterHellStage;
+        timeBetweenCac = GameManager.Instance.MonsterTimeBetweenCaCAttacks;
+        timeBetweenLava = GameManager.Instance.MonsterTimeBetweenLavaAttacks;
+        timeBetweenHell = GameManager.Instance.MonsterTimeBetweenHellAttacks;
+
         cacStagePlaces = new List<Transform>();
         foreach (Transform t in transform)
         {
@@ -133,7 +141,7 @@ public class MonsterController : MonoBehaviour
 
     private void Attack()
     {
-        if (myLife.life < cacStage && myLife.life > lavaStage)
+        if (MonsterLife < cacStage && MonsterLife > lavaStage)
         {
             if (Time.timeSinceLevelLoad > timeLastCac + timeBetweenCac)
             {
@@ -141,7 +149,7 @@ public class MonsterController : MonoBehaviour
                 CaCAttack();
             }
         }
-        else if (myLife.life < lavaStage && myLife.life > hellStage)
+        else if (MonsterLife < lavaStage && MonsterLife > hellStage)
         {
             if (Time.timeSinceLevelLoad > timeLastLava + timeBetweenLava)
             {
@@ -149,7 +157,7 @@ public class MonsterController : MonoBehaviour
                 LavaAttack();
             }
         }
-        else if (myLife.life < hellStage && myLife.life > 0)
+        else if (MonsterLife < hellStage && MonsterLife > 0)
         {
             if (Time.timeSinceLevelLoad > timeLastHell + timeBetweenHell)
             {
@@ -157,6 +165,11 @@ public class MonsterController : MonoBehaviour
                 HellAttack();
             }
         }
+    }
+
+    public void ChangeLife(int amount)
+    {
+        MonsterLife += amount;
     }
 
 }

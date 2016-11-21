@@ -4,11 +4,11 @@ using System.Collections;
 
 
 
-public class HeroController : MonoBehaviour
+public class Hero : MonoBehaviour
 {
 
-    public float maxSpeed = 5f;
-    private Rigidbody2D myRigidBody;
+    private float HeroSpeed;
+    private Rigidbody2D HeroRigidBody;
 
     [HideInInspector]
     public bool canMove;
@@ -16,29 +16,16 @@ public class HeroController : MonoBehaviour
     private float timeUnmovable = 0.05f;
 
     [HideInInspector]
-    public int life;
+    private int HeroLife;
 
     private float currentFiringDelay;
-    //[HideInInspector]
-    //public int pistolAmmo;
-    //public float pistolFireRate;
-    //public GameObject pistolPrefab;
-    //public float pistolSpeed;
-    //[HideInInspector]
-    //public int sniperAmmo;
-    //public float sniperFireRate;
-    //public GameObject sniperPrefab;
-    //public float sniperSpeed;
-    //[HideInInspector]
-    //public int rocketAmmo;
-    //public float rocketFireRate;
-    //public GameObject rocketPrefab;
-    //public float rocketSpeed;
+
 
     void Start ()
     {
-        life = 3;
-        myRigidBody = GetComponent<Rigidbody2D>();
+        HeroLife = GameManager.Instance.HeroStartingLife;
+        HeroSpeed = GameManager.Instance.HeroSpeed;
+        HeroRigidBody = GetComponent<Rigidbody2D>();
         canMove = true;
     }
 	
@@ -49,13 +36,13 @@ public class HeroController : MonoBehaviour
         float vMove = Input.GetAxis("Vertical1");
         if (canMove)
         {
-            myRigidBody.velocity = new Vector2(hMove * maxSpeed, vMove * maxSpeed);
+            HeroRigidBody.velocity = new Vector2(hMove * HeroSpeed, vMove * HeroSpeed);
         }
     }
 
     void Update()
     {
-        Fire(Time.deltaTime);
+        Fire();
         if (!canMove)
         {
             if (timeEnableMove == 0)
@@ -83,33 +70,35 @@ public class HeroController : MonoBehaviour
             switch (loot.GetLootType())
             {
                 case LOOT_TYPE.PISTOL:
-                    BulletManager.Instance.IncreaseAmmo(WEAPON_TYPE.PISTOL,amount);
+                    BulletManager.Instance.ChangeAmmo(WEAPON_TYPE.PISTOL,amount);
+                    Destroy(c.gameObject);
                     break;
                 case LOOT_TYPE.SNIPER:
-                    BulletManager.Instance.IncreaseAmmo(WEAPON_TYPE.SNIPER, amount);
-                    BulletManager.Instance.rocketAmmo = 0;
-                    Debug.Log("sniper ammo:" + BulletManager.Instance.sniperAmmo);
+                    BulletManager.Instance.ChangeAmmo(WEAPON_TYPE.SNIPER, amount);
+                    BulletManager.Instance.SetAmmo(WEAPON_TYPE.ROCKET,0);
+                    Destroy(c.gameObject);
                     break;
                 case LOOT_TYPE.ROCKET:
-                    BulletManager.Instance.IncreaseAmmo(WEAPON_TYPE.ROCKET, amount);
-                    BulletManager.Instance.sniperAmmo = 0;
+                    BulletManager.Instance.ChangeAmmo(WEAPON_TYPE.ROCKET, amount);
+                    BulletManager.Instance.ChangeAmmo(WEAPON_TYPE.SNIPER, 0);
+                    Destroy(c.gameObject);
                     break;
                 case LOOT_TYPE.LIFE:
-                    if (life < 4)
+                    if (HeroLife < 4)
                     {
-                        life ++;
-                        LootManager.Instance.canSpawnLife = true;
+                        HeroLife ++;
+                        Destroy(c.gameObject);
                     }
                     break;
             }
-            Destroy(c.gameObject);
+            
         }
     }
 
 
-    void Fire(float deltaTime)
+    void Fire()
     {
-        currentFiringDelay += deltaTime;
+        currentFiringDelay += Time.deltaTime;
         
            // if (Input.GetButton("Fire1") && pistolAmmo > 0 && currentFiringDelay >= pistolFireRate)
         if (Input.GetButton("Fire1") && BulletManager.Instance.CanFireGun(WEAPON_TYPE.PISTOL,currentFiringDelay))
@@ -152,5 +141,11 @@ public class HeroController : MonoBehaviour
         }
     }
     
+    public void ChangeLife(int amount)
+    {
+        HeroLife += amount;
+    }
+
+
 
 }

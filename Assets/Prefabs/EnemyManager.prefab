@@ -79,7 +79,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000012174392168}
-  - 114: {fileID: 114000013733159204}
+  - 114: {fileID: 114000012723684406}
   m_Layer: 0
   m_Name: EnemyManager
   m_TagString: Untagged
@@ -272,7 +272,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4000012174392168}
   m_RootOrder: 5
---- !u!114 &114000013733159204
+--- !u!114 &114000012723684406
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -280,17 +280,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000012720141006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8a2f1d970516804890821591bed2a63, type: 3}
+  m_Script: {fileID: 11500000, guid: e5998e8e3a74d2642a583828be6b4867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialSize: 40
-  enemyPrefab: {fileID: 1000010947100362, guid: 956eabbff4f0a2a42b9cf36cb76d0c06,
-    type: 2}
-  target: {fileID: 0}
-  startingTimeBetweenWaves: 10
-  startingMinNumInWave: 3
-  startingMaxNumInWave: 10
-  timeCleaner: 20
-  timeFat: 30
-  timeGordon: 40
-  timeBetweenWavesDecreaseRate: 0

@@ -22,7 +22,6 @@ GameObject:
   - 212: {fileID: 212000012647990236}
   - 50: {fileID: 50000010042421174}
   - 61: {fileID: 61000013293816476}
-  - 114: {fileID: 114000013121743070}
   - 114: {fileID: 114000011722912682}
   - 114: {fileID: 114000010020608244}
   m_Layer: 11
@@ -87,12 +86,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8bd8ee34661c074c88131d23cb729aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet:
-    serializedVersion: 2
-    m_Bits: 256
-  visionRadius: 15
-  dashSpeed: 50
-  timeBetweenDashes: 2
 --- !u!114 &114000011722912682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -104,25 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 878d069027986d8499f84d5bc013c298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 4000012767086828, guid: 1bfccd3f068487045903a9d238785efc, type: 2}
-  MoveSpeed: 22.5
-  MinDist: 1.5
-  attackRate: 1
-  damage: 1
   canMove: 0
-  type: 0
---- !u!114 &114000013121743070
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011419515636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de6c8db29318de948858ba75082a10a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  life: 10
 --- !u!212 &212000012647990236
 SpriteRenderer:
   m_ObjectHideFlags: 1

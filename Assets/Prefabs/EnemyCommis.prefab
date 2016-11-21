@@ -22,7 +22,6 @@ GameObject:
   - 212: {fileID: 212000012658826460}
   - 50: {fileID: 50000011250856954}
   - 61: {fileID: 61000013408883830}
-  - 114: {fileID: 114000013740351766}
   - 114: {fileID: 114000014221231516}
   m_Layer: 11
   m_Name: EnemyCommis
@@ -75,18 +74,6 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 0.53, y: 0.63}
---- !u!114 &114000013740351766
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013317204350}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de6c8db29318de948858ba75082a10a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  life: 2
 --- !u!114 &114000014221231516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -98,13 +85,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 878d069027986d8499f84d5bc013c298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 4000012767086828, guid: 1bfccd3f068487045903a9d238785efc, type: 2}
-  MoveSpeed: 4
-  MinDist: 5
-  attackRate: 1
-  damage: 1
+  AttackDistanceHero: 0
   canMove: 0
-  type: 0
+  GourmandTimeResetFocus: 5
 --- !u!212 &212000012658826460
 SpriteRenderer:
   m_ObjectHideFlags: 1

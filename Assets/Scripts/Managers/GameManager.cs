@@ -6,16 +6,111 @@ using System;
 public class GameManager : Singleton<GameManager>
 {
 
-    public string path;
+    public string pathToWavesData;
     List<WaveData> waves;
     List<LootData> loots;
 
+    [Space(3)]
+    [Header("Bullets")]
+    public int PistolStartingAmmo;
+    public float PistolFireRate;
+    public float SniperFireRate;
+    public float RocketFireRate;
+    public float PistolSpeed;
+    public float SniperSpeed;
+    public float RocketSpeed;
+    public float FragmentSpeed;
+    public float MonsterBulletSpeed;
+    public int PistolDamage;
+    public int SniperDamage;
+    public int RocketDamage;
+    public int FragmentDamage;
+    public int MonsterBulletDamage;
+    public float RocketTimeBeforeExplosion;
+
+    [Space(3)]
+    [Header("Hero")]
+    public float HeroSpeed;
+    public int HeroStartingLife;
+
+    [Space(3)]
+    [Header("Dash")]
+    public float HeroDashSpeed;
+    public float PlongeurDashSpeed;
+    public float HeroDashCoolDown;
+    public float PlongeurDashCoolDown;
+
+    [Space(3)]
+    [Header("Monster")]
+    public int MonsterStartingLife;
+    public int MonsterCaCStage;
+    public int MonsterLavaStage;
+    public int MonsterHellStage;
+    public int MonsterTimeBetweenCaCAttacks;
+    public int MonsterTimeBetweenLavaAttacks;
+    public int MonsterTimeBetweenHellAttacks;
+
+    [Space(3)]
+    [Header("Lava")]
+    public float LavaDuration;
+    public int LavaDamage;
+    public float LavaTimeBetweenAttack;
+
+    [Space(3)]
+    [Header("Enemy")]
+    public int CommisStartingLife;
+    public int PlongeurStartingLife;
+    public int GourmandStartingLife;
+    public int GordonStartingLife;
+
+    public float CommisSpeed;
+    public float PlongeurSpeed;
+    public float GourmandSpeed;
+    public float GordonSpeed;
+
+    public float CommisAttackSpeed;
+    public float PlongeurAttackSpeed;
+    public float GourmandAttackSpeed;
+    public float GordonAttackSpeed;
+
+    public int CommisDamage;
+    public int PlongeurDamage;
+    public int GourmandDamage;
+    public int GordonDamage;
+
+    public float ChangeFocusDistance;
+    public float EnemyMonsterAttackDistance;
+    public float EnemyHeroAttackDistance;
+
+
+    public int GordonLootPistolAmount;
+    public int GordonLootSniperAmount;
+    public int GordonLootRocketAmount;
+
+    public float GourmandTimeResetFocus;
+
+    [HideInInspector]
+    public Transform Hero;
+    [HideInInspector]
+    public Transform Monster;
+    [HideInInspector]
+    public GameObject Lava;
+    [HideInInspector]
+    public GameObject Bullet;
+    [HideInInspector]
+    public GameObject Loot;
+
     void Start()
     {
+        Hero = transform.Find("Hero");
+        Monster = transform.Find("Monster");
+        Lava = Resources.Load("PREFABS/Lava") as GameObject;
+        Bullet = Resources.Load("PREFABS/Bullet") as GameObject;
+        Loot = Resources.Load("PREFABS/Loot") as GameObject;
         waves = new List<WaveData>();
         loots = new List<LootData>();
 
-        loadWaveFile(path);
+        loadWaveFile(pathToWavesData);
         foreach (WaveData wave in waves)
         {
             StartCoroutine(StartWave(wave));

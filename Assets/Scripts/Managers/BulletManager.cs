@@ -7,59 +7,63 @@ using System.Collections.Generic;
 
 public class BulletManager : Singleton<BulletManager>
 {
+    private int pistolAmmo;
+    private int sniperAmmo;
+    private int rocketAmmo;
 
+    private float pistolFireRate;
+    private float sniperFireRate;
+    private float rocketFireRate;
 
-    public int pistolAmmo;
-    public float pistolFireRate;
-    public GameObject pistolPrefab;
-    public float pistolSpeed;
-    public int sniperAmmo;
-    public float sniperFireRate;
-    public GameObject sniperPrefab;
-    public float sniperSpeed;
-    public int rocketAmmo;
-    public float rocketFireRate;
-    public GameObject rocketPrefab;
-    public float rocketSpeed;
-    public GameObject monsterPrefab;
-    public float monsterSpeed;
+    private float pistolSpeed;
+    private float sniperSpeed;
+    private float rocketSpeed;
+    private float monsterSpeed;
+    private float fragmentSpeed;
 
     void Start ()
     {
-        pistolAmmo = 400;
+        pistolAmmo = GameManager.Instance.PistolStartingAmmo;
+        sniperAmmo = 0;
+        rocketAmmo = 0;
+
+        pistolFireRate = GameManager.Instance.PistolFireRate;
+        sniperFireRate = GameManager.Instance.SniperFireRate;
+        rocketFireRate = GameManager.Instance.RocketFireRate;
+
+        pistolSpeed = GameManager.Instance.PistolSpeed;
+        sniperSpeed = GameManager.Instance.SniperSpeed;
+        rocketSpeed = GameManager.Instance.RocketSpeed;
+        monsterSpeed = GameManager.Instance.MonsterBulletSpeed;
     }
 
     public void FireBullet(WEAPON_TYPE type, Transform shooterTransform, Vector2 direction, GameObject ignore = null)
     {
-        IncreaseAmmo(type, -1);
-
+        ChangeAmmo(type, -1);
 
         float bulletSpeed = 0f;
-        GameObject bulletType;
+        
         switch (type)
         {
             case WEAPON_TYPE.PISTOL:
                 bulletSpeed = pistolSpeed;
-                bulletType = pistolPrefab;
                 break;
             case WEAPON_TYPE.SNIPER:
                 bulletSpeed = sniperSpeed;
-                bulletType = sniperPrefab;
                 break;
             case WEAPON_TYPE.ROCKET:
                 bulletSpeed = rocketSpeed;
-                bulletType = rocketPrefab;
                 break;
             case WEAPON_TYPE.MONSTER:
                 bulletSpeed = monsterSpeed;
-                bulletType = monsterPrefab;
+                break;
+            case WEAPON_TYPE.FRAGMENT:
+                bulletSpeed = fragmentSpeed;
                 break;
             default:
-                bulletSpeed = pistolSpeed;
-                bulletType = pistolPrefab;
                 break;
         }
-        GameObject bullet = Instantiate(bulletType, shooterTransform.position, shooterTransform.rotation) as GameObject;
+        GameObject bullet = Instantiate(GameManager.Instance.Bullet, shooterTransform.position, shooterTransform.rotation) as GameObject;
         direction.Normalize();
         bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(direction.x * bulletSpeed, direction.y * bulletSpeed);
         bullet.GetComponent<Bullet>().SetWeaponType(type);
@@ -98,7 +102,7 @@ public class BulletManager : Singleton<BulletManager>
     }
 
 
-    public void IncreaseAmmo(WEAPON_TYPE type, int amount)
+    public void ChangeAmmo(WEAPON_TYPE type, int amount)
     {
         switch (type)
         {
@@ -111,6 +115,26 @@ public class BulletManager : Singleton<BulletManager>
             case WEAPON_TYPE.ROCKET:
                 rocketAmmo += amount;
                 break;
+            default:
+                break;
         }
-    }   
+    }
+
+    public void SetAmmo(WEAPON_TYPE type, int value)
+    {
+        switch (type)
+        {
+            case WEAPON_TYPE.PISTOL:
+                pistolAmmo = value;
+                break;
+            case WEAPON_TYPE.SNIPER:
+                sniperAmmo = value;
+                break;
+            case WEAPON_TYPE.ROCKET:
+                rocketAmmo = value;
+                break;
+            default:
+                break;
+        }
+    }
 }
