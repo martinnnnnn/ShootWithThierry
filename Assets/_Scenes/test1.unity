@@ -955,7 +955,8 @@ MonoBehaviour:
   plongeurPrefab: {fileID: 1000011419515636, guid: 8ee70620e294e2d4583ae276e387eaec,
     type: 2}
   plongeurAmount: 20
-  gourmandPrefab: {fileID: 0}
+  gourmandPrefab: {fileID: 1000011438215126, guid: 355513a7e16428c40919f4da104c0dd3,
+    type: 2}
   gourmandAmount: 20
   gordonPrefab: {fileID: 1000011438215126, guid: 355513a7e16428c40919f4da104c0dd3,
     type: 2}

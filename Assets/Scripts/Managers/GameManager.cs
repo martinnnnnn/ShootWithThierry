@@ -100,8 +100,20 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector]
     public GameObject Loot;
 
-    void Start()
+    void Awake()
     {
+        //foreach (Transform t in transform)
+        //{
+        //    if (t.gameObject.name == "Hero")
+        //    {
+        //        Hero = t;
+        //        Debug.Log("OHWI");
+        //    }
+        //    if (t.gameObject.name == "Monster")
+        //    {
+        //        Monster = t;
+        //    }
+        //}
         Hero = transform.Find("Hero");
         Monster = transform.Find("Monster");
         Lava = Resources.Load("PREFABS/Lava") as GameObject;

@@ -152,7 +152,7 @@ public class Bullet : MonoBehaviour
                 }
                 if (enemy)
                 {
-                    hero.ChangeLife(-BulletDamage);
+                    enemy.ChangeLife(-BulletDamage);
                 }
                 Destroy(gameObject);
                 break;
