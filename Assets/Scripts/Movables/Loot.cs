@@ -25,7 +25,7 @@ public class Loot : MonoBehaviour
     {
         lootType = type;
         amount = a;
-        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("LOOT/IMG_LOOT_" + lootType.ToString());
+        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("LOOTS/IMG_LOOT_" + lootType.ToString());
         gameObject.AddComponent<BoxCollider2D>();
     }
 

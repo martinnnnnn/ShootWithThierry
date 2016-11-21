@@ -102,18 +102,6 @@ public class GameManager : Singleton<GameManager>
 
     void Awake()
     {
-        //foreach (Transform t in transform)
-        //{
-        //    if (t.gameObject.name == "Hero")
-        //    {
-        //        Hero = t;
-        //        Debug.Log("OHWI");
-        //    }
-        //    if (t.gameObject.name == "Monster")
-        //    {
-        //        Monster = t;
-        //    }
-        //}
         Hero = transform.Find("Hero");
         Monster = transform.Find("Monster");
         Lava = Resources.Load("PREFABS/Lava") as GameObject;
@@ -142,7 +130,7 @@ public class GameManager : Singleton<GameManager>
     IEnumerator StartLoot(LootData data)
     {
         yield return new WaitForSeconds(data.timing - Time.timeSinceLevelLoad);
-        LootManager.Instance.SpawnLoot(null, data);
+        LootManager.Instance.SpawnLoot(data);
     }
 
 
@@ -168,12 +156,11 @@ public class GameManager : Singleton<GameManager>
         string[] columns;
 
 
-        
 
         for (int i = 1; i < lines.Length; i++)
         {
             columns = lines[i].Split(columnSeparators, System.StringSplitOptions.None);
-            if (columns[0] != "0")
+            if (columns[1] != "0")
             {
                 addWave(
                 float.Parse(columns[3]),
@@ -186,7 +173,7 @@ public class GameManager : Singleton<GameManager>
             else
             {
                 addLoot(
-                float.Parse(columns[2]),
+                float.Parse(columns[3]),
                 (LOOT_TYPE)Enum.Parse(typeof(LOOT_TYPE), columns[9], true),
                 int.Parse(columns[10]));
             }

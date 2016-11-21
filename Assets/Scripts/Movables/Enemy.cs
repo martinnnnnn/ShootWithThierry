@@ -54,6 +54,14 @@ public class Enemy : MonoBehaviour
         ResetCurrentTarget();
     }
 
+    void Update()
+    {
+        if (EnemyLife <= 0)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
     void FixedUpdate()
     {
         HandleFocus();
@@ -209,6 +217,8 @@ public class Enemy : MonoBehaviour
         DistanceChangementFocus = GameManager.Instance.ChangeFocusDistance;
         AttackDistanceHero = GameManager.Instance.EnemyHeroAttackDistance;
         AttackDistanceMonster = GameManager.Instance.EnemyMonsterAttackDistance;
+        Destroy(GetComponent<BoxCollider2D>());
+        gameObject.AddComponent<BoxCollider2D>();
         ResetCurrentTarget();
 
         switch(type)

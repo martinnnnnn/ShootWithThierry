@@ -19,9 +19,9 @@ public class ObjectPool : Singleton<ObjectPool>
 {
 
     
-    public GameObject commitPrefab;
-    public int commitAmount = 20;
-    private List<GameObject> commitObjects;
+    public GameObject commisPrefab;
+    public int commisAmount = 20;
+    private List<GameObject> commisObjects;
 
     public GameObject plongeurPrefab;
     public int plongeurAmount = 20;
@@ -42,12 +42,12 @@ public class ObjectPool : Singleton<ObjectPool>
 
     void Awake()
     {
-        commitObjects = new List<GameObject>();
-        for (int i = 0; i < commitAmount; ++i)
+        commisObjects = new List<GameObject>();
+        for (int i = 0; i < commisAmount; ++i)
         {
-            GameObject obj = Instantiate(commitPrefab);
+            GameObject obj = Instantiate(commisPrefab);
             obj.SetActive(false);
-            commitObjects.Add(obj);
+            commisObjects.Add(obj);
         }
         plongeurObjects = new List<GameObject>();
         for (int i = 0; i < plongeurAmount; ++i)
@@ -88,16 +88,16 @@ public class ObjectPool : Singleton<ObjectPool>
         switch (type)
         {
             case POOLED_OBJECTS.COMMIT:
-                for (int i = 0; i < commitObjects.Count; ++i)
+                for (int i = 0; i < commisObjects.Count; ++i)
                 {
-                    if (!commitObjects[i].activeInHierarchy)
+                    if (!commisObjects[i].activeInHierarchy)
                     {
-                        return commitObjects[i];
+                        return commisObjects[i];
                     }
                 }
-
-                obj = Instantiate(commitPrefab);
-                commitObjects.Add(obj);
+                Debug.Log("new commis");
+                obj = Instantiate(commisPrefab);
+                commisObjects.Add(obj);
                 return obj;
             case POOLED_OBJECTS.PLONGEUR:
                 for (int i = 0; i < plongeurObjects.Count; ++i)

@@ -8,25 +8,25 @@ public class LootManager : Singleton<LootManager>
     private GameObject lootPrefab;
     private Transform lifeSpawnPosition;
     private Transform ammoSpawnPosition;
-    public float timeBetweenLifeSpawns = 30f;
-    private float nextLifeSpawnsTime;
+    //public float timeBetweenLifeSpawns = 30f;
+    //private float nextLifeSpawnsTime;
 
     void Start()
     {
-        nextLifeSpawnsTime = timeBetweenLifeSpawns;
+        //nextLifeSpawnsTime = timeBetweenLifeSpawns;
         lootPrefab = GameManager.Instance.Loot;
-        lifeSpawnPosition = transform.FindChild("LifeSpawnPosition");
-        ammoSpawnPosition = transform.FindChild("AmmoSpawnPosition");
+        lifeSpawnPosition = transform.Find("LifeSpawnPosition");
+        ammoSpawnPosition = transform.Find("AmmoSpawnPosition");
     }
 
     void Update()
     {
 
-        if (Time.timeSinceLevelLoad >= nextLifeSpawnsTime)
-        {
-            nextLifeSpawnsTime += timeBetweenLifeSpawns;
-            SpawnLife();
-        }
+        //if (Time.timeSinceLevelLoad >= nextLifeSpawnsTime)
+        //{
+        //    nextLifeSpawnsTime += timeBetweenLifeSpawns;
+        //    SpawnLife();
+        //}
     }
 
     public void SpawnLoot(Transform spawn, LOOT_TYPE type, int amount)
@@ -36,10 +36,10 @@ public class LootManager : Singleton<LootManager>
         loot.GetComponent<Loot>().SetLoot(type,amount);
     }
 
-    public void SpawnLoot(Transform spawn, LootData data)
+    public void SpawnLoot(LootData data)
     {
-        if (spawn == null) spawn = ammoSpawnPosition;
-        GameObject loot = Instantiate(lootPrefab, spawn) as GameObject;
+        Transform spawn = (data.type == LOOT_TYPE.LIFE) ? lifeSpawnPosition : ammoSpawnPosition;
+        GameObject loot = Instantiate(lootPrefab, spawn.position, new Quaternion()) as GameObject;
         loot.GetComponent<Loot>().SetLoot(data.type, data.amount);
     }
 
