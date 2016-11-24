@@ -12,13 +12,14 @@ public class Monster : MonoBehaviour
     private int cacStage;
     private int lavaStage;
     private int hellStage;
+    private int cacDamage;
     private float timeBetweenCac;
     private float timeBetweenLava;
     private float timeBetweenHell;
     private float timeLastCac;
     private float timeLastLava;
     private float timeLastHell;
-
+    private float cacRadius;
 
     public int numberOfHellWaves = 10;
 
@@ -33,13 +34,15 @@ public class Monster : MonoBehaviour
 
     void Awake()
     {
-        MonsterLife = GameManager.Instance.MonsterStartingLife;
-        cacStage = GameManager.Instance.MonsterCaCStage;
-        lavaStage = GameManager.Instance.MonsterLavaStage;
-        hellStage = GameManager.Instance.MonsterHellStage;
-        timeBetweenCac = GameManager.Instance.MonsterTimeBetweenCaCAttacks;
-        timeBetweenLava = GameManager.Instance.MonsterTimeBetweenLavaAttacks;
-        timeBetweenHell = GameManager.Instance.MonsterTimeBetweenHellAttacks;
+        MonsterLife = GameDataManager.Instance.MonsterStartingLife;
+        cacStage = GameDataManager.Instance.MonsterCaCStage;
+        lavaStage = GameDataManager.Instance.MonsterLavaStage;
+        hellStage = GameDataManager.Instance.MonsterHellStage;
+        timeBetweenCac = GameDataManager.Instance.MonsterTimeBetweenCaCAttacks;
+        timeBetweenLava = GameDataManager.Instance.MonsterTimeBetweenLavaAttacks;
+        timeBetweenHell = GameDataManager.Instance.MonsterTimeBetweenHellAttacks;
+        cacRadius = GameDataManager.Instance.MonsterCaCRadius;
+        cacDamage = GameDataManager.Instance.MonsterCaCDamage;
 
         cacStagePlaces = new List<Transform>();
         foreach (Transform t in transform)
@@ -52,37 +55,60 @@ public class Monster : MonoBehaviour
         timeLastCac = 0f;
         timeLastLava = 0f;
         timeLastHell = 0f;
-}
+
+        UIManager.Instance.SetMonsterLife(MonsterLife);
+    }
 
     void Update()
     {
-        //if (myLife.life < firstStage && myLife.life > secondStage)
-        //{
-        //    CaCAttack();
-        //}
-        //else if (myLife.life < secondStage && myLife.life > thirdSage)
-        //{
-        //    //LavaAttack();
-        //}
-        //else if (myLife.life < thirdSage)
-        //{
-        //    if (!temp)
-        //    {
-        //        StartCoroutine(BulletHellAttack());
-        //        temp = true;
-        //    }
-        //}
+        Attack();
 
-        if (!temp)
+        //if (!temp)
+        //{
+        //    StartCoroutine(HellAttack());
+        //    temp = true;
+        //}
+    }
+
+    private void Attack()
+    {
+        if (MonsterLife < cacStage && MonsterLife > lavaStage)
         {
-            StartCoroutine(HellAttack());
-            temp = true;
+            if (Time.timeSinceLevelLoad > timeLastCac + timeBetweenCac)
+            {
+                timeLastCac = Time.timeSinceLevelLoad;
+                CaCAttack();
+            }
+        }
+        else if (MonsterLife < lavaStage && MonsterLife > hellStage)
+        {
+            if (Time.timeSinceLevelLoad > timeLastLava + timeBetweenLava)
+            {
+                timeLastLava = Time.timeSinceLevelLoad;
+                LavaAttack();
+            }
+        }
+        else if (MonsterLife < hellStage && MonsterLife > 0)
+        {
+            if (Time.timeSinceLevelLoad > timeLastHell + timeBetweenHell)
+            {
+                timeLastHell = Time.timeSinceLevelLoad;
+                StartCoroutine(HellAttack());
+            }
         }
     }
 
     private void CaCAttack()
     {
-
+        Debug.Log("cacDamage");
+        Collider2D[] attackedObjects =  Physics2D.OverlapCircleAll(transform.position, cacRadius);
+        for (int i = 0; i < attackedObjects.Length; ++i)
+        {
+            if (attackedObjects[i].GetComponent<Enemy>() || attackedObjects[i].GetComponent<Hero>())
+            {
+                attackedObjects[i].gameObject.SendMessage("ChangeLife", -cacDamage);
+            }
+        }
     }
 
     private IEnumerator HellAttack()
@@ -138,38 +164,10 @@ public class Monster : MonoBehaviour
         rocketBulletsDirections2.Add(new Vector2(-sqrtAngle, -.5f));
     }
 
-
-    private void Attack()
-    {
-        if (MonsterLife < cacStage && MonsterLife > lavaStage)
-        {
-            if (Time.timeSinceLevelLoad > timeLastCac + timeBetweenCac)
-            {
-                timeLastCac = Time.timeSinceLevelLoad;
-                CaCAttack();
-            }
-        }
-        else if (MonsterLife < lavaStage && MonsterLife > hellStage)
-        {
-            if (Time.timeSinceLevelLoad > timeLastLava + timeBetweenLava)
-            {
-                timeLastLava = Time.timeSinceLevelLoad;
-                LavaAttack();
-            }
-        }
-        else if (MonsterLife < hellStage && MonsterLife > 0)
-        {
-            if (Time.timeSinceLevelLoad > timeLastHell + timeBetweenHell)
-            {
-                timeLastHell = Time.timeSinceLevelLoad;
-                HellAttack();
-            }
-        }
-    }
-
     public void ChangeLife(int amount)
     {
         MonsterLife += amount;
+        UIManager.Instance.SetMonsterLife(MonsterLife);
     }
 
 }

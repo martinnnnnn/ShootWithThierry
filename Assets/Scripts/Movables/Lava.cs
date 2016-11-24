@@ -14,9 +14,9 @@ public class Lava : MonoBehaviour
 
     void Awake()
     {
-        LavaDuration = GameManager.Instance.LavaDuration;
-        LavaDamage = GameManager.Instance.LavaDamage;
-        LavaTimeBetweenAttack = GameManager.Instance.LavaTimeBetweenAttack;
+        LavaDuration = GameDataManager.Instance.LavaDuration;
+        LavaDamage = GameDataManager.Instance.LavaDamage;
+        LavaTimeBetweenAttack = GameDataManager.Instance.LavaTimeBetweenAttack;
     }
     
 

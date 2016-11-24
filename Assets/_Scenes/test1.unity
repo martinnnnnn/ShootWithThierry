@@ -190,6 +190,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hero: {fileID: 1997796820}
+--- !u!1001 &323015336
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4000011614277268, guid: 50016647ae178594d8e2bcba181eaec7, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.9891691
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011614277268, guid: 50016647ae178594d8e2bcba181eaec7, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.67263544
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011614277268, guid: 50016647ae178594d8e2bcba181eaec7, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -3.5703125
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011614277268, guid: 50016647ae178594d8e2bcba181eaec7, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011614277268, guid: 50016647ae178594d8e2bcba181eaec7, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011614277268, guid: 50016647ae178594d8e2bcba181eaec7, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011614277268, guid: 50016647ae178594d8e2bcba181eaec7, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011614277268, guid: 50016647ae178594d8e2bcba181eaec7, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 50016647ae178594d8e2bcba181eaec7, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &393687317
 Prefab:
   m_ObjectHideFlags: 0
@@ -233,7 +275,7 @@ Prefab:
         type: 2}
       propertyPath: commisPrefab
       value: 
-      objectReference: {fileID: 1000013317204350, guid: 3ab20aa4aa705314e8feaf7b26f7bdaf,
+      objectReference: {fileID: 1000010423111518, guid: 3ab20aa4aa705314e8feaf7b26f7bdaf,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 75ad12e93792de946a1af1accc8f95e6, type: 2}
@@ -281,6 +323,131 @@ Prefab:
         type: 2}
       propertyPath: PistolStartingAmmo
       value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: GordonAttackSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: HeroDashSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: HeroDashCoolDown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: PlongeurDashSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: CommisSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: PlongeurSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: GourmandSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: GordonSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: MonsterTimeBetweenCaCAttacks
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: MonsterTimeBetweenLavaAttacks
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: MonsterTimeBetweenHellAttacks
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: MonsterCaCRadius
+      value: 1.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: MonsterCaCDamage
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: StartingAmmo
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: PistolAmmoPerShot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: SniperAmmoPerShot
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: RocketAmmoPerShot
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: EnemyMonsterAttackDistance
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: EnemyHeroAttackDistance
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: MonsterStartingLife
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 61000014194963152, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: RocketFireRate
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: RocketTimeBeforeExplosion
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: RocketSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012922256952, guid: df5955f55203fa74bb965e0271f8bd00,
+        type: 2}
+      propertyPath: FragmentSpeed
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: df5955f55203fa74bb965e0271f8bd00, type: 2}
@@ -364,7 +531,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000013811692268, guid: 471554c7f38be6144b4a248491357fb1, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 471554c7f38be6144b4a248491357fb1, type: 2}
@@ -411,6 +578,68 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d6c15664d163872409101c57674e2508, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1519255767
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1519255770}
+  - 114: {fileID: 1519255769}
+  - 114: {fileID: 1519255768}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1519255768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1519255767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1077351063, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &1519255769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1519255767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -619905303, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 5
+--- !u!4 &1519255770
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1519255767}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
 --- !u!1001 &1855601544
 Prefab:
   m_ObjectHideFlags: 0
@@ -448,7 +677,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011004615614, guid: 35d46e4b093b68940805b68421cbfb6a, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 35d46e4b093b68940805b68421cbfb6a, type: 2}

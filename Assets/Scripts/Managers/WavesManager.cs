@@ -5,9 +5,11 @@ using System.Collections.Generic;
 public class WavesManager : Singleton<WavesManager>
 {
     private List<Transform> spawningPlaces;
-    
+    //private List<Enemy> enemies;
+
     void Start()
     {
+        //enemies = new List<Enemy>();
         spawningPlaces = new List<Transform>();
         foreach (Transform t in transform)
         {
@@ -24,6 +26,7 @@ public class WavesManager : Singleton<WavesManager>
             enemy.transform.position = spawningPlaces[data.spawningPosition].position;
             enemy.GetComponent<Enemy>().SetType(ENEMY_TYPE.COMMIS);
             enemy.SetActive(true);
+            //enemies.Add(enemy.GetComponent<Enemy>());
 
         }
         for (int i = 0; i < data.plongeurQuantity; ++i)
@@ -32,6 +35,7 @@ public class WavesManager : Singleton<WavesManager>
             enemy.transform.position = spawningPlaces[data.spawningPosition].position;
             enemy.GetComponent<Enemy>().SetType(ENEMY_TYPE.PLONGEUR);
             enemy.SetActive(true);
+            //enemies.Add(enemy.GetComponent<Enemy>());
         }
         for (int i = 0; i < data.gourmandQuantity; ++i)
         {
@@ -39,6 +43,7 @@ public class WavesManager : Singleton<WavesManager>
             enemy.transform.position = spawningPlaces[data.spawningPosition].position;
             enemy.GetComponent<Enemy>().SetType(ENEMY_TYPE.GOURMAND);
             enemy.SetActive(true);
+            //enemies.Add(enemy.GetComponent<Enemy>());
         }
         for (int i = 0; i < data.gordonQuantity; ++i)
         {
@@ -46,8 +51,11 @@ public class WavesManager : Singleton<WavesManager>
             enemy.transform.position = spawningPlaces[data.spawningPosition].position;
             enemy.GetComponent<Enemy>().SetType(ENEMY_TYPE.GORDON);
             enemy.SetActive(true);
+            //enemies.Add(enemy.GetComponent<Enemy>());
         }
     }
+
+
     
 }
 

@@ -20,7 +20,6 @@ public class Loot : MonoBehaviour
     {
     }
 
-
     public void SetLoot(LOOT_TYPE type, int a)
     {
         lootType = type;

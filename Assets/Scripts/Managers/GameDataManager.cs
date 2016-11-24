@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class GameManager : Singleton<GameManager>
+public class GameDataManager : Singleton<GameDataManager>
 {
 
     public string pathToWavesData;
@@ -12,7 +12,10 @@ public class GameManager : Singleton<GameManager>
 
     [Space(3)]
     [Header("Bullets")]
-    public int PistolStartingAmmo;
+    public int StartingAmmo;
+    public int PistolAmmoPerShot;
+    public int SniperAmmoPerShot;
+    public int RocketAmmoPerShot;
     public float PistolFireRate;
     public float SniperFireRate;
     public float RocketFireRate;
@@ -49,6 +52,8 @@ public class GameManager : Singleton<GameManager>
     public int MonsterTimeBetweenCaCAttacks;
     public int MonsterTimeBetweenLavaAttacks;
     public int MonsterTimeBetweenHellAttacks;
+    public float MonsterCaCRadius;
+    public int MonsterCaCDamage;
 
     [Space(3)]
     [Header("Lava")]

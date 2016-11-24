@@ -7,9 +7,11 @@ using System.Collections.Generic;
 
 public class BulletManager : Singleton<BulletManager>
 {
-    private int pistolAmmo;
-    private int sniperAmmo;
-    private int rocketAmmo;
+    private int Ammo;
+
+    private int pistolAmmoPerShot;
+    private int sniperAmmoPerShot;
+    private int rocketAmmoPerShot;
 
     private float pistolFireRate;
     private float sniperFireRate;
@@ -21,37 +23,46 @@ public class BulletManager : Singleton<BulletManager>
     private float monsterSpeed;
     private float fragmentSpeed;
 
+    private WEAPON_TYPE currentWeapon;
+
     void Start ()
     {
-        pistolAmmo = GameManager.Instance.PistolStartingAmmo;
-        sniperAmmo = 0;
-        rocketAmmo = 0;
+        Ammo = GameDataManager.Instance.StartingAmmo;
 
-        pistolFireRate = GameManager.Instance.PistolFireRate;
-        sniperFireRate = GameManager.Instance.SniperFireRate;
-        rocketFireRate = GameManager.Instance.RocketFireRate;
+        pistolAmmoPerShot = GameDataManager.Instance.PistolAmmoPerShot;
+        sniperAmmoPerShot = GameDataManager.Instance.SniperAmmoPerShot;
+        rocketAmmoPerShot = GameDataManager.Instance.RocketAmmoPerShot;
 
-        pistolSpeed = GameManager.Instance.PistolSpeed;
-        sniperSpeed = GameManager.Instance.SniperSpeed;
-        rocketSpeed = GameManager.Instance.RocketSpeed;
-        monsterSpeed = GameManager.Instance.MonsterBulletSpeed;
+        pistolFireRate = GameDataManager.Instance.PistolFireRate;
+        sniperFireRate = GameDataManager.Instance.SniperFireRate;
+        rocketFireRate = GameDataManager.Instance.RocketFireRate;
+
+        pistolSpeed = GameDataManager.Instance.PistolSpeed;
+        sniperSpeed = GameDataManager.Instance.SniperSpeed;
+        rocketSpeed = GameDataManager.Instance.RocketSpeed;
+        monsterSpeed = GameDataManager.Instance.MonsterBulletSpeed;
+        fragmentSpeed = GameDataManager.Instance.FragmentSpeed;
+        currentWeapon = WEAPON_TYPE.PISTOL;
+
+        UIManager.Instance.SetAmmo(Ammo);
     }
 
     public void FireBullet(WEAPON_TYPE type, Transform shooterTransform, Vector2 direction, GameObject ignore = null)
     {
-        ChangeAmmo(type, -1);
-
         float bulletSpeed = 0f;
         
         switch (type)
         {
             case WEAPON_TYPE.PISTOL:
+                ChangeAmmo(-pistolAmmoPerShot);
                 bulletSpeed = pistolSpeed;
                 break;
             case WEAPON_TYPE.SNIPER:
+                ChangeAmmo(-sniperAmmoPerShot);
                 bulletSpeed = sniperSpeed;
                 break;
             case WEAPON_TYPE.ROCKET:
+                ChangeAmmo(-rocketAmmoPerShot);
                 bulletSpeed = rocketSpeed;
                 break;
             case WEAPON_TYPE.MONSTER:
@@ -63,7 +74,8 @@ public class BulletManager : Singleton<BulletManager>
             default:
                 break;
         }
-        GameObject bullet = Instantiate(GameManager.Instance.Bullet, shooterTransform.position, shooterTransform.rotation) as GameObject;
+
+        GameObject bullet = Instantiate(GameDataManager.Instance.Bullet, shooterTransform.position, shooterTransform.rotation) as GameObject;
         direction.Normalize();
         bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(direction.x * bulletSpeed, direction.y * bulletSpeed);
         bullet.GetComponent<Bullet>().SetWeaponType(type);
@@ -72,13 +84,6 @@ public class BulletManager : Singleton<BulletManager>
         bullet.transform.eulerAngles = new Vector3(bullet.transform.eulerAngles.x, bullet.transform.eulerAngles.y, deg);
         if (ignore) Physics2D.IgnoreCollision(ignore.GetComponent<Collider2D>(), bullet.GetComponent<Collider2D>());
     }
-    
-
-
-    public bool CanFirePistol(float fireDelay)
-    {
-        return (pistolAmmo > 0 && fireDelay >= pistolFireRate);
-    }
 
     public bool CanFireGun(WEAPON_TYPE type, float fireDelay)
     {
@@ -86,15 +91,13 @@ public class BulletManager : Singleton<BulletManager>
         switch(type)
         {
             case WEAPON_TYPE.PISTOL:
-                canfire = (pistolAmmo > 0 && fireDelay >= pistolFireRate);
+                canfire = (Ammo > pistolAmmoPerShot && fireDelay >= pistolFireRate);
                 break;
             case WEAPON_TYPE.SNIPER:
-                canfire = (sniperAmmo > 0 && fireDelay >= sniperFireRate);
-                Debug.Log("ammo:" + sniperAmmo + " fireDelay: " + fireDelay + " / pistolFireRate: " + sniperFireRate);
-                Debug.Log("canfire:" + canfire);
+                canfire = (Ammo > sniperAmmoPerShot && currentWeapon == WEAPON_TYPE.SNIPER && fireDelay >= sniperFireRate);
                 break;
             case WEAPON_TYPE.ROCKET:
-                canfire = (rocketAmmo > 0 && fireDelay >= rocketFireRate);
+                canfire = (Ammo > rocketAmmoPerShot && currentWeapon == WEAPON_TYPE.ROCKET && fireDelay >= rocketFireRate);
                 break;
         }
         
@@ -102,39 +105,26 @@ public class BulletManager : Singleton<BulletManager>
     }
 
 
-    public void ChangeAmmo(WEAPON_TYPE type, int amount)
+    public void ChangeAmmo(int amount)
     {
-        switch (type)
+        if (Ammo + amount >= 0)
         {
-            case WEAPON_TYPE.PISTOL:
-                pistolAmmo += amount;
-                break;
-            case WEAPON_TYPE.SNIPER:
-                sniperAmmo += amount;
-                break;
-            case WEAPON_TYPE.ROCKET:
-                rocketAmmo += amount;
-                break;
-            default:
-                break;
+            Ammo += amount;
         }
+        UIManager.Instance.SetAmmo(Ammo);
     }
 
-    public void SetAmmo(WEAPON_TYPE type, int value)
+    public void SetAmmo(int value)
     {
-        switch (type)
+        if (value > 0)
         {
-            case WEAPON_TYPE.PISTOL:
-                pistolAmmo = value;
-                break;
-            case WEAPON_TYPE.SNIPER:
-                sniperAmmo = value;
-                break;
-            case WEAPON_TYPE.ROCKET:
-                rocketAmmo = value;
-                break;
-            default:
-                break;
+            Ammo = value;
         }
+        UIManager.Instance.SetAmmo(Ammo);
+    }
+
+    public void SetWeaponType(WEAPON_TYPE type)
+    {
+        currentWeapon = type;
     }
 }

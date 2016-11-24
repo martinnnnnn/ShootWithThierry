@@ -14,7 +14,7 @@ public class LootManager : Singleton<LootManager>
     void Start()
     {
         //nextLifeSpawnsTime = timeBetweenLifeSpawns;
-        lootPrefab = GameManager.Instance.Loot;
+        lootPrefab = GameDataManager.Instance.Loot;
         lifeSpawnPosition = transform.Find("LifeSpawnPosition");
         ammoSpawnPosition = transform.Find("AmmoSpawnPosition");
     }
@@ -65,13 +65,13 @@ public class LootManager : Singleton<LootManager>
         switch(type)
         {
             case LOOT_TYPE.PISTOL:
-                amount = GameManager.Instance.GordonLootPistolAmount;
+                amount = GameDataManager.Instance.GordonLootPistolAmount;
                 break;
             case LOOT_TYPE.SNIPER:
-                amount = GameManager.Instance.GordonLootSniperAmount;
+                amount = GameDataManager.Instance.GordonLootSniperAmount;
                 break;
             case LOOT_TYPE.ROCKET:
-                amount = GameManager.Instance.GordonLootRocketAmount;
+                amount = GameDataManager.Instance.GordonLootRocketAmount;
                 break;
         }
         return amount;

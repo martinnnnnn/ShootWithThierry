@@ -24,10 +24,10 @@ public class DashController : MonoBehaviour
         enemy = GetComponent<Enemy>();
         myRigidBody = GetComponent<Rigidbody2D>();
         bullet = LayerMask.NameToLayer("Bullet");
-        HeroDashSpeed = GameManager.Instance.HeroDashSpeed;
-        HeroDashCoolDown = GameManager.Instance.HeroDashCoolDown;
-        EnemyDashSpeed = GameManager.Instance.PlongeurDashSpeed;
-        EnemyDashCoolDown = GameManager.Instance.PlongeurDashCoolDown;
+        HeroDashSpeed = GameDataManager.Instance.HeroDashSpeed;
+        HeroDashCoolDown = GameDataManager.Instance.HeroDashCoolDown;
+        EnemyDashSpeed = GameDataManager.Instance.PlongeurDashSpeed;
+        EnemyDashCoolDown = GameDataManager.Instance.PlongeurDashCoolDown;
 
         timeNextDash = 0f;
     }
@@ -38,6 +38,7 @@ public class DashController : MonoBehaviour
         {
             if (Input.GetButton("Jump") && Time.timeSinceLevelLoad >= timeNextDash)
             {
+                Debug.Log("Jump!");
                 timeNextDash = Time.timeSinceLevelLoad + HeroDashCoolDown;
                 Vector2 dashDirection = new Vector2(Input.GetAxis("Horizontal1"),Input.GetAxis("Vertical1"));
                 myRigidBody.velocity = new Vector2(dashDirection.x * HeroDashSpeed, dashDirection.y * HeroDashSpeed);

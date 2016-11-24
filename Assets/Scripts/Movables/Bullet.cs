@@ -41,7 +41,7 @@ public class Bullet : MonoBehaviour
         myRigidBody = GetComponent<Rigidbody2D>();
         myRenderer = GetComponent<SpriteRenderer>();
 
-        RocketExplosionTime = Time.timeSinceLevelLoad + GameManager.Instance.RocketTimeBeforeExplosion;
+        RocketExplosionTime = Time.timeSinceLevelLoad + GameDataManager.Instance.RocketTimeBeforeExplosion;
         rocketBulletsDirections = new List<Vector2>();
         rocketBulletsDirections.Add(new Vector2(0,1));
         rocketBulletsDirections.Add(new Vector2(0,-1));
@@ -61,19 +61,19 @@ public class Bullet : MonoBehaviour
         switch (BulletType)
         {
             case WEAPON_TYPE.PISTOL:
-                BulletDamage = GameManager.Instance.PistolDamage;
+                BulletDamage = GameDataManager.Instance.PistolDamage;
                 break;
             case WEAPON_TYPE.SNIPER:
-                BulletDamage = GameManager.Instance.SniperDamage;
+                BulletDamage = GameDataManager.Instance.SniperDamage;
                 break;
             case WEAPON_TYPE.ROCKET:
-                BulletDamage = GameManager.Instance.RocketDamage;
+                BulletDamage = GameDataManager.Instance.RocketDamage;
                 break;
             case WEAPON_TYPE.MONSTER:
-                BulletDamage = GameManager.Instance.MonsterBulletDamage;
+                BulletDamage = GameDataManager.Instance.MonsterBulletDamage;
                 break;
             case WEAPON_TYPE.FRAGMENT:
-                BulletDamage = GameManager.Instance.FragmentDamage;
+                BulletDamage = GameDataManager.Instance.FragmentDamage;
                 break;
 
         }
@@ -88,15 +88,21 @@ public class Bullet : MonoBehaviour
 
         if (c.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
+            if (BulletType == WEAPON_TYPE.ROCKET)
+            {
+                Explode();
+                return;
+            }
             Destroy(gameObject);
         }
         
         switch (BulletType)
         {
             case WEAPON_TYPE.PISTOL:
+            case WEAPON_TYPE.FRAGMENT:
                 if (monster)
                 {
-                    monster.ChangeLife(BulletDamage); ;
+                    monster.ChangeLife(BulletDamage);
                 }
                 if (enemy)
                 {
@@ -130,10 +136,10 @@ public class Bullet : MonoBehaviour
                 }
                 break;
             case WEAPON_TYPE.ROCKET:
-                if (monster)
-                {
-                    monster.ChangeLife(BulletDamage); ;
-                }
+                //if (monster)
+                //{
+                //    monster.ChangeLife(BulletDamage);
+                //}
                 if (enemy)
                 {
                     enemy.ChangeLife(-BulletDamage);
@@ -170,5 +176,6 @@ public class Bullet : MonoBehaviour
         {
             BulletManager.Instance.FireBullet(WEAPON_TYPE.FRAGMENT, transform, direction);
         }
+        Destroy(gameObject);
     }
 }

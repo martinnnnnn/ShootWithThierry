@@ -23,10 +23,11 @@ public class Hero : MonoBehaviour
 
     void Start ()
     {
-        HeroLife = GameManager.Instance.HeroStartingLife;
-        HeroSpeed = GameManager.Instance.HeroSpeed;
+        HeroLife = GameDataManager.Instance.HeroStartingLife;
+        HeroSpeed = GameDataManager.Instance.HeroSpeed;
         HeroRigidBody = GetComponent<Rigidbody2D>();
         canMove = true;
+        UIManager.Instance.SetHeroLife(HeroLife);
     }
 	
 	// Update is called once per frame
@@ -70,28 +71,23 @@ public class Hero : MonoBehaviour
             switch (loot.GetLootType())
             {
                 case LOOT_TYPE.PISTOL:
-                    BulletManager.Instance.ChangeAmmo(WEAPON_TYPE.PISTOL,amount);
-                    Destroy(c.gameObject);
+                    BulletManager.Instance.ChangeAmmo(amount);
                     break;
                 case LOOT_TYPE.SNIPER:
-                    BulletManager.Instance.ChangeAmmo(WEAPON_TYPE.SNIPER, amount);
-                    BulletManager.Instance.SetAmmo(WEAPON_TYPE.ROCKET,0);
-                    Destroy(c.gameObject);
+                    BulletManager.Instance.SetWeaponType(WEAPON_TYPE.SNIPER);
                     break;
                 case LOOT_TYPE.ROCKET:
-                    BulletManager.Instance.ChangeAmmo(WEAPON_TYPE.ROCKET, amount);
-                    BulletManager.Instance.ChangeAmmo(WEAPON_TYPE.SNIPER, 0);
-                    Destroy(c.gameObject);
+                    BulletManager.Instance.SetWeaponType(WEAPON_TYPE.ROCKET);
                     break;
                 case LOOT_TYPE.LIFE:
-                    if (HeroLife < 4)
+                    if (HeroLife < GameDataManager.Instance.HeroStartingLife)
                     {
                         HeroLife ++;
-                        Destroy(c.gameObject);
+                        
                     }
                     break;
             }
-            
+            Destroy(c.gameObject);
         }
     }
 
@@ -144,6 +140,7 @@ public class Hero : MonoBehaviour
     public void ChangeLife(int amount)
     {
         HeroLife += amount;
+        UIManager.Instance.SetHeroLife(HeroLife);
     }
 
 

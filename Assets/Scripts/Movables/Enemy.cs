@@ -38,13 +38,13 @@ public class Enemy : MonoBehaviour
     private float GourmandTimeResetFocus;
     private float timeLastHit;
 
-
+    private float tooCloseEnemies = 1f;
 
     void Awake()
     {
-        Monster = GameManager.Instance.Monster;
-        Hero = GameManager.Instance.Hero;
-        GourmandTimeResetFocus = GameManager.Instance.GourmandTimeResetFocus;
+        Monster = GameDataManager.Instance.Monster;
+        Hero = GameDataManager.Instance.Hero;
+        GourmandTimeResetFocus = GameDataManager.Instance.GourmandTimeResetFocus;
     }
 
     void OnEnable()
@@ -69,31 +69,31 @@ public class Enemy : MonoBehaviour
         {
             HandleDash();
         }
-        if (canMove) Deplacement();
+        if (canMove) Move();
         Attack();
     }
 
-    void Deplacement()
+    void Move()
     {
 
-        Vector2 direction = CurrentTarget.position - transform.position;
-        float magnitude = direction.magnitude;
+        Vector3 direction = CurrentTarget.position - transform.position;
+        float distance = Vector3.Distance(CurrentTarget.position,transform.position);
+        //float magnitude = direction.magnitude;
         direction.Normalize();
-        
-        Vector3 velocity = direction * MoveSpeed;
 
-        if ((CurrentTarget == Hero && magnitude >= AttackDistanceHero) || CurrentTarget == Monster && magnitude >= AttackDistanceMonster)
+        if ((CurrentTarget == Hero && distance >= AttackDistanceHero) || CurrentTarget == Monster && distance >= AttackDistanceMonster)
         {
             GetComponent<Rigidbody2D>().velocity = new Vector3(direction.x * MoveSpeed, direction.y * MoveSpeed);
         }
-        else if (magnitude < AttackDistanceHero)
+        else if ((CurrentTarget == Hero && distance < AttackDistanceHero) || CurrentTarget == Monster && distance < AttackDistanceMonster)
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
         }
 
-        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
-        transform.LookAt(CurrentTarget.position);
-        transform.Rotate(new Vector3(0, -90, 0), Space.Self);
+        //graphics.position = new Vector3(graphics.position.x, graphics.position.y, 0);
+        //graphics.LookAt(CurrentTarget.position);
+        //graphics.Rotate(new Vector3(0, -90, 0), Space.Self);
+
     }
 
     void Attack()
@@ -101,9 +101,12 @@ public class Enemy : MonoBehaviour
         if (Time.timeSinceLevelLoad > nextAttackTime)
         {
             nextAttackTime = Time.timeSinceLevelLoad + AttackSpeed;
-
-            if (Vector3.Distance(transform.position, CurrentTarget.position) <= AttackDistanceHero + 0.1f)
+            float distance = Vector3.Distance(transform.position, CurrentTarget.position);
+            //Debug.Log("distance :" + distance);
+            if (CurrentTarget == Hero && distance <= AttackDistanceHero + 0.1f
+                || CurrentTarget == Monster && distance <= AttackDistanceMonster + 0.1f)
             {
+                //Debug.Log("ORMAGUD");
                 Hero hero = CurrentTarget.GetComponent<Hero>();
                 Monster monster = CurrentTarget.GetComponent<Monster>();
                 if (hero)
@@ -214,38 +217,38 @@ public class Enemy : MonoBehaviour
 
     private void ResetEnemy()
     {
-        DistanceChangementFocus = GameManager.Instance.ChangeFocusDistance;
-        AttackDistanceHero = GameManager.Instance.EnemyHeroAttackDistance;
-        AttackDistanceMonster = GameManager.Instance.EnemyMonsterAttackDistance;
-        Destroy(GetComponent<BoxCollider2D>());
-        gameObject.AddComponent<BoxCollider2D>();
+        DistanceChangementFocus = GameDataManager.Instance.ChangeFocusDistance;
+        AttackDistanceHero = GameDataManager.Instance.EnemyHeroAttackDistance;
+        AttackDistanceMonster = GameDataManager.Instance.EnemyMonsterAttackDistance;
+        //Destroy(GetComponent<BoxCollider2D>());
+        //gameObject.AddComponent<BoxCollider2D>();
         ResetCurrentTarget();
 
         switch(type)
         {
             case ENEMY_TYPE.COMMIS:
-                EnemyLife = GameManager.Instance.CommisStartingLife;
-                MoveSpeed = GameManager.Instance.CommisSpeed;
-                AttackSpeed = GameManager.Instance.CommisAttackSpeed;
-                Damage = GameManager.Instance.CommisDamage;
+                EnemyLife = GameDataManager.Instance.CommisStartingLife;
+                MoveSpeed = GameDataManager.Instance.CommisSpeed;
+                AttackSpeed = GameDataManager.Instance.CommisAttackSpeed;
+                Damage = GameDataManager.Instance.CommisDamage;
                 break;
             case ENEMY_TYPE.PLONGEUR:
-                EnemyLife = GameManager.Instance.PlongeurStartingLife;
-                MoveSpeed = GameManager.Instance.PlongeurSpeed;
-                AttackSpeed = GameManager.Instance.PlongeurAttackSpeed;
-                Damage = GameManager.Instance.PlongeurDamage;
+                EnemyLife = GameDataManager.Instance.PlongeurStartingLife;
+                MoveSpeed = GameDataManager.Instance.PlongeurSpeed;
+                AttackSpeed = GameDataManager.Instance.PlongeurAttackSpeed;
+                Damage = GameDataManager.Instance.PlongeurDamage;
                 break;
             case ENEMY_TYPE.GOURMAND:
-                EnemyLife = GameManager.Instance.GourmandStartingLife;
-                MoveSpeed = GameManager.Instance.GourmandSpeed;
-                AttackSpeed = GameManager.Instance.GourmandAttackSpeed;
-                Damage = GameManager.Instance.GourmandDamage;
+                EnemyLife = GameDataManager.Instance.GourmandStartingLife;
+                MoveSpeed = GameDataManager.Instance.GourmandSpeed;
+                AttackSpeed = GameDataManager.Instance.GourmandAttackSpeed;
+                Damage = GameDataManager.Instance.GourmandDamage;
                 break;
             case ENEMY_TYPE.GORDON:
-                EnemyLife = GameManager.Instance.GordonStartingLife;
-                MoveSpeed = GameManager.Instance.GordonSpeed;
-                AttackSpeed = GameManager.Instance.GordonAttackSpeed;
-                Damage = GameManager.Instance.GordonDamage;
+                EnemyLife = GameDataManager.Instance.GordonStartingLife;
+                MoveSpeed = GameDataManager.Instance.GordonSpeed;
+                AttackSpeed = GameDataManager.Instance.GordonAttackSpeed;
+                Damage = GameDataManager.Instance.GordonDamage;
                 break;
         }
     }

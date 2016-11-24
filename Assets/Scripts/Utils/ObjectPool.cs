@@ -14,11 +14,8 @@ public enum POOLED_OBJECTS
 
 
 
-
 public class ObjectPool : Singleton<ObjectPool>
 {
-
-    
     public GameObject commisPrefab;
     public int commisAmount = 20;
     private List<GameObject> commisObjects;
@@ -47,6 +44,7 @@ public class ObjectPool : Singleton<ObjectPool>
         {
             GameObject obj = Instantiate(commisPrefab);
             obj.SetActive(false);
+            obj.transform.SetParent(transform);
             commisObjects.Add(obj);
         }
         plongeurObjects = new List<GameObject>();
@@ -54,6 +52,7 @@ public class ObjectPool : Singleton<ObjectPool>
         {
             GameObject obj = Instantiate(plongeurPrefab);
             obj.SetActive(false);
+            obj.transform.SetParent(transform);
             plongeurObjects.Add(obj);
         }
         gourmandObjects = new List<GameObject>();
@@ -61,6 +60,7 @@ public class ObjectPool : Singleton<ObjectPool>
         {
             GameObject obj = Instantiate(gourmandPrefab);
             obj.SetActive(false);
+            obj.transform.SetParent(transform);
             gourmandObjects.Add(obj);
         }
         gordonObjects = new List<GameObject>();
@@ -68,6 +68,7 @@ public class ObjectPool : Singleton<ObjectPool>
         {
             GameObject obj = Instantiate(gordonPrefab);
             obj.SetActive(false);
+            obj.transform.SetParent(transform);
             gordonObjects.Add(obj);
         }
         bulletObjects = new List<GameObject>();
@@ -75,6 +76,7 @@ public class ObjectPool : Singleton<ObjectPool>
         {
             GameObject obj = Instantiate(bulletPrefab);
             obj.SetActive(false);
+            obj.transform.SetParent(transform);
             bulletObjects.Add(obj);
         }
     }
@@ -95,7 +97,6 @@ public class ObjectPool : Singleton<ObjectPool>
                         return commisObjects[i];
                     }
                 }
-                Debug.Log("new commis");
                 obj = Instantiate(commisPrefab);
                 commisObjects.Add(obj);
                 return obj;
@@ -150,5 +151,4 @@ public class ObjectPool : Singleton<ObjectPool>
         }
         return null;
     }
-
 }
