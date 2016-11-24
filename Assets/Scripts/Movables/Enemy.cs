@@ -195,6 +195,7 @@ public class Enemy : MonoBehaviour
                 CurrentTarget = Monster;
                 break;
             case ENEMY_TYPE.GORDON:
+                Debug.Log("hello");
                 CurrentTarget = Hero;
                 break;
         }
@@ -220,8 +221,6 @@ public class Enemy : MonoBehaviour
         DistanceChangementFocus = GameDataManager.Instance.ChangeFocusDistance;
         AttackDistanceHero = GameDataManager.Instance.EnemyHeroAttackDistance;
         AttackDistanceMonster = GameDataManager.Instance.EnemyMonsterAttackDistance;
-        //Destroy(GetComponent<BoxCollider2D>());
-        //gameObject.AddComponent<BoxCollider2D>();
         ResetCurrentTarget();
 
         switch(type)
@@ -256,5 +255,6 @@ public class Enemy : MonoBehaviour
     public void SetType(ENEMY_TYPE t)
     {
         type = t;
+        ResetEnemy();
     }
 }

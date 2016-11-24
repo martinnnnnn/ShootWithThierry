@@ -2,153 +2,222 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// Cartoon FX  - (c) 2012-2016 Jean Moreno
 
-public enum POOLED_OBJECTS
+// Spawn System:
+// Preload GameObject to reuse them later, avoiding to Instantiate them.
+// Very useful for mobile platforms.
+
+public class ObjectPool : MonoBehaviour
 {
-    COMMIT,
-    PLONGEUR,
-    GOURMAND,
-    GORDON,
-    BULLET,
-}
 
-
-
-public class ObjectPool : Singleton<ObjectPool>
-{
-    public GameObject commisPrefab;
-    public int commisAmount = 20;
-    private List<GameObject> commisObjects;
-
-    public GameObject plongeurPrefab;
-    public int plongeurAmount = 20;
-    private List<GameObject> plongeurObjects;
-
-    public GameObject gourmandPrefab;
-    public int gourmandAmount = 20;
-    private List<GameObject> gourmandObjects;
-
-    public GameObject gordonPrefab;
-    public int gordonAmount = 20;
-    private List<GameObject> gordonObjects;
-
-    public GameObject bulletPrefab;
-    public int bulletAmount = 20;
-    private List<GameObject> bulletObjects;
-
-
-    void Awake()
+    static public GameObject GetNextObject(GameObject sourceObj, Transform trans)
     {
-        commisObjects = new List<GameObject>();
-        for (int i = 0; i < commisAmount; ++i)
+        GameObject o = GetNextObject(sourceObj, true);
+        o.transform.position = trans.position;
+        o.transform.rotation = trans.rotation;
+        return o;
+    }
+    /// <summary>
+    /// Get the next available preloaded Object.
+    /// </summary>
+    /// <returns>
+    /// The next available preloaded Object.
+    /// </returns>
+    /// <param name='sourceObj'>
+    /// The source Object from which to get a preloaded copy.
+    /// </param>
+    /// <param name='activateObject'>
+    /// Activates the object before returning it.
+    /// </param>
+    static public GameObject GetNextObject(GameObject sourceObj, bool activateObject = true)
+    {
+        int uniqueId = sourceObj.GetInstanceID();
+
+        if (!instance.poolCursors.ContainsKey(uniqueId))
         {
-            GameObject obj = Instantiate(commisPrefab);
-            obj.SetActive(false);
-            obj.transform.SetParent(transform);
-            commisObjects.Add(obj);
+            Debug.LogError("[ObjectPpol.GetNextObject()] Object hasn't been preloaded: " + sourceObj.name + " (ID:" + uniqueId + ")\n", instance);
+            return null;
         }
-        plongeurObjects = new List<GameObject>();
-        for (int i = 0; i < plongeurAmount; ++i)
+
+        int cursor = instance.poolCursors[uniqueId];
+        GameObject returnObj = null;
+        if (instance.onlyGetInactiveObjects)
         {
-            GameObject obj = Instantiate(plongeurPrefab);
-            obj.SetActive(false);
-            obj.transform.SetParent(transform);
-            plongeurObjects.Add(obj);
+            int loop = cursor;
+            while (true)
+            {
+                returnObj = instance.instantiatedObjects[uniqueId][cursor];
+                instance.increasePoolCursor(uniqueId);
+                cursor = instance.poolCursors[uniqueId];
+
+                if (returnObj != null && !returnObj.activeSelf)
+                    break;
+
+                //complete loop: no active instance available
+                if (cursor == loop)
+                {
+                    if (instance.instantiateIfNeeded)
+                    {
+                        Debug.Log("[ObjectPpol.GetNextObject()] A new instance has been created for \"" + sourceObj.name + "\" because no active instance were found in the pool.\n", instance);
+                        PreloadObject(sourceObj);
+                        var list = instance.instantiatedObjects[uniqueId];
+                        returnObj = list[list.Count - 1];
+                        break;
+                    }
+                    else
+                    {
+                        Debug.LogWarning("[ObjectPpol.GetNextObject()] There are no active instances available in the pool for \"" + sourceObj.name + "\"\nYou may need to increase the preloaded object count for this prefab?", instance);
+                        return null;
+                    }
+                }
+            }
         }
-        gourmandObjects = new List<GameObject>();
-        for (int i = 0; i < gourmandAmount; ++i)
+        else
         {
-            GameObject obj = Instantiate(gourmandPrefab);
-            obj.SetActive(false);
-            obj.transform.SetParent(transform);
-            gourmandObjects.Add(obj);
+            returnObj = instance.instantiatedObjects[uniqueId][cursor];
+            instance.increasePoolCursor(uniqueId);
         }
-        gordonObjects = new List<GameObject>();
-        for (int i = 0; i < gordonAmount; ++i)
+
+        if (activateObject && returnObj != null)
+            returnObj.SetActive(true);
+
+        return returnObj;
+    }
+
+    /// <summary>
+    /// Preloads an object a number of times in the pool.
+    /// </summary>
+    /// <param name='sourceObj'>
+    /// The source Object.
+    /// </param>
+    /// <param name='poolSize'>
+    /// The number of times it will be instantiated in the pool (i.e. the max number of same object that would appear simultaneously in your Scene).
+    /// </param>
+    static public void PreloadObject(GameObject sourceObj, int poolSize = 1)
+    {
+        instance.addObjectToPool(sourceObj, poolSize);
+    }
+
+    /// <summary>
+    /// Unloads all the preloaded objects from a source Object.
+    /// </summary>
+    /// <param name='sourceObj'>
+    /// Source object.
+    /// </param>
+    static public void UnloadObjects(GameObject sourceObj)
+    {
+        instance.removeObjectsFromPool(sourceObj);
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether all objects defined in the Editor are loaded or not.
+    /// </summary>
+    /// <value>
+    /// <c>true</c> if all objects are loaded; otherwise, <c>false</c>.
+    /// </value>
+    static public bool AllObjectsLoaded
+    {
+        get
         {
-            GameObject obj = Instantiate(gordonPrefab);
-            obj.SetActive(false);
-            obj.transform.SetParent(transform);
-            gordonObjects.Add(obj);
-        }
-        bulletObjects = new List<GameObject>();
-        for (int i = 0; i < bulletAmount; ++i)
-        {
-            GameObject obj = Instantiate(bulletPrefab);
-            obj.SetActive(false);
-            obj.transform.SetParent(transform);
-            bulletObjects.Add(obj);
+            return instance.allObjectsLoaded;
         }
     }
 
-    
+    // INTERNAL SYSTEM ----------------------------------------------------------------------------------------------------------------------------------------
 
+    static private ObjectPool instance;
 
-    public GameObject GetPooledObject(POOLED_OBJECTS type)
+    public GameObject[] objectsToPreload = new GameObject[0];
+    public int[] objectsToPreloadTimes = new int[0];
+    public bool hideObjectsInHierarchy = false;
+    public bool spawnAsChildren = true;
+    public bool onlyGetInactiveObjects = false;
+    public bool instantiateIfNeeded = false;
+
+    private bool allObjectsLoaded;
+    private Dictionary<int, List<GameObject>> instantiatedObjects = new Dictionary<int, List<GameObject>>();
+    private Dictionary<int, int> poolCursors = new Dictionary<int, int>();
+
+    private void addObjectToPool(GameObject sourceObject, int number)
     {
-        GameObject obj;
-        switch (type)
+        int uniqueId = sourceObject.GetInstanceID();
+
+        //Add new entry if it doesn't exist
+        if (!instantiatedObjects.ContainsKey(uniqueId))
         {
-            case POOLED_OBJECTS.COMMIT:
-                for (int i = 0; i < commisObjects.Count; ++i)
-                {
-                    if (!commisObjects[i].activeInHierarchy)
-                    {
-                        return commisObjects[i];
-                    }
-                }
-                obj = Instantiate(commisPrefab);
-                commisObjects.Add(obj);
-                return obj;
-            case POOLED_OBJECTS.PLONGEUR:
-                for (int i = 0; i < plongeurObjects.Count; ++i)
-                {
-                    if (!plongeurObjects[i].activeInHierarchy)
-                    {
-                        return plongeurObjects[i];
-                    }
-                }
-
-                obj = Instantiate(plongeurPrefab);
-                plongeurObjects.Add(obj);
-                return obj;
-            case POOLED_OBJECTS.GOURMAND:
-                for (int i = 0; i < gourmandObjects.Count; ++i)
-                {
-                    if (!gourmandObjects[i].activeInHierarchy)
-                    {
-                        return gourmandObjects[i];
-                    }
-                }
-
-                obj = Instantiate(gourmandPrefab);
-                gourmandObjects.Add(obj);
-                return obj;
-            case POOLED_OBJECTS.GORDON:
-                for (int i = 0; i < gordonObjects.Count; ++i)
-                {
-                    if (!gordonObjects[i].activeInHierarchy)
-                    {
-                        return gordonObjects[i];
-                    }
-                }
-
-                obj = Instantiate(gordonPrefab);
-                gordonObjects.Add(obj);
-                return obj;
-            case POOLED_OBJECTS.BULLET:
-                for (int i = 0; i < bulletObjects.Count; ++i)
-                {
-                    if (!bulletObjects[i].activeInHierarchy)
-                    {
-                        return bulletObjects[i];
-                    }
-                }
-
-                obj = Instantiate(bulletPrefab);
-                bulletObjects.Add(obj);
-                return obj;
+            instantiatedObjects.Add(uniqueId, new List<GameObject>());
+            poolCursors.Add(uniqueId, 0);
         }
-        return null;
+
+        //Add the new objects
+        GameObject newObj;
+        for (int i = 0; i < number; i++)
+        {
+            newObj = (GameObject)Instantiate(sourceObject);
+            newObj.SetActive(false);
+
+            instantiatedObjects[uniqueId].Add(newObj);
+
+            if (hideObjectsInHierarchy)
+                newObj.hideFlags = HideFlags.HideInHierarchy;
+
+            if (spawnAsChildren)
+                newObj.transform.parent = this.transform;
+        }
+    }
+
+    private void removeObjectsFromPool(GameObject sourceObject)
+    {
+        int uniqueId = sourceObject.GetInstanceID();
+
+        if (!instantiatedObjects.ContainsKey(uniqueId))
+        {
+            Debug.LogWarning("[ObjectPool.removeObjectsFromPool()] There aren't any preloaded object for: " + sourceObject.name + " (ID:" + uniqueId + ")\n", this.gameObject);
+            return;
+        }
+
+        //Destroy all objects
+        for (int i = instantiatedObjects[uniqueId].Count - 1; i >= 0; i--)
+        {
+            GameObject obj = instantiatedObjects[uniqueId][i];
+            instantiatedObjects[uniqueId].RemoveAt(i);
+            GameObject.Destroy(obj);
+        }
+
+        //Remove pool entry
+        instantiatedObjects.Remove(uniqueId);
+        poolCursors.Remove(uniqueId);
+    }
+
+    private void increasePoolCursor(int uniqueId)
+    {
+        instance.poolCursors[uniqueId]++;
+        if (instance.poolCursors[uniqueId] >= instance.instantiatedObjects[uniqueId].Count)
+        {
+            instance.poolCursors[uniqueId] = 0;
+        }
+    }
+
+    //--------------------------------
+
+    void Awake()
+    {
+        if (instance != null)
+            Debug.LogWarning("ObjectPool: There should only be one instance of ObjectPool per Scene!\n", this.gameObject);
+
+        instance = this;
+    }
+
+    void Start()
+    {
+        allObjectsLoaded = false;
+
+        for (int i = 0; i < objectsToPreload.Length; i++)
+        {
+            PreloadObject(objectsToPreload[i], objectsToPreloadTimes[i]);
+        }
+
+        allObjectsLoaded = true;
     }
 }

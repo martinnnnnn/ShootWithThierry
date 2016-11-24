@@ -5,53 +5,61 @@ using System.Collections.Generic;
 public class WavesManager : Singleton<WavesManager>
 {
     private List<Transform> spawningPlaces;
-    //private List<Enemy> enemies;
+
+    private GameObject commisPrefab;
+    private GameObject plongeurPrefab;
+    private GameObject gourmandPrefab;
+    private GameObject gordonPrefab;
+
 
     void Start()
     {
-        //enemies = new List<Enemy>();
+
+        commisPrefab = GameDataManager.Instance.Commis;
+        plongeurPrefab = GameDataManager.Instance.Plongeur;
+        gourmandPrefab = GameDataManager.Instance.Gourmand;
+        gordonPrefab = GameDataManager.Instance.Gordon;
+
         spawningPlaces = new List<Transform>();
         foreach (Transform t in transform)
         {
             spawningPlaces.Add(t);
         }
+
+
     }
 
 
-    public void SpawnWave(WaveData data)
+    public IEnumerator SpawnWave(WaveData data)
     {
+        WaitForSeconds wait = new WaitForSeconds(0.001f);
         for (int i = 0; i < data.commitQuantity; ++i)
         {
-            GameObject enemy = ObjectPool.Instance.GetPooledObject(POOLED_OBJECTS.COMMIT);
-            enemy.transform.position = spawningPlaces[data.spawningPosition].position;
+            GameObject enemy = ObjectPool.GetNextObject(commisPrefab, spawningPlaces[data.spawningPosition]);
             enemy.GetComponent<Enemy>().SetType(ENEMY_TYPE.COMMIS);
             enemy.SetActive(true);
-            //enemies.Add(enemy.GetComponent<Enemy>());
-
+            yield return wait;
         }
         for (int i = 0; i < data.plongeurQuantity; ++i)
         {
-            GameObject enemy = ObjectPool.Instance.GetPooledObject(POOLED_OBJECTS.PLONGEUR);
-            enemy.transform.position = spawningPlaces[data.spawningPosition].position;
+            GameObject enemy = ObjectPool.GetNextObject(plongeurPrefab, spawningPlaces[data.spawningPosition]);
             enemy.GetComponent<Enemy>().SetType(ENEMY_TYPE.PLONGEUR);
             enemy.SetActive(true);
-            //enemies.Add(enemy.GetComponent<Enemy>());
+            yield return wait;
         }
         for (int i = 0; i < data.gourmandQuantity; ++i)
         {
-            GameObject enemy = ObjectPool.Instance.GetPooledObject(POOLED_OBJECTS.GOURMAND);
-            enemy.transform.position = spawningPlaces[data.spawningPosition].position;
+            GameObject enemy = ObjectPool.GetNextObject(gourmandPrefab, spawningPlaces[data.spawningPosition]);
             enemy.GetComponent<Enemy>().SetType(ENEMY_TYPE.GOURMAND);
             enemy.SetActive(true);
-            //enemies.Add(enemy.GetComponent<Enemy>());
+            yield return wait;
         }
         for (int i = 0; i < data.gordonQuantity; ++i)
         {
-            GameObject enemy = ObjectPool.Instance.GetPooledObject(POOLED_OBJECTS.GORDON);
-            enemy.transform.position = spawningPlaces[data.spawningPosition].position;
+            GameObject enemy = ObjectPool.GetNextObject(gordonPrefab, spawningPlaces[data.spawningPosition]);
             enemy.GetComponent<Enemy>().SetType(ENEMY_TYPE.GORDON);
             enemy.SetActive(true);
-            //enemies.Add(enemy.GetComponent<Enemy>());
+            yield return wait;
         }
     }
 

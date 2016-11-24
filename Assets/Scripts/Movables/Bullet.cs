@@ -31,6 +31,7 @@ public class Bullet : MonoBehaviour
             if (Time.timeSinceLevelLoad > RocketExplosionTime)
             {
                 Explode();
+                gameObject.SetActive(false);
             }
         }
     }
@@ -41,7 +42,6 @@ public class Bullet : MonoBehaviour
         myRigidBody = GetComponent<Rigidbody2D>();
         myRenderer = GetComponent<SpriteRenderer>();
 
-        RocketExplosionTime = Time.timeSinceLevelLoad + GameDataManager.Instance.RocketTimeBeforeExplosion;
         rocketBulletsDirections = new List<Vector2>();
         rocketBulletsDirections.Add(new Vector2(0,1));
         rocketBulletsDirections.Add(new Vector2(0,-1));
@@ -68,6 +68,7 @@ public class Bullet : MonoBehaviour
                 break;
             case WEAPON_TYPE.ROCKET:
                 BulletDamage = GameDataManager.Instance.RocketDamage;
+                RocketExplosionTime = Time.timeSinceLevelLoad + GameDataManager.Instance.RocketTimeBeforeExplosion;
                 break;
             case WEAPON_TYPE.MONSTER:
                 BulletDamage = GameDataManager.Instance.MonsterBulletDamage;
@@ -91,9 +92,11 @@ public class Bullet : MonoBehaviour
             if (BulletType == WEAPON_TYPE.ROCKET)
             {
                 Explode();
+                gameObject.SetActive(false);
                 return;
             }
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            //Destroy(gameObject);
         }
         
         switch (BulletType)
@@ -112,14 +115,16 @@ public class Bullet : MonoBehaviour
                         enemy.ResetLastHitTimer();
                     }
                 }
-                Destroy(gameObject);
+                gameObject.SetActive(false);
+                //Destroy(gameObject);
                 break;
 
             case WEAPON_TYPE.SNIPER:
                 if (monster)
                 {
                     monster.ChangeLife(BulletDamage);
-                    Destroy(gameObject);
+                    gameObject.SetActive(false);
+                    //Destroy(gameObject);
                 }
                 if (enemy)
                 {
@@ -131,25 +136,15 @@ public class Bullet : MonoBehaviour
                     enemy.ChangeLife(-BulletDamage);
                     if (enemy.GetLife() > 0)
                     {
-                        Destroy(gameObject);
+                        gameObject.SetActive(false);
+                        //Destroy(gameObject);
                     }
                 }
                 break;
             case WEAPON_TYPE.ROCKET:
-                //if (monster)
-                //{
-                //    monster.ChangeLife(BulletDamage);
-                //}
-                if (enemy)
-                {
-                    enemy.ChangeLife(-BulletDamage);
-                    if (enemy.GetEnemyType() == ENEMY_TYPE.GOURMAND)
-                    {
-                        enemy.ResetLastHitTimer();
-                    }
-                }
                 Explode();
-                Destroy(gameObject);
+                gameObject.SetActive(false);
+                //Destroy(gameObject);
                 break;
             case WEAPON_TYPE.MONSTER:
                 if (hero)
@@ -160,7 +155,8 @@ public class Bullet : MonoBehaviour
                 {
                     enemy.ChangeLife(-BulletDamage);
                 }
-                Destroy(gameObject);
+                gameObject.SetActive(false);
+                //Destroy(gameObject);
                 break;
         }
         
@@ -176,6 +172,5 @@ public class Bullet : MonoBehaviour
         {
             BulletManager.Instance.FireBullet(WEAPON_TYPE.FRAGMENT, transform, direction);
         }
-        Destroy(gameObject);
     }
 }

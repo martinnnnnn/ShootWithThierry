@@ -24,7 +24,7 @@ public class Monster : MonoBehaviour
     public int numberOfHellWaves = 10;
 
     private List<Transform> cacStagePlaces;
-    public GameObject lava;
+    public GameObject lavaPrefab;
 
     private List<Vector2> rocketBulletsDirections1;
     private List<Vector2> rocketBulletsDirections2;
@@ -43,6 +43,7 @@ public class Monster : MonoBehaviour
         timeBetweenHell = GameDataManager.Instance.MonsterTimeBetweenHellAttacks;
         cacRadius = GameDataManager.Instance.MonsterCaCRadius;
         cacDamage = GameDataManager.Instance.MonsterCaCDamage;
+        lavaPrefab = GameDataManager.Instance.Lava;
 
         cacStagePlaces = new List<Transform>();
         foreach (Transform t in transform)
@@ -136,7 +137,8 @@ public class Monster : MonoBehaviour
     {
         foreach (Transform t in cacStagePlaces)
         {
-            GameObject go = Instantiate(lava, t.position, t.rotation) as GameObject;
+            GameObject lava = ObjectPool.GetNextObject(lavaPrefab);
+           // GameObject go = Instantiate(lavaPrefab, t.position, t.rotation) as GameObject;
         }
     }
 

@@ -104,6 +104,14 @@ public class GameDataManager : Singleton<GameDataManager>
     public GameObject Bullet;
     [HideInInspector]
     public GameObject Loot;
+    [HideInInspector]
+    public GameObject Commis;
+    [HideInInspector]
+    public GameObject Plongeur;
+    [HideInInspector]
+    public GameObject Gourmand;
+    [HideInInspector]
+    public GameObject Gordon;
 
     void Awake()
     {
@@ -112,6 +120,11 @@ public class GameDataManager : Singleton<GameDataManager>
         Lava = Resources.Load("PREFABS/Lava") as GameObject;
         Bullet = Resources.Load("PREFABS/Bullet") as GameObject;
         Loot = Resources.Load("PREFABS/Loot") as GameObject;
+        Commis = Resources.Load("PREFABS/ENEMIES/Commis") as GameObject;
+        Plongeur = Resources.Load("PREFABS/ENEMIES/Plongeur") as GameObject;
+        Gourmand = Resources.Load("PREFABS/ENEMIES/Gourmand") as GameObject;
+        Gordon = Resources.Load("PREFABS/ENEMIES/Gordon") as GameObject;
+
         waves = new List<WaveData>();
         loots = new List<LootData>();
 
@@ -129,7 +142,7 @@ public class GameDataManager : Singleton<GameDataManager>
     IEnumerator StartWave(WaveData data)
     {
         yield return new WaitForSeconds(data.timing - Time.timeSinceLevelLoad);
-        WavesManager.Instance.SpawnWave(data);
+        StartCoroutine(WavesManager.Instance.SpawnWave(data));
     }
 
     IEnumerator StartLoot(LootData data)

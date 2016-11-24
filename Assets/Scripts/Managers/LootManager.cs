@@ -32,14 +32,16 @@ public class LootManager : Singleton<LootManager>
     public void SpawnLoot(Transform spawn, LOOT_TYPE type, int amount)
     {
         if (spawn == null) spawn = ammoSpawnPosition;
-        GameObject loot = Instantiate(lootPrefab, spawn) as GameObject;
+        GameObject loot = ObjectPool.GetNextObject(lootPrefab,spawn);
+        //GameObject loot = Instantiate(lootPrefab, spawn) as GameObject;
         loot.GetComponent<Loot>().SetLoot(type,amount);
     }
 
     public void SpawnLoot(LootData data)
     {
         Transform spawn = (data.type == LOOT_TYPE.LIFE) ? lifeSpawnPosition : ammoSpawnPosition;
-        GameObject loot = Instantiate(lootPrefab, spawn.position, new Quaternion()) as GameObject;
+        //GameObject loot = Instantiate(lootPrefab, spawn.position, new Quaternion()) as GameObject;
+        GameObject loot = ObjectPool.GetNextObject(lootPrefab, spawn);
         loot.GetComponent<Loot>().SetLoot(data.type, data.amount);
     }
 
@@ -48,14 +50,16 @@ public class LootManager : Singleton<LootManager>
         if (spawn == null) spawn = ammoSpawnPosition;
         LOOT_TYPE type = (LOOT_TYPE)Random.Range(0, 4);
         if (amount == 0) amount = GetAmount(type);
-        GameObject loot = Instantiate(lootPrefab, spawn) as GameObject;
+        //GameObject loot = Instantiate(lootPrefab, spawn) as GameObject;
+        GameObject loot = ObjectPool.GetNextObject(lootPrefab, spawn);
         loot.GetComponent<Loot>().SetLoot((LOOT_TYPE)Random.Range(0,4), amount);
     }
 
 
     public void SpawnLife()
     {
-        GameObject loot = Instantiate(lootPrefab, lifeSpawnPosition.position, new Quaternion()) as GameObject;
+       // GameObject loot = Instantiate(lootPrefab, lifeSpawnPosition.position, new Quaternion()) as GameObject;
+        GameObject loot = ObjectPool.GetNextObject(lootPrefab, lifeSpawnPosition);
         loot.GetComponent<Loot>().SetLoot(LOOT_TYPE.SNIPER, 6);
     }
 
