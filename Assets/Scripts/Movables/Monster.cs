@@ -74,7 +74,7 @@ public class Monster : MonoBehaviour
 
     private void Attack()
     {
-        if (MonsterLife < cacStage && MonsterLife > lavaStage)
+        if (MonsterLife < cacStage /*&& MonsterLife > lavaStage*/)
         {
             if (Time.timeSinceLevelLoad > timeLastCac + timeBetweenCac)
             {
@@ -82,7 +82,7 @@ public class Monster : MonoBehaviour
                 CaCAttack();
             }
         }
-        else if (MonsterLife < lavaStage && MonsterLife > hellStage)
+        if (MonsterLife < lavaStage /*&& MonsterLife > hellStage*/)
         {
             if (Time.timeSinceLevelLoad > timeLastLava + timeBetweenLava)
             {
@@ -90,7 +90,7 @@ public class Monster : MonoBehaviour
                 LavaAttack();
             }
         }
-        else if (MonsterLife < hellStage && MonsterLife > 0)
+        if (MonsterLife < hellStage /*&& MonsterLife > 0*/)
         {
             if (Time.timeSinceLevelLoad > timeLastHell + timeBetweenHell)
             {
