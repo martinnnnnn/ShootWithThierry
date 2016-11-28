@@ -23,7 +23,6 @@ public class DashController : MonoBehaviour
         hero = GetComponent<Hero>();
         enemy = GetComponent<Enemy>();
         myRigidBody = GetComponent<Rigidbody2D>();
-        //bullet = LayerMask.NameToLayer("Bullet");
         HeroDashSpeed = GameDataManager.Instance.HeroDashSpeed;
         HeroDashCoolDown = GameDataManager.Instance.HeroDashCoolDown;
         EnemyDashSpeed = GameDataManager.Instance.PlongeurDashSpeed;

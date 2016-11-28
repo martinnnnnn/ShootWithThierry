@@ -47,7 +47,7 @@ public class BulletManager : Singleton<BulletManager>
         UIManager.Instance.SetAmmo(Ammo);
     }
 
-    public void FireBullet(WEAPON_TYPE type, Transform shooterTransform, Vector2 direction, GameObject ignore = null)
+    public void FireBullet(WEAPON_TYPE type, Transform shooterTransform, Vector2 direction, GameObject ignore = null, GameObject unIgnore = null)
     {
         float bulletSpeed = 0f;
         direction.Normalize();
@@ -76,13 +76,10 @@ public class BulletManager : Singleton<BulletManager>
                 break;
         }
 
-        //GameObject bullet = Instantiate(GameDataManager.Instance.Bullet, shooterTransform.position, shooterTransform.rotation) as GameObject;
         GameObject bullet = ObjectPool.GetNextObject(GameDataManager.Instance.Bullet, shooterTransform);
         bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(direction.x * bulletSpeed, direction.y * bulletSpeed);
         bullet.GetComponent<Bullet>().SetWeaponType(type);
-        //float deg = Vector2.Angle(new Vector2(1, 0), direction);
 
-        //bullet.transform.eulerAngles = new Vector3(bullet.transform.eulerAngles.x, bullet.transform.eulerAngles.y, deg);
         if (ignore) Physics2D.IgnoreCollision(ignore.GetComponent<Collider2D>(), bullet.GetComponent<Collider2D>());
     }
 

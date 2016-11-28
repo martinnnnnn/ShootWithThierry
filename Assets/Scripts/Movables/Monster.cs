@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 
 
@@ -21,7 +22,7 @@ public class Monster : MonoBehaviour
     private float timeLastHell;
     private float cacRadius;
 
-    public int numberOfHellWaves = 10;
+    public int numberOfHellWaves = 25;
 
     private List<Transform> cacStagePlaces;
     public GameObject lavaPrefab;
@@ -62,13 +63,13 @@ public class Monster : MonoBehaviour
 
     void Update()
     {
-        Attack();
+        // Attack();
 
-        //if (!temp)
-        //{
-        //    StartCoroutine(HellAttack());
-        //    temp = true;
-        //}
+        if (!temp)
+        {
+            StartCoroutine(HellAttack());
+            temp = true;
+        }
     }
 
     private void Attack()
@@ -101,7 +102,6 @@ public class Monster : MonoBehaviour
 
     private void CaCAttack()
     {
-        Debug.Log("cacDamage");
         Collider2D[] attackedObjects =  Physics2D.OverlapCircleAll(transform.position, cacRadius);
         for (int i = 0; i < attackedObjects.Length; ++i)
         {
@@ -112,26 +112,46 @@ public class Monster : MonoBehaviour
         }
     }
 
+    private float speed = 10f;
+    private float angle = 1f;
+    private int count = 20;
+    private float radius = 2f;
+    private int mult = 1;
     private IEnumerator HellAttack()
     {
-        Vector3 localShotPos = new Vector3(0, -((new Vector2(transform.localScale.x * 8f,
-                                    transform.localScale.y * 5f)).magnitude));
-
         for (int i = 0; i < numberOfHellWaves; ++i)
         {
-            foreach (Vector2 direction in rocketBulletsDirections1)
+            for (int j = 0; j < count; j++)
             {
-                BulletManager.Instance.FireBullet(WEAPON_TYPE.MONSTER, transform, direction, gameObject);
+                Vector3 thispos = new Vector3(radius * (float)Math.Sin(angle), radius * (float)Math.Cos(angle) * mult, 0);
+                thispos.Normalize();
+                BulletManager.Instance.FireBullet(WEAPON_TYPE.MONSTER, transform, thispos,gameObject);
+                angle += (2 * (float)Math.PI) / count;
             }
-            yield return new WaitForSeconds(.5f);
+            angle += 15;
 
-            foreach (Vector2 direction in rocketBulletsDirections2)
-            {
-                BulletManager.Instance.FireBullet(WEAPON_TYPE.MONSTER, transform, direction, gameObject);
-            }
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(.15f);
         }
+
+        //Vector3 localShotPos = new Vector3(0, -((new Vector2(transform.localScale.x * 8f,
+        //                            transform.localScale.y * 5f)).magnitude));
+
+        //for (int i = 0; i < numberOfHellWaves; ++i)
+        //{
+        //    foreach (Vector2 direction in rocketBulletsDirections1)
+        //    {
+        //        BulletManager.Instance.FireBullet(WEAPON_TYPE.MONSTER, transform, direction, gameObject);
+        //    }
+        //    yield return new WaitForSeconds(.5f);
+
+        //    foreach (Vector2 direction in rocketBulletsDirections2)
+        //    {
+        //        BulletManager.Instance.FireBullet(WEAPON_TYPE.MONSTER, transform, direction, gameObject);
+        //    }
+        //    yield return new WaitForSeconds(.5f);
+        //}
     }
+
 
     private void LavaAttack()
     {

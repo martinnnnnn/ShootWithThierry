@@ -109,4 +109,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 808e0453d8a79574181129a9bc99d84e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBetweenLifeSpawns: 5

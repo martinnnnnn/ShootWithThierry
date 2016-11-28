@@ -203,7 +203,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000014276816402}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.8211136, y: -0.23294187, z: 0}
+  m_LocalPosition: {x: 4.358696, y: -0.23294187, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -279,7 +279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfHellWaves: 10
-  lava: {fileID: 0}
+  lavaPrefab: {fileID: 0}
 --- !u!114 &114000011707416952
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -291,7 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c4454da51f7001498c55355c4d10673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canMove: 0
+  canMove: 1
 --- !u!114 &114000012786885618
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -303,6 +303,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8bd8ee34661c074c88131d23cb729aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bullet:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &114000012922256952
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -315,34 +318,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathToWavesData: TEXTFILES/data
-  PistolStartingAmmo: 50
+  StartingAmmo: 2000
+  PistolAmmoPerShot: 1
+  SniperAmmoPerShot: 2
+  RocketAmmoPerShot: 5
   PistolFireRate: 0.1
   SniperFireRate: 0.5
-  RocketFireRate: 3
+  RocketFireRate: 0.1
   PistolSpeed: 15
   SniperSpeed: 20
-  RocketSpeed: 2
-  FragmentSpeed: 20
+  RocketSpeed: 3
+  FragmentSpeed: 15
   MonsterBulletSpeed: 5
   PistolDamage: 1
   SniperDamage: 1
   RocketDamage: 1
   FragmentDamage: 1
   MonsterBulletDamage: 1
-  RocketTimeBeforeExplosion: 0.5
+  RocketTimeBeforeExplosion: 1.5
   HeroSpeed: 10
   HeroStartingLife: 50
-  HeroDashSpeed: 10
-  PlongeurDashSpeed: 10
-  HeroDashCoolDown: 3
+  HeroDashSpeed: 35
+  PlongeurDashSpeed: 35
+  HeroDashCoolDown: 1
   PlongeurDashCoolDown: 0.5
-  MonsterStartingLife: 100
+  MonsterStartingLife: 99
   MonsterCaCStage: 100
   MonsterLavaStage: 60
   MonsterHellStage: 30
-  MonsterTimeBetweenCaCAttacks: 50
-  MonsterTimeBetweenLavaAttacks: 50
-  MonsterTimeBetweenHellAttacks: 50
+  MonsterTimeBetweenCaCAttacks: 5
+  MonsterTimeBetweenLavaAttacks: 10
+  MonsterTimeBetweenHellAttacks: 15
+  MonsterCaCRadius: 1.6
+  MonsterCaCDamage: 40
   LavaDuration: 10
   LavaDamage: 1
   LavaTimeBetweenAttack: 2
@@ -350,10 +358,10 @@ MonoBehaviour:
   PlongeurStartingLife: 5
   GourmandStartingLife: 5
   GordonStartingLife: 5
-  CommisSpeed: 12
-  PlongeurSpeed: 12
-  GourmandSpeed: 12
-  GordonSpeed: 12
+  CommisSpeed: 20
+  PlongeurSpeed: 5
+  GourmandSpeed: 5
+  GordonSpeed: 5
   CommisAttackSpeed: 2
   PlongeurAttackSpeed: 2
   GourmandAttackSpeed: 2
@@ -363,17 +371,21 @@ MonoBehaviour:
   GourmandDamage: 1
   GordonDamage: 1
   ChangeFocusDistance: 2
-  EnemyMonsterAttackDistance: 1.5
-  EnemyHeroAttackDistance: 1
+  EnemyMonsterAttackDistance: 4
+  EnemyHeroAttackDistance: 4
   GordonLootPistolAmount: 50
   GordonLootSniperAmount: 5
   GordonLootRocketAmount: 5
   GourmandTimeResetFocus: 3
-  Hero: {fileID: 0}
-  Monster: {fileID: 0}
-  Lava: {fileID: 0}
-  Bullet: {fileID: 0}
-  Loot: {fileID: 0}
+  Hero: {fileID: 4000013370931558}
+  Monster: {fileID: 4000010831537524}
+  Lava: {fileID: 1000012718419260, guid: 960e89485d21bfc4eaf1033500e69006, type: 2}
+  Bullet: {fileID: 1000012165473638, guid: 486eb8d6cccce6d4390e3d3cf114a611, type: 2}
+  Loot: {fileID: 1000011026606514, guid: 9231891c210dca744b58401f5fbd3fb7, type: 2}
+  Commis: {fileID: 1000010423111518, guid: 3ab20aa4aa705314e8feaf7b26f7bdaf, type: 2}
+  Plongeur: {fileID: 1000010423111518, guid: 89987c699995a7d4cb8e0950a0cbb646, type: 2}
+  Gourmand: {fileID: 1000010423111518, guid: b020cde0dd1cb2249b2f4e5a28893ac4, type: 2}
+  Gordon: {fileID: 1000010423111518, guid: a0667c46c87db2841af9c21a37246a04, type: 2}
 --- !u!212 &212000011035409600
 SpriteRenderer:
   m_ObjectHideFlags: 1

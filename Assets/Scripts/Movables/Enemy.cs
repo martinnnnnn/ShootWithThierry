@@ -40,6 +40,10 @@ public class Enemy : MonoBehaviour
 
     private float tooCloseEnemies = 1f;
 
+    public Animator anim;
+    private bool facingLeft = true;
+    private bool isWalking = false;
+
     void Awake()
     {
         Monster = GameDataManager.Instance.Monster;
@@ -71,6 +75,8 @@ public class Enemy : MonoBehaviour
         }
         if (canMove) Move();
         Attack();
+
+
     }
 
     void Move()
@@ -78,22 +84,39 @@ public class Enemy : MonoBehaviour
 
         Vector3 direction = CurrentTarget.position - transform.position;
         float distance = Vector3.Distance(CurrentTarget.position,transform.position);
-        //float magnitude = direction.magnitude;
         direction.Normalize();
 
         if ((CurrentTarget == Hero && distance >= AttackDistanceHero) || CurrentTarget == Monster && distance >= AttackDistanceMonster)
         {
+            isWalking = true;
             GetComponent<Rigidbody2D>().velocity = new Vector3(direction.x * MoveSpeed, direction.y * MoveSpeed);
         }
         else if ((CurrentTarget == Hero && distance < AttackDistanceHero) || CurrentTarget == Monster && distance < AttackDistanceMonster)
         {
+            isWalking = false;
             GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
         }
 
-        //graphics.position = new Vector3(graphics.position.x, graphics.position.y, 0);
-        //graphics.LookAt(CurrentTarget.position);
-        //graphics.Rotate(new Vector3(0, -90, 0), Space.Self);
+        anim.SetBool("isWalking", isWalking);
+        anim.SetFloat("hSpeed", Mathf.Abs(direction.x));
+        anim.SetFloat("vSpeed", direction.y);
 
+        if (direction.x > 0 && facingLeft)
+        {
+            Flip();
+        }
+        else if (direction.x < 0 && !facingLeft)
+        {
+            Flip();
+        }
+    }
+
+    void Flip()
+    {
+        facingLeft = !facingLeft;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
     }
 
     void Attack()
@@ -106,7 +129,7 @@ public class Enemy : MonoBehaviour
             if (CurrentTarget == Hero && distance <= AttackDistanceHero + 0.1f
                 || CurrentTarget == Monster && distance <= AttackDistanceMonster + 0.1f)
             {
-                //Debug.Log("ORMAGUD");
+                anim.SetTrigger("Attack");
                 Hero hero = CurrentTarget.GetComponent<Hero>();
                 Monster monster = CurrentTarget.GetComponent<Monster>();
                 if (hero)
@@ -195,7 +218,6 @@ public class Enemy : MonoBehaviour
                 CurrentTarget = Monster;
                 break;
             case ENEMY_TYPE.GORDON:
-                Debug.Log("hello");
                 CurrentTarget = Hero;
                 break;
         }
