@@ -11,8 +11,8 @@ public class Monster : MonoBehaviour
     private int MonsterLife;
 
     private int cacStage;
-    private int lavaStage;
-    private int hellStage;
+    private int standardHellStage;
+    private int fancyHellStage;
     private int cacDamage;
     private float timeBetweenCac;
     private float timeBetweenLava;
@@ -22,7 +22,7 @@ public class Monster : MonoBehaviour
     private float timeLastHell;
     private float cacRadius;
 
-    public int numberOfHellWaves = 25;
+    private int numberOfHellWaves = 25;
 
     private List<Transform> cacStagePlaces;
     public GameObject lavaPrefab;
@@ -32,13 +32,14 @@ public class Monster : MonoBehaviour
 
     private bool temp = false;
 
+    public Animator anim;
 
     void Awake()
     {
         MonsterLife = GameDataManager.Instance.MonsterStartingLife;
         cacStage = GameDataManager.Instance.MonsterCaCStage;
-        lavaStage = GameDataManager.Instance.MonsterLavaStage;
-        hellStage = GameDataManager.Instance.MonsterHellStage;
+        standardHellStage = GameDataManager.Instance.MonsterLavaStage;
+        fancyHellStage = GameDataManager.Instance.MonsterHellStage;
         timeBetweenCac = GameDataManager.Instance.MonsterTimeBetweenCaCAttacks;
         timeBetweenLava = GameDataManager.Instance.MonsterTimeBetweenLavaAttacks;
         timeBetweenHell = GameDataManager.Instance.MonsterTimeBetweenHellAttacks;
@@ -59,6 +60,8 @@ public class Monster : MonoBehaviour
         timeLastHell = 0f;
 
         UIManager.Instance.SetMonsterLife(MonsterLife);
+
+        SetAnimIdle();
     }
 
     void Update()
@@ -67,14 +70,14 @@ public class Monster : MonoBehaviour
 
         if (!temp)
         {
-            StartCoroutine(HellAttack());
+            StartCoroutine(FancyHellAttack());
             temp = true;
         }
     }
 
     private void Attack()
     {
-        if (MonsterLife < cacStage /*&& MonsterLife > lavaStage*/)
+        if (MonsterLife < cacStage)
         {
             if (Time.timeSinceLevelLoad > timeLastCac + timeBetweenCac)
             {
@@ -82,20 +85,20 @@ public class Monster : MonoBehaviour
                 CaCAttack();
             }
         }
-        if (MonsterLife < lavaStage /*&& MonsterLife > hellStage*/)
+        if (MonsterLife < standardHellStage)
         {
             if (Time.timeSinceLevelLoad > timeLastLava + timeBetweenLava)
             {
                 timeLastLava = Time.timeSinceLevelLoad;
-                LavaAttack();
+                StartCoroutine(StandardHellAtatck());
             }
         }
-        if (MonsterLife < hellStage /*&& MonsterLife > 0*/)
+        if (MonsterLife < fancyHellStage)
         {
             if (Time.timeSinceLevelLoad > timeLastHell + timeBetweenHell)
             {
                 timeLastHell = Time.timeSinceLevelLoad;
-                StartCoroutine(HellAttack());
+                StartCoroutine(FancyHellAttack());
             }
         }
     }
@@ -117,7 +120,7 @@ public class Monster : MonoBehaviour
     private int count = 20;
     private float radius = 2f;
     private int mult = 1;
-    private IEnumerator HellAttack()
+    private IEnumerator FancyHellAttack()
     {
         for (int i = 0; i < numberOfHellWaves; ++i)
         {
@@ -133,33 +136,35 @@ public class Monster : MonoBehaviour
             yield return new WaitForSeconds(.15f);
         }
 
-        //Vector3 localShotPos = new Vector3(0, -((new Vector2(transform.localScale.x * 8f,
-        //                            transform.localScale.y * 5f)).magnitude));
 
-        //for (int i = 0; i < numberOfHellWaves; ++i)
-        //{
-        //    foreach (Vector2 direction in rocketBulletsDirections1)
-        //    {
-        //        BulletManager.Instance.FireBullet(WEAPON_TYPE.MONSTER, transform, direction, gameObject);
-        //    }
-        //    yield return new WaitForSeconds(.5f);
-
-        //    foreach (Vector2 direction in rocketBulletsDirections2)
-        //    {
-        //        BulletManager.Instance.FireBullet(WEAPON_TYPE.MONSTER, transform, direction, gameObject);
-        //    }
-        //    yield return new WaitForSeconds(.5f);
-        //}
     }
 
 
-    private void LavaAttack()
+    private IEnumerator StandardHellAtatck()
     {
-        foreach (Transform t in cacStagePlaces)
+        //Vector3 localShotPos = new Vector3(0, -((new Vector2(transform.localScale.x * 8f,
+        //                            transform.localScale.y * 5f)).magnitude));
+
+        for (int i = 0; i < numberOfHellWaves; ++i)
         {
-            GameObject lava = ObjectPool.GetNextObject(lavaPrefab);
-           // GameObject go = Instantiate(lavaPrefab, t.position, t.rotation) as GameObject;
+            foreach (Vector2 direction in rocketBulletsDirections1)
+            {
+                BulletManager.Instance.FireBullet(WEAPON_TYPE.MONSTER, transform, direction, gameObject);
+            }
+            yield return new WaitForSeconds(.5f);
+
+            foreach (Vector2 direction in rocketBulletsDirections2)
+            {
+                BulletManager.Instance.FireBullet(WEAPON_TYPE.MONSTER, transform, direction, gameObject);
+            }
+            yield return new WaitForSeconds(.5f);
         }
+
+
+        //foreach (Transform t in cacStagePlaces)
+        //{
+        //    GameObject lava = ObjectPool.GetNextObject(lavaPrefab);
+        //}
     }
 
     private void InitBulletSpawns()
@@ -188,8 +193,28 @@ public class Monster : MonoBehaviour
 
     public void ChangeLife(int amount)
     {
+        
         MonsterLife += amount;
+        if (MonsterLife > GameDataManager.Instance.MonsterMaxLife) MonsterLife = GameDataManager.Instance.MonsterMaxLife;
         UIManager.Instance.SetMonsterLife(MonsterLife);
+
+        SetAnimIdle();
+    }
+
+    void SetAnimIdle()
+    {
+        if (MonsterLife > fancyHellStage)
+        {
+            anim.SetTrigger("ToIdle1");
+        }
+        if (MonsterLife < fancyHellStage)
+        {
+            anim.SetTrigger("ToIdle2");
+        }
+        if (MonsterLife < standardHellStage)
+        {
+            anim.SetTrigger("ToIdle3");
+        }
     }
 
 }

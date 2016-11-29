@@ -132,14 +132,15 @@ public class Enemy : MonoBehaviour
                 anim.SetTrigger("Attack");
                 Hero hero = CurrentTarget.GetComponent<Hero>();
                 Monster monster = CurrentTarget.GetComponent<Monster>();
-                if (hero)
-                {
-                    hero.ChangeLife(-Damage);
-                }
-                else if (monster)
-                {
-                    monster.ChangeLife(-Damage);
-                }
+                CurrentTarget.gameObject.SendMessage("ChangeLife", -Damage);
+                //if (hero)
+                //{
+                //    hero.ChangeLife(-Damage);
+                //}
+                //else if (monster)
+                //{
+                //    monster.ChangeLife(-Damage);
+                //}
             }
         }
     }
@@ -175,13 +176,13 @@ public class Enemy : MonoBehaviour
     }
 
 
-    public void DropLoot()
-    {
-        if (type == ENEMY_TYPE.GORDON)
-        {
-            LootManager.Instance.SpawnRandomLoot(transform);
-        }
-    }
+    //public void DropLoot()
+    //{
+    //    if (type == ENEMY_TYPE.GORDON)
+    //    {
+    //        LootManager.Instance.SpawnRandomLoot(transform);
+    //    }
+    //}
 
 
     void HandleDash()

@@ -45,10 +45,11 @@ public class GameDataManager : Singleton<GameDataManager>
 
     [Space(3)]
     [Header("Monster")]
+    public int MonsterMaxLife;
     public int MonsterStartingLife;
     public int MonsterCaCStage;
-    public int MonsterLavaStage;
     public int MonsterHellStage;
+    public int MonsterLavaStage;
     public int MonsterTimeBetweenCaCAttacks;
     public int MonsterTimeBetweenLavaAttacks;
     public int MonsterTimeBetweenHellAttacks;
@@ -193,7 +194,8 @@ public class GameDataManager : Singleton<GameDataManager>
                 addLoot(
                 float.Parse(columns[3]),
                 (LOOT_TYPE)Enum.Parse(typeof(LOOT_TYPE), columns[9], true),
-                int.Parse(columns[10]));
+                int.Parse(columns[10]),
+                int.Parse(columns[4]) - 1);
             }
         }
     }
@@ -210,12 +212,13 @@ public class GameDataManager : Singleton<GameDataManager>
         waves.Add(data);
     }
 
-    public void addLoot(float timing, LOOT_TYPE type, int amount)
+    public void addLoot(float timing, LOOT_TYPE type, int amount, int spawn = 0)
     {
         LootData data = new LootData();
         data.timing = timing;
         data.type = type;
         data.amount = amount;
+        data.spawn = spawn;
         loots.Add(data);
     }
 }
@@ -247,4 +250,5 @@ public struct LootData
     public float timing;
     public LOOT_TYPE type;
     public int amount;
+    public int spawn;
 }

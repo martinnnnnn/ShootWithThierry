@@ -7,6 +7,11 @@ using System.Collections;
 public class Hero : MonoBehaviour
 {
 
+    public Animator animBody;
+    public Animator animArms;
+    public Transform visuals;
+    private bool facingLeft = true;
+
     private float HeroSpeed;
     private Rigidbody2D HeroRigidBody;
 
@@ -19,7 +24,6 @@ public class Hero : MonoBehaviour
     private int HeroLife;
 
     private float currentFiringDelay;
-
 
     void Start ()
     {
@@ -38,11 +42,36 @@ public class Hero : MonoBehaviour
         if (canMove)
         {
             HeroRigidBody.velocity = new Vector2(hMove * HeroSpeed, vMove * HeroSpeed);
+            if (vMove > 0 && Mathf.Abs(vMove) > Mathf.Abs(hMove))
+            {
+                animArms.enabled = false;
+            }
+            else
+            {
+                animArms.enabled = true;
+            }
+            animBody.SetFloat("hSpeed", Mathf.Abs(hMove));
+            animBody.SetFloat("vSpeed", vMove);
+            animArms.SetFloat("hSpeed", Mathf.Abs(hMove));
+            animArms.SetFloat("vSpeed", vMove);
+
+            if (hMove > 0 && facingLeft)
+            {
+                Flip();
+            }
+            else if (hMove < 0 && !facingLeft)
+            {
+                Flip();
+            }
         }
     }
 
+
+
     void Update()
     {
+        ArmsLookAt(new Vector3(Input.GetAxis("Horizontal2"), Input.GetAxis("Vertical2"), 0));
+
         Fire();
         if (!canMove)
         {
@@ -64,30 +93,38 @@ public class Hero : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D c)
     {
-        Loot loot = c.gameObject.GetComponent<Loot>();
-        if (loot)
+
+        LootSpawn lSpawn = c.gameObject.GetComponent<LootSpawn>();
+        if (lSpawn)
         {
-            int amount = loot.GetLootAmount();
-            switch (loot.GetLootType())
+            if (lSpawn.CurrentLoot)
             {
-                case LOOT_TYPE.PISTOL:
-                    BulletManager.Instance.ChangeAmmo(amount);
-                    break;
-                case LOOT_TYPE.SNIPER:
-                    BulletManager.Instance.SetWeaponType(WEAPON_TYPE.SNIPER);
-                    break;
-                case LOOT_TYPE.ROCKET:
-                    BulletManager.Instance.SetWeaponType(WEAPON_TYPE.ROCKET);
-                    break;
-                case LOOT_TYPE.LIFE:
-                    if (HeroLife < GameDataManager.Instance.HeroStartingLife)
+                Loot loot = lSpawn.CurrentLoot.GetComponent<Loot>();
+                if (loot)
+                {
+                    switch (loot.GetLootType())
                     {
-                        HeroLife ++;
-                        
+                        case LOOT_TYPE.PISTOL:
+                            BulletManager.Instance.ChangeAmmo(loot.GetLootAmount());
+                            break;
+                        case LOOT_TYPE.SNIPER:
+                            BulletManager.Instance.SetWeaponType(WEAPON_TYPE.SNIPER);
+                            break;
+                        case LOOT_TYPE.ROCKET:
+                            BulletManager.Instance.SetWeaponType(WEAPON_TYPE.ROCKET);
+                            break;
+                        case LOOT_TYPE.LIFE:
+                            if (HeroLife < GameDataManager.Instance.HeroStartingLife)
+                            {
+                                HeroLife++;
+
+                            }
+                            break;
                     }
-                    break;
+                }
+                lSpawn.CurrentLoot = null;
+                loot.gameObject.SetActive(false);
             }
-            Destroy(c.gameObject);
         }
     }
 
@@ -95,16 +132,19 @@ public class Hero : MonoBehaviour
     void Fire()
     {
         currentFiringDelay += Time.deltaTime;
-        
-           // if (Input.GetButton("Fire1") && pistolAmmo > 0 && currentFiringDelay >= pistolFireRate)
+        bool isAttacking = false;
+
+        // if (Input.GetButton("Fire1") && pistolAmmo > 0 && currentFiringDelay >= pistolFireRate)
         if (Input.GetButton("Fire1") && BulletManager.Instance.CanFireGun(WEAPON_TYPE.PISTOL,currentFiringDelay))
         {
             currentFiringDelay = 0f;
             float horizontal = Input.GetAxis("Horizontal2");
             float vertical = Input.GetAxis("Vertical2");
 
+
             if (horizontal != 0 || vertical != 0)
             {
+                isAttacking = true;
                 BulletManager.Instance.FireBullet(WEAPON_TYPE.PISTOL, transform, new Vector2(horizontal, vertical));
             }
         }
@@ -119,6 +159,7 @@ public class Hero : MonoBehaviour
 
                 if (horizontal != 0 || vertical != 0)
                 {
+                    isAttacking = true;
                     Debug.Log("bullet tiré");
                     BulletManager.Instance.FireBullet(WEAPON_TYPE.SNIPER, transform, new Vector2(horizontal, vertical));
                 }
@@ -131,18 +172,49 @@ public class Hero : MonoBehaviour
 
                 if (horizontal != 0 || vertical != 0)
                 {
+                    isAttacking = true;
                     BulletManager.Instance.FireBullet(WEAPON_TYPE.ROCKET, transform, new Vector2(horizontal, vertical));
                 }
             }
         }
+        animArms.SetBool("isAttacking", isAttacking);
     }
     
     public void ChangeLife(int amount)
     {
+        
         HeroLife += amount;
+        if (HeroLife > GameDataManager.Instance.HeroStartingLife)
+        {
+            HeroLife = GameDataManager.Instance.HeroStartingLife;
+        }
         UIManager.Instance.SetHeroLife(HeroLife);
     }
 
+
+    void Flip()
+    {
+        facingLeft = !facingLeft;
+        Vector3 theScale = visuals.localScale;
+        theScale.x *= -1;
+        visuals.localScale = theScale;
+    }
+
+    void ArmsLookAt(Vector3 direction)
+    {
+        if (direction != Vector3.zero)
+        {
+            Quaternion rotation = Quaternion.LookRotation
+                 (direction - animArms.transform.position, animArms.transform.TransformDirection(Vector3.up));
+            animArms.transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+        }
+    }
+
+    private void AnimateDash()
+    {
+        animBody.SetTrigger("Dash");
+        animArms.enabled = false;
+    }
 
 
 }

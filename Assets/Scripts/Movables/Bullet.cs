@@ -58,7 +58,7 @@ public class Bullet : MonoBehaviour
     {
         BulletType = type;
         myRenderer.sprite = Resources.Load<Sprite>("BULLET/IMG_BULLET_" + BulletType.ToString());
-        gameObject.layer = LayerMask.NameToLayer("Bullet");
+        //gameObject.layer = LayerMask.NameToLayer("Bullet");
         switch (BulletType)
         {
             case WEAPON_TYPE.PISTOL:

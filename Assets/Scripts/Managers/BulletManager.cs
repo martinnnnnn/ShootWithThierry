@@ -47,7 +47,7 @@ public class BulletManager : Singleton<BulletManager>
         UIManager.Instance.SetAmmo(Ammo);
     }
 
-    public void FireBullet(WEAPON_TYPE type, Transform shooterTransform, Vector2 direction, GameObject ignore = null, GameObject unIgnore = null)
+    public void FireBullet(WEAPON_TYPE type, Transform shooterTransform, Vector2 direction, GameObject ignore = null)
     {
         float bulletSpeed = 0f;
         direction.Normalize();
