@@ -13,9 +13,6 @@ public class LootManager : Singleton<LootManager>
     void Start()
     {
         lootPrefab = GameDataManager.Instance.Loot;
-        //nextLifeSpawnsTime = timeBetweenLifeSpawns;
-        //lifeSpawnPosition = transform.Find("LifeSpawnPosition");
-        //recipeSpawnPosition = transform.Find("AmmoSpawnPosition");
     }
 
 

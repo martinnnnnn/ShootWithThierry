@@ -38,7 +38,8 @@ public class Enemy : MonoBehaviour
     private float GourmandTimeResetFocus;
     private float timeLastHit;
 
-    private float tooCloseEnemies = 1f;
+    // private float tooCloseEnemies = 1f;
+    private bool isColliding = false;
 
     public Animator anim;
     private bool facingLeft = true;
@@ -62,6 +63,7 @@ public class Enemy : MonoBehaviour
     {
         if (EnemyLife <= 0)
         {
+            DeapthManager.Instance.RemoveActor(gameObject);
             gameObject.SetActive(false);
         }
     }
@@ -75,9 +77,25 @@ public class Enemy : MonoBehaviour
         }
         if (canMove) Move();
         Attack();
-
-
     }
+
+    public void OnCollisionEnter2D(Collision2D c)
+    {
+        if (c.gameObject == CurrentTarget.gameObject)
+        {
+            isColliding = true;
+        }
+            
+    }
+
+    public void OnCollisionExit2D(Collision2D c)
+    {
+        if (c.gameObject == CurrentTarget.gameObject)
+        {
+            isColliding = false;
+        }
+    }
+
 
     void Move()
     {
@@ -86,12 +104,14 @@ public class Enemy : MonoBehaviour
         float distance = Vector3.Distance(CurrentTarget.position,transform.position);
         direction.Normalize();
 
-        if ((CurrentTarget == Hero && distance >= AttackDistanceHero) || CurrentTarget == Monster && distance >= AttackDistanceMonster)
+        if (!isColliding)
+       // if ((CurrentTarget == Hero && distance >= AttackDistanceHero) || CurrentTarget == Monster && distance >= AttackDistanceMonster)
         {
             isWalking = true;
             GetComponent<Rigidbody2D>().velocity = new Vector3(direction.x * MoveSpeed, direction.y * MoveSpeed);
         }
-        else if ((CurrentTarget == Hero && distance < AttackDistanceHero) || CurrentTarget == Monster && distance < AttackDistanceMonster)
+        else
+        //else if ((CurrentTarget == Hero && distance < AttackDistanceHero) || CurrentTarget == Monster && distance < AttackDistanceMonster)
         {
             isWalking = false;
             GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
@@ -126,12 +146,13 @@ public class Enemy : MonoBehaviour
             nextAttackTime = Time.timeSinceLevelLoad + AttackSpeed;
             float distance = Vector3.Distance(transform.position, CurrentTarget.position);
             //Debug.Log("distance :" + distance);
-            if (CurrentTarget == Hero && distance <= AttackDistanceHero + 0.1f
-                || CurrentTarget == Monster && distance <= AttackDistanceMonster + 0.1f)
+            if (isColliding)
+            //if (CurrentTarget == Hero && distance <= AttackDistanceHero + 0.1f
+            //    || CurrentTarget == Monster && distance <= AttackDistanceMonster + 0.1f)
             {
                 anim.SetTrigger("Attack");
-                Hero hero = CurrentTarget.GetComponent<Hero>();
-                Monster monster = CurrentTarget.GetComponent<Monster>();
+                //Hero hero = CurrentTarget.GetComponent<Hero>();
+                //Monster monster = CurrentTarget.GetComponent<Monster>();
                 CurrentTarget.gameObject.SendMessage("ChangeLife", -Damage);
                 //if (hero)
                 //{

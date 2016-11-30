@@ -81,7 +81,7 @@ public class ObjectPool : MonoBehaviour
 
         if (activateObject && returnObj != null)
             returnObj.SetActive(true);
-
+        DeapthManager.Instance.AddActor(returnObj);
         return returnObj;
     }
 

@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour
     private int BulletDamage;
     private float RocketExplosionTime;
 
-    private Rigidbody2D myRigidBody;
+    //private Rigidbody2D myRigidBody;
     private SpriteRenderer myRenderer;
 
     private List<Vector2> rocketBulletsDirections;
@@ -31,6 +31,7 @@ public class Bullet : MonoBehaviour
             if (Time.timeSinceLevelLoad > RocketExplosionTime)
             {
                 Explode();
+                DeapthManager.Instance.RemoveActor(gameObject);
                 gameObject.SetActive(false);
             }
         }
@@ -39,7 +40,7 @@ public class Bullet : MonoBehaviour
 
     void Awake()
     {
-        myRigidBody = GetComponent<Rigidbody2D>();
+        //myRigidBody = GetComponent<Rigidbody2D>();
         myRenderer = GetComponent<SpriteRenderer>();
 
         rocketBulletsDirections = new List<Vector2>();
@@ -94,9 +95,11 @@ public class Bullet : MonoBehaviour
             if (BulletType == WEAPON_TYPE.ROCKET)
             {
                 Explode();
+                DeapthManager.Instance.RemoveActor(gameObject);
                 gameObject.SetActive(false);
                 return;
             }
+            DeapthManager.Instance.RemoveActor(gameObject);
             gameObject.SetActive(false);
             //Destroy(gameObject);
         }
@@ -117,6 +120,7 @@ public class Bullet : MonoBehaviour
                         enemy.ResetLastHitTimer();
                     }
                 }
+                DeapthManager.Instance.RemoveActor(gameObject);
                 gameObject.SetActive(false);
                 //Destroy(gameObject);
                 break;
@@ -125,6 +129,7 @@ public class Bullet : MonoBehaviour
                 if (monster)
                 {
                     monster.ChangeLife(BulletDamage);
+                    DeapthManager.Instance.RemoveActor(gameObject);
                     gameObject.SetActive(false);
                     //Destroy(gameObject);
                 }
@@ -138,6 +143,7 @@ public class Bullet : MonoBehaviour
                     enemy.ChangeLife(-BulletDamage);
                     if (enemy.GetLife() > 0)
                     {
+                        DeapthManager.Instance.RemoveActor(gameObject);
                         gameObject.SetActive(false);
                         //Destroy(gameObject);
                     }
@@ -145,6 +151,7 @@ public class Bullet : MonoBehaviour
                 break;
             case WEAPON_TYPE.ROCKET:
                 Explode();
+                DeapthManager.Instance.RemoveActor(gameObject);
                 gameObject.SetActive(false);
                 //Destroy(gameObject);
                 break;
@@ -157,6 +164,7 @@ public class Bullet : MonoBehaviour
                 {
                     enemy.ChangeLife(-BulletDamage);
                 }
+                DeapthManager.Instance.RemoveActor(gameObject);
                 gameObject.SetActive(false);
                 //Destroy(gameObject);
                 break;

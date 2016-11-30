@@ -19,6 +19,7 @@ public class LootSpawn : MonoBehaviour
         {
             if (currentLoot)
             {
+                DeapthManager.Instance.RemoveActor(currentLoot.gameObject);
                 currentLoot.gameObject.SetActive(false);
             }
             currentLoot = value;

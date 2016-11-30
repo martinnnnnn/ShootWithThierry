@@ -18,7 +18,7 @@ public class Hero : MonoBehaviour
     [HideInInspector]
     public bool canMove;
     private float timeEnableMove;
-    private float timeUnmovable = 0.05f;
+    private float timeUnmovable = 0.2f;
 
     [HideInInspector]
     private int HeroLife;
@@ -125,6 +125,7 @@ public class Hero : MonoBehaviour
                     }
                 }
                 lSpawn.CurrentLoot = null;
+                DeapthManager.Instance.RemoveActor(loot.gameObject);
                 loot.gameObject.SetActive(false);
             }
         }

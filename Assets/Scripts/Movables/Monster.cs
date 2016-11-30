@@ -115,7 +115,6 @@ public class Monster : MonoBehaviour
         }
     }
 
-    private float speed = 10f;
     private float angle = 1f;
     private int count = 20;
     private float radius = 2f;

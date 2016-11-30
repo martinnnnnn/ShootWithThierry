@@ -6,6 +6,7 @@ using System;
 public class GameDataManager : Singleton<GameDataManager>
 {
 
+
     public string pathToWavesData;
     List<WaveData> waves;
     List<LootData> loots;
@@ -118,6 +119,9 @@ public class GameDataManager : Singleton<GameDataManager>
     {
         Hero = transform.Find("Hero");
         Monster = transform.Find("Monster");
+        DeapthManager.Instance.AddActor(Hero.gameObject);
+        DeapthManager.Instance.AddActor(Monster.gameObject);
+
         Lava = Resources.Load("PREFABS/Lava") as GameObject;
         Bullet = Resources.Load("PREFABS/Bullet") as GameObject;
         Loot = Resources.Load("PREFABS/Loot") as GameObject;

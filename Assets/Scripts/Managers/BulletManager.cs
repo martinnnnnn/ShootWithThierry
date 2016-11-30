@@ -80,7 +80,15 @@ public class BulletManager : Singleton<BulletManager>
         bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(direction.x * bulletSpeed, direction.y * bulletSpeed);
         bullet.GetComponent<Bullet>().SetWeaponType(type);
 
-        if (ignore) Physics2D.IgnoreCollision(ignore.GetComponent<Collider2D>(), bullet.GetComponent<Collider2D>());
+        if (ignore)
+        {
+            Collider2D[] colliders = ignore.GetComponents<Collider2D>();
+            for (int i = 0; i < colliders.Length; ++i)
+            {
+                Physics2D.IgnoreCollision(colliders[i], bullet.GetComponent<Collider2D>());
+            }
+        }
+       // if (ignore) Physics2D.IgnoreCollision(ignore.GetComponents<CircleCollider2D>(), bullet.GetComponent<Collider2D>());
     }
 
     public bool CanFireGun(WEAPON_TYPE type, float fireDelay)
