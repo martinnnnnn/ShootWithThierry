@@ -42,27 +42,30 @@ public class Hero : MonoBehaviour
         if (canMove)
         {
             HeroRigidBody.velocity = new Vector2(hMove * HeroSpeed, vMove * HeroSpeed);
-            if (vMove > 0 && Mathf.Abs(vMove) > Mathf.Abs(hMove))
-            {
-                animArms.enabled = false;
-            }
-            else
-            {
-                animArms.enabled = true;
-            }
-            animBody.SetFloat("hSpeed", Mathf.Abs(hMove));
-            animBody.SetFloat("vSpeed", vMove);
-            animArms.SetFloat("hSpeed", Mathf.Abs(hMove));
-            animArms.SetFloat("vSpeed", vMove);
 
-            if (hMove > 0 && facingLeft)
-            {
-                Flip();
-            }
-            else if (hMove < 0 && !facingLeft)
-            {
-                Flip();
-            }
+            HandleAnim();
+
+            //if (vMove > 0 && Mathf.Abs(vMove) > Mathf.Abs(hMove))
+            //{
+            //    animArms.gameObject.SetActive(false);
+            //}
+            //else
+            //{
+            //    animArms.gameObject.SetActive(true);
+            //}
+            //animBody.SetFloat("hSpeed", Mathf.Abs(hMove));
+            //animBody.SetFloat("vSpeed", vMove);
+            //animArms.SetFloat("hSpeed", Mathf.Abs(hMove));
+            //animArms.SetFloat("vSpeed", vMove);
+
+            //if (hMove > 0 && facingLeft)
+            //{
+            //    Flip();
+            //}
+            //else if (hMove < 0 && !facingLeft)
+            //{
+            //    Flip();
+            //}
         }
     }
 
@@ -117,7 +120,6 @@ public class Hero : MonoBehaviour
                             if (HeroLife < GameDataManager.Instance.HeroStartingLife)
                             {
                                 HeroLife++;
-
                             }
                             break;
                     }
@@ -134,7 +136,6 @@ public class Hero : MonoBehaviour
         currentFiringDelay += Time.deltaTime;
         bool isAttacking = false;
 
-        // if (Input.GetButton("Fire1") && pistolAmmo > 0 && currentFiringDelay >= pistolFireRate)
         if (Input.GetButton("Fire1") && BulletManager.Instance.CanFireGun(WEAPON_TYPE.PISTOL,currentFiringDelay))
         {
             currentFiringDelay = 0f;
@@ -177,7 +178,8 @@ public class Hero : MonoBehaviour
                 }
             }
         }
-        animArms.SetBool("isAttacking", isAttacking);
+        if (animArms.gameObject.activeSelf) animArms.SetBool("isAttacking", isAttacking);
+        //HandleAnim(isAttacking);
     }
     
     public void ChangeLife(int amount)
@@ -192,6 +194,61 @@ public class Hero : MonoBehaviour
     }
 
 
+    void HandleAnim()
+    {
+        float leftH = Input.GetAxis("Horizontal1");
+        float leftV = Input.GetAxis("Vertical1");
+        float rightH = Input.GetAxis("Horizontal2");
+        float rightV = Input.GetAxis("Vertical2");
+
+        float sendToBodyH = 0f;
+        float sendToBodyV = 0f;
+
+        if (Mathf.Abs(rightH) > .1f || Mathf.Abs(rightV) > 0.1f)
+        {
+            // si la vitesse de deplacement > 0 => changement pour shootingspeed
+            // si la vitesse de deplacement < 0 => changement pour shootingspeed * .1
+            if (Mathf.Abs(leftH) < 0.1f && Mathf.Abs(leftV) < 0.1f)
+            {
+                sendToBodyH = rightH * 0.1f;
+                sendToBodyV = rightV * 0.1f;
+            }
+            else
+            {
+                sendToBodyH = rightH;
+                sendToBodyV = rightV;
+            }
+        }
+        else
+        {
+            sendToBodyH = leftH;
+            sendToBodyV = leftV;
+        }
+        animBody.SetFloat("hSpeed", Mathf.Abs(sendToBodyH));
+        animBody.SetFloat("vSpeed", sendToBodyV);
+
+        if (sendToBodyV > 0 && Mathf.Abs(sendToBodyV) > Mathf.Abs(sendToBodyH))
+        {
+            animArms.gameObject.SetActive(false);
+        }
+        else
+        {
+            animArms.gameObject.SetActive(true);
+            animArms.SetFloat("hSpeed", Mathf.Abs(sendToBodyH));
+            animArms.SetFloat("vSpeed", sendToBodyV);
+        }
+
+        if (sendToBodyH > 0 && facingLeft)
+        {
+            Flip();
+        }
+        else if (sendToBodyH < 0 && !facingLeft)
+        {
+            Flip();
+        }
+    }
+
+
     void Flip()
     {
         facingLeft = !facingLeft;
@@ -202,18 +259,18 @@ public class Hero : MonoBehaviour
 
     void ArmsLookAt(Vector3 direction)
     {
-        if (direction != Vector3.zero)
-        {
-            Quaternion rotation = Quaternion.LookRotation
-                 (direction - animArms.transform.position, animArms.transform.TransformDirection(Vector3.up));
-            animArms.transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
-        }
+        //if (direction != Vector3.zero)
+        //{
+        //    Quaternion rotation = Quaternion.LookRotation
+        //         (direction - animArms.transform.position, animArms.transform.TransformDirection(Vector3.up));
+        //    animArms.transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+        //}
     }
 
     private void AnimateDash()
     {
         animBody.SetTrigger("Dash");
-        animArms.enabled = false;
+        animArms.gameObject.SetActive(false);
     }
 
 

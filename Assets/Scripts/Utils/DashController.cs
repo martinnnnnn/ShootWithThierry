@@ -37,7 +37,7 @@ public class DashController : MonoBehaviour
         {
             if (Input.GetButton("Jump") && Time.timeSinceLevelLoad >= timeNextDash)
             {
-                //Debug.Log("Jump!");
+                gameObject.SendMessage("AnimateDash");
                 timeNextDash = Time.timeSinceLevelLoad + HeroDashCoolDown;
                 Vector2 dashDirection = new Vector2(Input.GetAxis("Horizontal1"),Input.GetAxis("Vertical1"));
                 myRigidBody.velocity = new Vector2(dashDirection.x * HeroDashSpeed, dashDirection.y * HeroDashSpeed);
@@ -47,7 +47,6 @@ public class DashController : MonoBehaviour
         else
         {
             Collider2D incomingBullet = Physics2D.OverlapCircle(transform.position, visionRadius, bullet);
-            //Debug.Log("incomming" + incomingBullet);
             if (incomingBullet && Time.timeSinceLevelLoad >= timeNextDash)
             {
                 Debug.Log("dashing");
