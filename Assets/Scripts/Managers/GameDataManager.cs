@@ -2,14 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.SceneManagement;
 
 public class GameDataManager : Singleton<GameDataManager>
 {
 
+    //public string pathToWavesData;
+    //List<WaveData> waves;
+    //List<LootData> loots;
 
-    public string pathToWavesData;
-    List<WaveData> waves;
-    List<LootData> loots;
 
     [Space(3)]
     [Header("Bullets")]
@@ -105,6 +106,8 @@ public class GameDataManager : Singleton<GameDataManager>
     [HideInInspector]
     public GameObject Bullet;
     [HideInInspector]
+    public GameObject MonsterBullet;
+    [HideInInspector]
     public GameObject Loot;
     [HideInInspector]
     public GameObject Commis;
@@ -117,142 +120,164 @@ public class GameDataManager : Singleton<GameDataManager>
 
     void Awake()
     {
+       // Debug.Log("TIME:" + Time.timeSinceLevelLoad);
+
+        //StartCoroutine(LoadTimeTest());
+
         Hero = transform.Find("Hero");
         Monster = transform.Find("Monster");
-        DeapthManager.Instance.AddActor(Hero.gameObject);
-        DeapthManager.Instance.AddActor(Monster.gameObject);
+
 
         Lava = Resources.Load("PREFABS/Lava") as GameObject;
         Bullet = Resources.Load("PREFABS/Bullet") as GameObject;
+        MonsterBullet = Resources.Load("PREFABS/FragmentBullet") as GameObject;
         Loot = Resources.Load("PREFABS/Loot") as GameObject;
         Commis = Resources.Load("PREFABS/ENEMIES/Commis") as GameObject;
         Plongeur = Resources.Load("PREFABS/ENEMIES/Plongeur") as GameObject;
         Gourmand = Resources.Load("PREFABS/ENEMIES/Gourmand") as GameObject;
         Gordon = Resources.Load("PREFABS/ENEMIES/Gordon") as GameObject;
 
-        waves = new List<WaveData>();
-        loots = new List<LootData>();
+        //waves = new List<WaveData>();
+        //loots = new List<LootData>();
 
-        loadWaveFile(pathToWavesData);
-        foreach (WaveData wave in waves)
-        {
-            StartCoroutine(StartWave(wave));
-        }
-        foreach (LootData loot in loots)
-        {
-            StartCoroutine(StartLoot(loot));
-        }
+        //loadWaveFile(pathToWavesData);
+        //foreach (WaveData wave in waves)
+        //{
+        //    StartCoroutine(StartWave(wave));
+        //}
+        //foreach (LootData loot in loots)
+        //{
+        //    StartCoroutine(StartLoot(loot));
+        //}
     }
 
-    IEnumerator StartWave(WaveData data)
+    void Start()
     {
-        yield return new WaitForSeconds(data.timing - Time.timeSinceLevelLoad);
-        StartCoroutine(WavesManager.Instance.SpawnWave(data));
-    }
-
-    IEnumerator StartLoot(LootData data)
-    {
-        yield return new WaitForSeconds(data.timing - Time.timeSinceLevelLoad);
-        LootManager.Instance.SpawnLoot(data);
+        DeapthManager.Instance.AddActor(Hero.gameObject);
+        DeapthManager.Instance.AddActor(Monster.gameObject);
     }
 
 
+    //IEnumerator LoadTimeTest()
+    //{
+        //yield return new WaitForSeconds(5);
 
-    private void loadWaveFile(string path)
-    {
-       
-        // Load resources
-        TextAsset textAsset = (TextAsset)Resources.Load(path, typeof(TextAsset));
-        if (textAsset == null)
-        {
-            Debug.LogWarning("[TextManager] " + path + " file not found.");
-            return;
-        }
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // 5.3
 
-        Debug.Log("[TextManager] loading: " + path);
-
-        // Read the file
-        string[] lineSeparators = new string[] { "|" };
-        string[] lines = textAsset.text.Split(lineSeparators, System.StringSplitOptions.RemoveEmptyEntries);
-
-        string[] columnSeparators = new string[] { "\t" };
-        string[] columns;
+        //SceneManager.LoadScene("testTime");
+    //}
 
 
 
-        for (int i = 1; i < lines.Length; i++)
-        {
-            columns = lines[i].Split(columnSeparators, System.StringSplitOptions.None);
-            if (columns[1] != "0")
-            {
-                addWave(
-                float.Parse(columns[3]),
-                int.Parse(columns[4]) - 1,
-                int.Parse(columns[5]),
-                int.Parse(columns[6]),
-                int.Parse(columns[7]),
-                int.Parse(columns[8]));
-            }
-            else
-            {
-                addLoot(
-                float.Parse(columns[3]),
-                (LOOT_TYPE)Enum.Parse(typeof(LOOT_TYPE), columns[9], true),
-                int.Parse(columns[10]),
-                int.Parse(columns[4]) - 1);
-            }
-        }
-    }
+    //IEnumerator StartWave(WaveData data)
+    //{
+    //    yield return new WaitForSeconds(data.timing - Time.timeSinceLevelLoad);
+    //    StartCoroutine(WavesManager.Instance.SpawnWave(data));
+    //}
 
-    public void addWave(float timing, int position, int commit, int plongeur, int gourmand, int gordon)
-    {
-        WaveData data = new WaveData();
-        data.timing = timing;
-        data.spawningPosition = position;
-        data.commitQuantity = commit;
-        data.plongeurQuantity = plongeur;
-        data.gourmandQuantity = gourmand;
-        data.gordonQuantity = gordon;
-        waves.Add(data);
-    }
+    //IEnumerator StartLoot(LootData data)
+    //{
+    //    yield return new WaitForSeconds(data.timing - Time.timeSinceLevelLoad);
+    //    LootManager.Instance.SpawnLoot(data);
+    //}
 
-    public void addLoot(float timing, LOOT_TYPE type, int amount, int spawn = 0)
-    {
-        LootData data = new LootData();
-        data.timing = timing;
-        data.type = type;
-        data.amount = amount;
-        data.spawn = spawn;
-        loots.Add(data);
-    }
+
+
+    //private void loadWaveFile(string path)
+    //{
+
+    //    // Load resources
+    //    TextAsset textAsset = (TextAsset)Resources.Load(path, typeof(TextAsset));
+    //    if (textAsset == null)
+    //    {
+    //        Debug.LogWarning("[TextManager] " + path + " file not found.");
+    //        return;
+    //    }
+
+    //    Debug.Log("[TextManager] loading: " + path);
+
+    //    // Read the file
+    //    string[] lineSeparators = new string[] { "|" };
+    //    string[] lines = textAsset.text.Split(lineSeparators, System.StringSplitOptions.RemoveEmptyEntries);
+
+    //    string[] columnSeparators = new string[] { "\t" };
+    //    string[] columns;
+
+
+
+    //    for (int i = 1; i < lines.Length; i++)
+    //    {
+    //        columns = lines[i].Split(columnSeparators, System.StringSplitOptions.None);
+    //        if (columns[1] != "0")
+    //        {
+    //            addWave(
+    //            float.Parse(columns[3]),
+    //            int.Parse(columns[4]) - 1,
+    //            int.Parse(columns[5]),
+    //            int.Parse(columns[6]),
+    //            int.Parse(columns[7]),
+    //            int.Parse(columns[8]));
+    //        }
+    //        else
+    //        {
+    //            addLoot(
+    //            float.Parse(columns[3]),
+    //            (LOOT_TYPE)Enum.Parse(typeof(LOOT_TYPE), columns[9], true),
+    //            int.Parse(columns[10]),
+    //            int.Parse(columns[4]) - 1);
+    //        }
+    //    }
+    //}
+
+    //public void addWave(float timing, int position, int commit, int plongeur, int gourmand, int gordon)
+    //{
+    //    WaveData data = new WaveData();
+    //    data.timing = timing;
+    //    data.spawningPosition = position;
+    //    data.commitQuantity = commit;
+    //    data.plongeurQuantity = plongeur;
+    //    data.gourmandQuantity = gourmand;
+    //    data.gordonQuantity = gordon;
+    //    waves.Add(data);
+    //}
+
+    //public void addLoot(float timing, LOOT_TYPE type, int amount, int spawn = 0)
+    //{
+    //    LootData data = new LootData();
+    //    data.timing = timing;
+    //    data.type = type;
+    //    data.amount = amount;
+    //    data.spawn = spawn;
+    //    loots.Add(data);
+    //}
 }
 
 
 
-public struct WaveData
-{
-    public float timing;
-    public int spawningPosition;
-    public int commitQuantity;
-    public int plongeurQuantity;
-    public int gourmandQuantity;
-    public int gordonQuantity;
+//public struct WaveData
+//{
+//    public float timing;
+//    public int spawningPosition;
+//    public int commitQuantity;
+//    public int plongeurQuantity;
+//    public int gourmandQuantity;
+//    public int gordonQuantity;
 
-    override public string ToString()
-    {
-        return ("" + timing
-            + ":" + spawningPosition
-            + ":" + commitQuantity
-            + ":" + plongeurQuantity
-            + ":" + gourmandQuantity
-            + ":" + gordonQuantity);
-    }
-}
+//    override public string ToString()
+//    {
+//        return ("" + timing
+//            + ":" + spawningPosition
+//            + ":" + commitQuantity
+//            + ":" + plongeurQuantity
+//            + ":" + gourmandQuantity
+//            + ":" + gordonQuantity);
+//    }
+//}
 
-public struct LootData
-{
-    public float timing;
-    public LOOT_TYPE type;
-    public int amount;
-    public int spawn;
-}
+//public struct LootData
+//{
+//    public float timing;
+//    public LOOT_TYPE type;
+//    public int amount;
+//    public int spawn;
+//}

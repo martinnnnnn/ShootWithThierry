@@ -32,7 +32,7 @@ public class WavesManager : Singleton<WavesManager>
 
     public IEnumerator SpawnWave(WaveData data)
     {
-        WaitForSeconds wait = new WaitForSeconds(0.001f);
+        WaitForSeconds wait = new WaitForSeconds(0.01f);
         for (int i = 0; i < data.commitQuantity; ++i)
         {
             GameObject enemy = ObjectPool.GetNextObject(commisPrefab, spawningPlaces[data.spawningPosition]);

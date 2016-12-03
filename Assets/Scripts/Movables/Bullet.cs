@@ -58,7 +58,14 @@ public class Bullet : MonoBehaviour
     public void SetWeaponType(WEAPON_TYPE type)
     {
         BulletType = type;
-        myRenderer.sprite = Resources.Load<Sprite>("BULLET/IMG_BULLET_" + BulletType.ToString());
+        if (BulletType == WEAPON_TYPE.FRAGMENT)
+        {
+            myRenderer.sprite = Resources.Load<Sprite>("BULLET/IMG_BULLET_" + BulletType.ToString() + "_" + Random.Range(1,12));
+        }
+        else
+        {
+            myRenderer.sprite = Resources.Load<Sprite>("BULLET/IMG_BULLET_" + BulletType.ToString());
+        }
         //gameObject.layer = LayerMask.NameToLayer("Bullet");
         switch (BulletType)
         {

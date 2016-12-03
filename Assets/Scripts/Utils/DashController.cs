@@ -49,7 +49,6 @@ public class DashController : MonoBehaviour
             Collider2D incomingBullet = Physics2D.OverlapCircle(transform.position, visionRadius, bullet);
             if (incomingBullet && Time.timeSinceLevelLoad >= timeNextDash)
             {
-                Debug.Log("dashing");
                 timeNextDash = Time.timeSinceLevelLoad + EnemyDashCoolDown;
                 Vector2 dashDirection = transform.position - incomingBullet.transform.position;
                 dashDirection.Normalize();

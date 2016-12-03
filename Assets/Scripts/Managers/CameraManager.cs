@@ -20,7 +20,7 @@ public class CameraManager : MonoBehaviour
     void FixedUpdate()
     {
         cameraFocus = hero.position;
-        cameraFocus.z = -20;
+        cameraFocus.z = -100;
 
         transform.position = Vector3.Lerp(transform.position, cameraFocus, 1);
 

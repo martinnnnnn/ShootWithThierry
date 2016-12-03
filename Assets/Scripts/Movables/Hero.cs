@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.SceneManagement;
 
 
 
@@ -94,9 +94,8 @@ public class Hero : MonoBehaviour
     }
 
 
-    public void OnCollisionEnter2D(Collision2D c)
+    public void OnTriggerEnter2D(Collider2D c)
     {
-
         LootSpawn lSpawn = c.gameObject.GetComponent<LootSpawn>();
         if (lSpawn)
         {
@@ -191,7 +190,12 @@ public class Hero : MonoBehaviour
         {
             HeroLife = GameDataManager.Instance.HeroStartingLife;
         }
+        if (HeroLife <= 0)
+        {
+            SceneManager.LoadScene("testTime");
+        }
         UIManager.Instance.SetHeroLife(HeroLife);
+
     }
 
 

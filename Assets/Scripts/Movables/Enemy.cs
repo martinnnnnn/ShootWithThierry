@@ -14,6 +14,8 @@ public enum ENEMY_TYPE
 public class Enemy : MonoBehaviour
 {
 
+    public GameObject bloodPrefab;
+
     [HideInInspector]
     private Transform CurrentTarget;
     private Transform Monster;
@@ -32,7 +34,7 @@ public class Enemy : MonoBehaviour
     [HideInInspector]
     public bool canMove;
     private float timeEnableMove;
-    private float timeUnmovable = 0.05f;
+    private float timeUnmovable = 0.1f;
     private float nextAttackTime;
 
     private float GourmandTimeResetFocus;
@@ -63,6 +65,9 @@ public class Enemy : MonoBehaviour
     {
         if (EnemyLife <= 0)
         {
+            CFX_SpawnSystem.GetNextObject(bloodPrefab);
+            bloodPrefab.transform.position = transform.position;
+            //Debug.LogError("this:" + transform.position + " /fx:" + bloodPrefab.transform.position);
             DeapthManager.Instance.RemoveActor(gameObject);
             gameObject.SetActive(false);
         }
@@ -300,5 +305,10 @@ public class Enemy : MonoBehaviour
     {
         type = t;
         ResetEnemy();
+    }
+
+    private void AnimateDash()
+    {
+        anim.SetTrigger("Dash");
     }
 }

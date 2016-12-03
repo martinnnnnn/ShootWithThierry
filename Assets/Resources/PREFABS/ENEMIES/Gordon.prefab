@@ -132,6 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 878d069027986d8499f84d5bc013c298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bloodPrefab: {fileID: 100000, guid: 606a850aa430f1f448f49cd1ff453dcc, type: 2}
   canMove: 0
   anim: {fileID: 95000012767719834}
 --- !u!212 &212000013922062378

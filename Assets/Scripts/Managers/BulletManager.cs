@@ -42,7 +42,7 @@ public class BulletManager : Singleton<BulletManager>
         rocketSpeed = GameDataManager.Instance.RocketSpeed;
         monsterSpeed = GameDataManager.Instance.MonsterBulletSpeed;
         fragmentSpeed = GameDataManager.Instance.FragmentSpeed;
-        currentWeapon = WEAPON_TYPE.PISTOL;
+        currentWeapon = WEAPON_TYPE.ROCKET;
 
         UIManager.Instance.SetAmmo(Ammo);
     }
@@ -76,7 +76,16 @@ public class BulletManager : Singleton<BulletManager>
                 break;
         }
 
-        GameObject bullet = ObjectPool.GetNextObject(GameDataManager.Instance.Bullet, shooterTransform);
+        GameObject bullet;
+        if (type == WEAPON_TYPE.MONSTER)
+        {
+            bullet = ObjectPool.GetNextObject(GameDataManager.Instance.MonsterBullet, shooterTransform);
+        }
+        else
+        {
+            bullet = ObjectPool.GetNextObject(GameDataManager.Instance.Bullet, shooterTransform);
+        }
+        
         bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(direction.x * bulletSpeed, direction.y * bulletSpeed);
         bullet.GetComponent<Bullet>().SetWeaponType(type);
 

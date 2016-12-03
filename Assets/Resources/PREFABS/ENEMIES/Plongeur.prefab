@@ -38,9 +38,10 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000010109372146}
-  - 212: {fileID: 212000011963709766}
+  - 212: {fileID: 212000012837204104}
+  - 95: {fileID: 95000012291674190}
   m_Layer: 11
-  m_Name: Image
+  m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,9 +102,26 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.36, y: -0.99}
   serializedVersion: 2
-  m_Radius: 0.28
+  m_Radius: 0.5
+--- !u!95 &95000012291674190
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011555248566}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3d6f6d4419256f540b74d7fcb8459216, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114000010018066824
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -129,8 +147,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 878d069027986d8499f84d5bc013c298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bloodPrefab: {fileID: 100000, guid: 606a850aa430f1f448f49cd1ff453dcc, type: 2}
   canMove: 0
---- !u!212 &212000011963709766
+  anim: {fileID: 95000012291674190}
+--- !u!212 &212000012837204104
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -159,7 +179,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d360614104181fc4b990165f044653e7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c2781d09a2765f74d94d3499e07b5c49, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

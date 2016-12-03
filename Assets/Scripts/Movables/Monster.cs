@@ -2,13 +2,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.SceneManagement;
 
+
+public enum MONSTER_STAGES
+{
+    STAGE1,
+    STAGE2,
+    STAGE3
+}
 
 
 
 public class Monster : MonoBehaviour
 {
     private int MonsterLife;
+
+
+    private MONSTER_STAGES currentStage;
+
 
     private int cacStage;
     private int standardHellStage;
@@ -38,9 +50,9 @@ public class Monster : MonoBehaviour
     {
         MonsterLife = GameDataManager.Instance.MonsterStartingLife;
         cacStage = GameDataManager.Instance.MonsterCaCStage;
-        standardHellStage = GameDataManager.Instance.MonsterLavaStage;
-        fancyHellStage = GameDataManager.Instance.MonsterHellStage;
-        timeBetweenCac = GameDataManager.Instance.MonsterTimeBetweenCaCAttacks;
+        standardHellStage = GameDataManager.Instance.MonsterHellStage;
+        fancyHellStage = GameDataManager.Instance.MonsterLavaStage;
+         timeBetweenCac = GameDataManager.Instance.MonsterTimeBetweenCaCAttacks;
         timeBetweenLava = GameDataManager.Instance.MonsterTimeBetweenLavaAttacks;
         timeBetweenHell = GameDataManager.Instance.MonsterTimeBetweenHellAttacks;
         cacRadius = GameDataManager.Instance.MonsterCaCRadius;
@@ -59,6 +71,8 @@ public class Monster : MonoBehaviour
         timeLastLava = 0f;
         timeLastHell = 0f;
 
+        SetCurrentStage();
+
         UIManager.Instance.SetMonsterLife(MonsterLife);
 
         SetAnimIdle();
@@ -66,41 +80,66 @@ public class Monster : MonoBehaviour
 
     void Update()
     {
-        // Attack();
+        Attack();
 
-        if (!temp)
-        {
-            StartCoroutine(FancyHellAttack());
-            temp = true;
-        }
+        //if (!temp)
+        //{
+        //    StartCoroutine(FancyHellAttack());
+        //    temp = true;
+        //}
     }
 
     private void Attack()
     {
-        if (MonsterLife < cacStage)
+        switch (currentStage)
         {
-            if (Time.timeSinceLevelLoad > timeLastCac + timeBetweenCac)
-            {
-                timeLastCac = Time.timeSinceLevelLoad;
-                CaCAttack();
-            }
+            case MONSTER_STAGES.STAGE1:
+                if (Time.timeSinceLevelLoad > timeLastCac + timeBetweenCac)
+                {
+                    timeLastCac = Time.timeSinceLevelLoad;
+                    CaCAttack();
+                }
+                break;
+            case MONSTER_STAGES.STAGE2:
+                if (Time.timeSinceLevelLoad > timeLastLava + timeBetweenLava)
+                {
+                    timeLastLava = Time.timeSinceLevelLoad;
+                    StartCoroutine(StandardHellAtatck());
+                }
+                break;
+            case MONSTER_STAGES.STAGE3:
+                if (Time.timeSinceLevelLoad > timeLastHell + timeBetweenHell)
+                {
+                    timeLastHell = Time.timeSinceLevelLoad;
+                    StartCoroutine(FancyHellAttack());
+                }
+                break;
         }
-        if (MonsterLife < standardHellStage)
-        {
-            if (Time.timeSinceLevelLoad > timeLastLava + timeBetweenLava)
-            {
-                timeLastLava = Time.timeSinceLevelLoad;
-                StartCoroutine(StandardHellAtatck());
-            }
-        }
-        if (MonsterLife < fancyHellStage)
-        {
-            if (Time.timeSinceLevelLoad > timeLastHell + timeBetweenHell)
-            {
-                timeLastHell = Time.timeSinceLevelLoad;
-                StartCoroutine(FancyHellAttack());
-            }
-        }
+
+        //if (MonsterLife < cacStage)
+        //{
+        //    if (Time.timeSinceLevelLoad > timeLastCac + timeBetweenCac)
+        //    {
+        //        timeLastCac = Time.timeSinceLevelLoad;
+        //        CaCAttack();
+        //    }
+        //}
+        //if (MonsterLife < standardHellStage)
+        //{
+        //    if (Time.timeSinceLevelLoad > timeLastLava + timeBetweenLava)
+        //    {
+        //        timeLastLava = Time.timeSinceLevelLoad;
+        //        StartCoroutine(StandardHellAtatck());
+        //    }
+        //}
+        //if (MonsterLife < fancyHellStage)
+        //{
+        //    if (Time.timeSinceLevelLoad > timeLastHell + timeBetweenHell)
+        //    {
+        //        timeLastHell = Time.timeSinceLevelLoad;
+        //        StartCoroutine(FancyHellAttack());
+        //    }
+        //}
     }
 
     private void CaCAttack()
@@ -158,12 +197,6 @@ public class Monster : MonoBehaviour
             }
             yield return new WaitForSeconds(.5f);
         }
-
-
-        //foreach (Transform t in cacStagePlaces)
-        //{
-        //    GameObject lava = ObjectPool.GetNextObject(lavaPrefab);
-        //}
     }
 
     private void InitBulletSpawns()
@@ -195,10 +228,36 @@ public class Monster : MonoBehaviour
         
         MonsterLife += amount;
         if (MonsterLife > GameDataManager.Instance.MonsterMaxLife) MonsterLife = GameDataManager.Instance.MonsterMaxLife;
-        UIManager.Instance.SetMonsterLife(MonsterLife);
+        if (MonsterLife <= 0)
+        {
+            SceneManager.LoadScene("testTime");
+        }
 
+        SetCurrentStage();
+
+        UIManager.Instance.SetMonsterLife(MonsterLife);
         SetAnimIdle();
     }
+
+    
+    void SetCurrentStage()
+    {
+        
+        if (MonsterLife <= fancyHellStage)
+        {
+            currentStage = MONSTER_STAGES.STAGE3;
+        }
+        else if (MonsterLife <= standardHellStage)
+        {
+            currentStage = MONSTER_STAGES.STAGE2;
+        }
+        else
+        {
+            currentStage = MONSTER_STAGES.STAGE1;
+        }
+        Debug.Log("life:" + MonsterLife + "/stage:"+currentStage);
+    }
+
 
     void SetAnimIdle()
     {

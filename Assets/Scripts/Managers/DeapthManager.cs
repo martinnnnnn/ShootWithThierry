@@ -35,7 +35,6 @@ public class DeapthManager : Singleton<DeapthManager>
 
     public void AddActor(GameObject o)
     {
-        
         actors.Add(o);
     }
 
