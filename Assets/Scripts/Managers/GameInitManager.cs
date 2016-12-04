@@ -4,6 +4,14 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
 
+
+//|	0	0	5	1	0	0	0	0	PISTOL	100
+//|	0	0	5	1	0	0	0	0	SNIPER	0
+//|	0	0	5	2	0	0	0	0	SNIPER	0
+//|	0	0	5	3	0	0	0	0	ROCKET	0
+//|	0	0	5	4	0	0	0	0	ROCKET	0
+//|	0	0	5	4	0	0	0	0	LIFE	0
+
 public class GameInitManager : Singleton<GameInitManager>
 {
     public string pathToWavesData;
@@ -44,13 +52,13 @@ public class GameInitManager : Singleton<GameInitManager>
 
     IEnumerator StartWave(WaveData data, float timeDecalage = 0f)
     {
-        yield return new WaitForSeconds(data.timing/* - Time.timeSinceLevelLoad + timeDecalage*/);
+        yield return new WaitForSeconds(data.timing);
         StartCoroutine(WavesManager.Instance.SpawnWave(data));
     }
 
     IEnumerator StartLoot(LootData data, float timeDecalage = 0f)
     {
-        yield return new WaitForSeconds(data.timing/* - Time.timeSinceLevelLoad + timeDecalage*/);
+        yield return new WaitForSeconds(data.timing);
         LootManager.Instance.SpawnLoot(data);
     }
 
