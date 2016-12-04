@@ -63,6 +63,8 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        timeSinceLastHitSound += Time.deltaTime;
+
         if (EnemyLife <= 0)
         {
             SoundManager.Instance.PlaySound("Enemies_Death");
@@ -238,7 +240,7 @@ public class Enemy : MonoBehaviour
 
     private void ResetCurrentTarget()
     {
-        switch(type)
+        switch (type)
         {
             case ENEMY_TYPE.COMMIS:
             case ENEMY_TYPE.PLONGEUR:
@@ -251,10 +253,17 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private float timeSinceLastHitSound = 0f;
+    private float timeBetweenHitSound = 2f;
+
     public void ChangeLife(int amount)
     {
         EnemyLife += amount;
-        SoundManager.Instance.PlaySound("Enemies_Hit");
+        if (timeSinceLastHitSound > timeBetweenHitSound)
+        {
+            timeSinceLastHitSound = 0f;
+            SoundManager.Instance.PlaySound("Enemies_Hit");
+        }
     }
 
     public ENEMY_TYPE GetEnemyType()

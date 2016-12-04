@@ -42,9 +42,9 @@ public class Monster : MonoBehaviour
     private List<Vector2> rocketBulletsDirections1;
     private List<Vector2> rocketBulletsDirections2;
 
-    private bool temp = false;
-
     public Animator anim;
+    private float timeBetweenHitSounds = 2f;
+    private float timeSinceLastHitSound = 0f;
 
     void Awake()
     {
@@ -77,16 +77,26 @@ public class Monster : MonoBehaviour
 
         anim.SetFloat("Life", MonsterLife);
     }
+    private void CaCAttack()
+    {
+        anim.SetTrigger("Attack");
+
+        Collider2D[] attackedObjects = Physics2D.OverlapCircleAll(transform.position, cacRadius);
+        for (int i = 0; i < attackedObjects.Length; ++i)
+        {
+            if (attackedObjects[i].GetComponent<Enemy>() || attackedObjects[i].GetComponent<Hero>())
+            {
+                attackedObjects[i].gameObject.SendMessage("ChangeLife", -cacDamage);
+            }
+        }
+    }
 
     void Update()
     {
         Attack();
 
-        //if (!temp)
-        //{
-        //    StartCoroutine(FancyHellAttack());
-        //    temp = true;
-        //}
+        timeSinceLastHitSound += Time.deltaTime;
+
     }
 
     private void Attack()
@@ -146,21 +156,6 @@ public class Monster : MonoBehaviour
         //    }
         //}
     }
-
-    private void CaCAttack()
-    {
-        anim.SetTrigger("Attack");
-
-        Collider2D[] attackedObjects =  Physics2D.OverlapCircleAll(transform.position, cacRadius);
-        for (int i = 0; i < attackedObjects.Length; ++i)
-        {
-            if (attackedObjects[i].GetComponent<Enemy>() || attackedObjects[i].GetComponent<Hero>())
-            {
-                attackedObjects[i].gameObject.SendMessage("ChangeLife", -cacDamage);
-            }
-        }
-    }
-
     private float angle = 1f;
     private int count = 20;
     private float radius = 2f;
@@ -241,23 +236,30 @@ public class Monster : MonoBehaviour
         if (amount < 0)
         {
             anim.SetTrigger("Damage");
-            switch(currentStage)
+            if (timeSinceLastHitSound > timeBetweenHitSounds)
             {
-                case MONSTER_STAGES.STAGE1:
-                    SoundManager.Instance.PlaySound("Monster_Hit_Phase1_"+ UnityEngine.Random.Range(1,4));
-                    break;
-                case MONSTER_STAGES.STAGE2:
-                    SoundManager.Instance.PlaySound("Monster_Hit_Phase2_" + UnityEngine.Random.Range(1, 4));
-                    break;
-                case MONSTER_STAGES.STAGE3:
-                    SoundManager.Instance.PlaySound("Monster_Hit_Phase3_" + UnityEngine.Random.Range(1, 3));
-                    break;
+                timeSinceLastHitSound = 0;
+                switch (currentStage)
+                {
+                    case MONSTER_STAGES.STAGE1:
+                        SoundManager.Instance.PlaySound("Monster_Hit_Phase1_" + UnityEngine.Random.Range(1, 4));
+                        break;
+                    case MONSTER_STAGES.STAGE2:
+                        SoundManager.Instance.PlaySound("Monster_Hit_Phase2_" + UnityEngine.Random.Range(1, 4));
+                        break;
+                    case MONSTER_STAGES.STAGE3:
+                        SoundManager.Instance.PlaySound("Monster_Hit_Phase3_" + UnityEngine.Random.Range(1, 3));
+                        break;
+                }
             }
-            SoundManager.Instance.PlaySound("");
         }
         else
         {
-            SoundManager.Instance.PlaySound("Monster_Heal_" + UnityEngine.Random.Range(1, 3));
+            if (timeSinceLastHitSound > timeBetweenHitSounds)
+            {
+                timeSinceLastHitSound = 0;
+                SoundManager.Instance.PlaySound("Monster_Heal_" + UnityEngine.Random.Range(1, 3));
+            }
         }
         SetCurrentStage();
         anim.SetFloat("Life", MonsterLife);
@@ -268,7 +270,7 @@ public class Monster : MonoBehaviour
     
     void SetCurrentStage()
     {
-        
+        MONSTER_STAGES lastStage = currentStage;
         if (MonsterLife <= fancyHellStage)
         {
             currentStage = MONSTER_STAGES.STAGE3;
@@ -280,6 +282,19 @@ public class Monster : MonoBehaviour
         else
         {
             currentStage = MONSTER_STAGES.STAGE1;
+        }
+        if (lastStage != currentStage)
+        {
+            if (currentStage == MONSTER_STAGES.STAGE2)
+            {
+                SoundManager.Instance.UnmuteMonsterStage("MonsterPhase2");
+                SoundManager.Instance.MuteMonsterStage("MonsterPhase3");
+            }
+            else if (currentStage == MONSTER_STAGES.STAGE3)
+            {
+                SoundManager.Instance.MuteMonsterStage("MonsterPhase2");
+                SoundManager.Instance.UnmuteMonsterStage("MonsterPhase3");
+            }
         }
     }
 

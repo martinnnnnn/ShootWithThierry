@@ -24,7 +24,7 @@ public class UIManager : Singleton<UIManager>
 
     public void SetMonsterLife(int value)
     {
-        MonsterLife.text = "Monster Life : " + value;
+        //MonsterLife.text = "Monster Life : " + value;
     }
 
     public void SetAmmo(int value)
