@@ -112,10 +112,12 @@ public class Hero : MonoBehaviour
                             break;
                         case LOOT_TYPE.SNIPER:
                             SoundManager.Instance.PlaySound("Ammo_PickUp_2");
+                            UIManager.Instance.SetRecipe("SNIPER");
                             BulletManager.Instance.SetWeaponType(WEAPON_TYPE.SNIPER);
                             break;
                         case LOOT_TYPE.ROCKET:
                             SoundManager.Instance.PlaySound("Recipe_PickUp");
+                            UIManager.Instance.SetRecipe("ROCKET");
                             BulletManager.Instance.SetWeaponType(WEAPON_TYPE.ROCKET);
                             break;
                         case LOOT_TYPE.LIFE:

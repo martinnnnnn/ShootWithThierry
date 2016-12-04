@@ -73,10 +73,14 @@ public class Monster : MonoBehaviour
 
         SetCurrentStage();
 
-        UIManager.Instance.SetMonsterLife(MonsterLife);
-
         anim.SetFloat("Life", MonsterLife);
     }
+
+    void Start()
+    {
+        UIManager.Instance.SetMonsterLife(MonsterLife);
+    }
+
     private void CaCAttack()
     {
         anim.SetTrigger("Attack");
