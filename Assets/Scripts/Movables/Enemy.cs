@@ -65,6 +65,7 @@ public class Enemy : MonoBehaviour
     {
         if (EnemyLife <= 0)
         {
+            SoundManager.Instance.PlaySound("Enemies_Death");
             CFX_SpawnSystem.GetNextObject(bloodPrefab);
             bloodPrefab.transform.position = transform.position;
             //Debug.LogError("this:" + transform.position + " /fx:" + bloodPrefab.transform.position);
@@ -253,6 +254,7 @@ public class Enemy : MonoBehaviour
     public void ChangeLife(int amount)
     {
         EnemyLife += amount;
+        SoundManager.Instance.PlaySound("Enemies_Hit");
     }
 
     public ENEMY_TYPE GetEnemyType()

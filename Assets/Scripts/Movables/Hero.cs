@@ -107,12 +107,15 @@ public class Hero : MonoBehaviour
                     switch (loot.GetLootType())
                     {
                         case LOOT_TYPE.PISTOL:
+                            SoundManager.Instance.PlaySound("Ammo_PickUp_1");
                             BulletManager.Instance.ChangeAmmo(loot.GetLootAmount());
                             break;
                         case LOOT_TYPE.SNIPER:
+                            SoundManager.Instance.PlaySound("Ammo_PickUp_2");
                             BulletManager.Instance.SetWeaponType(WEAPON_TYPE.SNIPER);
                             break;
                         case LOOT_TYPE.ROCKET:
+                            SoundManager.Instance.PlaySound("Recipe_PickUp");
                             BulletManager.Instance.SetWeaponType(WEAPON_TYPE.ROCKET);
                             break;
                         case LOOT_TYPE.LIFE:
@@ -146,6 +149,7 @@ public class Hero : MonoBehaviour
             if (horizontal != 0 || vertical != 0)
             {
                 isAttacking = true;
+                SoundManager.Instance.PlaySound("Weapon_Pistol");
                 BulletManager.Instance.FireBullet(WEAPON_TYPE.PISTOL, transform, new Vector2(horizontal, vertical));
             }
         }
@@ -161,7 +165,7 @@ public class Hero : MonoBehaviour
                 if (horizontal != 0 || vertical != 0)
                 {
                     isAttacking = true;
-                    Debug.Log("bullet tiré");
+                    SoundManager.Instance.PlaySound("Weapon_Sniper");
                     BulletManager.Instance.FireBullet(WEAPON_TYPE.SNIPER, transform, new Vector2(horizontal, vertical));
                 }
             }
@@ -174,6 +178,7 @@ public class Hero : MonoBehaviour
                 if (horizontal != 0 || vertical != 0)
                 {
                     isAttacking = true;
+                    SoundManager.Instance.PlaySound("Weapon_Rocket");
                     BulletManager.Instance.FireBullet(WEAPON_TYPE.ROCKET, transform, new Vector2(horizontal, vertical));
                 }
             }
@@ -193,6 +198,14 @@ public class Hero : MonoBehaviour
         if (HeroLife <= 0)
         {
             SceneManager.LoadScene("testTime");
+        }
+        if (amount < 0)
+        {
+            SoundManager.Instance.PlaySound("Hero_Hit_" + UnityEngine.Random.Range(1, 3));
+        }
+        else
+        {
+            SoundManager.Instance.PlaySound("Monster_Life_Up");
         }
         UIManager.Instance.SetHeroLife(HeroLife);
 

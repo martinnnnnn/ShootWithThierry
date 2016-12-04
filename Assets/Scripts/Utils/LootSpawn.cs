@@ -17,6 +17,7 @@ public class LootSpawn : MonoBehaviour
         }
         set
         {
+            SoundManager.Instance.PlaySound("Loot_Drop");
             if (currentLoot)
             {
                 DeapthManager.Instance.RemoveActor(currentLoot.gameObject);

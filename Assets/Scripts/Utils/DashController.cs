@@ -37,6 +37,7 @@ public class DashController : MonoBehaviour
         {
             if (Input.GetButton("Jump") && Time.timeSinceLevelLoad >= timeNextDash)
             {
+                SoundManager.Instance.PlaySound("Hero_Dash");
                 gameObject.SendMessage("AnimateDash");
                 timeNextDash = Time.timeSinceLevelLoad + HeroDashCoolDown;
                 Vector2 dashDirection = new Vector2(Input.GetAxis("Horizontal1"),Input.GetAxis("Vertical1"));

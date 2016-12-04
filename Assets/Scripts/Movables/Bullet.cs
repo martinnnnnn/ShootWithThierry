@@ -185,6 +185,7 @@ public class Bullet : MonoBehaviour
 
     public void Explode()
     {
+        SoundManager.Instance.PlaySound("Weapon_Rocket_Explosion");
         foreach (Vector2 direction in rocketBulletsDirections)
         {
             BulletManager.Instance.FireBullet(WEAPON_TYPE.FRAGMENT, transform, direction);

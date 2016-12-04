@@ -75,7 +75,7 @@ public class Monster : MonoBehaviour
 
         UIManager.Instance.SetMonsterLife(MonsterLife);
 
-        SetAnimIdle();
+        anim.SetFloat("Life", MonsterLife);
     }
 
     void Update()
@@ -91,15 +91,20 @@ public class Monster : MonoBehaviour
 
     private void Attack()
     {
+        if (Time.timeSinceLevelLoad > timeLastCac + timeBetweenCac)
+        {
+            timeLastCac = Time.timeSinceLevelLoad;
+            CaCAttack();
+        }
         switch (currentStage)
         {
-            case MONSTER_STAGES.STAGE1:
-                if (Time.timeSinceLevelLoad > timeLastCac + timeBetweenCac)
-                {
-                    timeLastCac = Time.timeSinceLevelLoad;
-                    CaCAttack();
-                }
-                break;
+            //case MONSTER_STAGES.STAGE1:
+            //    if (Time.timeSinceLevelLoad > timeLastCac + timeBetweenCac)
+            //    {
+            //        timeLastCac = Time.timeSinceLevelLoad;
+            //        CaCAttack();
+            //    }
+            //    break;
             case MONSTER_STAGES.STAGE2:
                 if (Time.timeSinceLevelLoad > timeLastLava + timeBetweenLava)
                 {
@@ -144,6 +149,8 @@ public class Monster : MonoBehaviour
 
     private void CaCAttack()
     {
+        anim.SetTrigger("Attack");
+
         Collider2D[] attackedObjects =  Physics2D.OverlapCircleAll(transform.position, cacRadius);
         for (int i = 0; i < attackedObjects.Length; ++i)
         {
@@ -160,6 +167,7 @@ public class Monster : MonoBehaviour
     private int mult = 1;
     private IEnumerator FancyHellAttack()
     {
+        anim.SetTrigger("Special");
         for (int i = 0; i < numberOfHellWaves; ++i)
         {
             for (int j = 0; j < count; j++)
@@ -173,8 +181,6 @@ public class Monster : MonoBehaviour
 
             yield return new WaitForSeconds(.15f);
         }
-
-
     }
 
 
@@ -182,7 +188,7 @@ public class Monster : MonoBehaviour
     {
         //Vector3 localShotPos = new Vector3(0, -((new Vector2(transform.localScale.x * 8f,
         //                            transform.localScale.y * 5f)).magnitude));
-
+        anim.SetTrigger("Special");
         for (int i = 0; i < numberOfHellWaves; ++i)
         {
             foreach (Vector2 direction in rocketBulletsDirections1)
@@ -225,7 +231,6 @@ public class Monster : MonoBehaviour
 
     public void ChangeLife(int amount)
     {
-        
         MonsterLife += amount;
         if (MonsterLife > GameDataManager.Instance.MonsterMaxLife) MonsterLife = GameDataManager.Instance.MonsterMaxLife;
         if (MonsterLife <= 0)
@@ -233,10 +238,31 @@ public class Monster : MonoBehaviour
             SceneManager.LoadScene("testTime");
         }
 
+        if (amount < 0)
+        {
+            anim.SetTrigger("Damage");
+            switch(currentStage)
+            {
+                case MONSTER_STAGES.STAGE1:
+                    SoundManager.Instance.PlaySound("Monster_Hit_Phase1_"+ UnityEngine.Random.Range(1,4));
+                    break;
+                case MONSTER_STAGES.STAGE2:
+                    SoundManager.Instance.PlaySound("Monster_Hit_Phase2_" + UnityEngine.Random.Range(1, 4));
+                    break;
+                case MONSTER_STAGES.STAGE3:
+                    SoundManager.Instance.PlaySound("Monster_Hit_Phase3_" + UnityEngine.Random.Range(1, 3));
+                    break;
+            }
+            SoundManager.Instance.PlaySound("");
+        }
+        else
+        {
+            SoundManager.Instance.PlaySound("Monster_Heal_" + UnityEngine.Random.Range(1, 3));
+        }
         SetCurrentStage();
-
+        anim.SetFloat("Life", MonsterLife);
         UIManager.Instance.SetMonsterLife(MonsterLife);
-        SetAnimIdle();
+        //SetAnimIdle();
     }
 
     
@@ -255,24 +281,23 @@ public class Monster : MonoBehaviour
         {
             currentStage = MONSTER_STAGES.STAGE1;
         }
-        Debug.Log("life:" + MonsterLife + "/stage:"+currentStage);
     }
 
 
-    void SetAnimIdle()
-    {
-        if (MonsterLife > fancyHellStage)
-        {
-            anim.SetTrigger("ToIdle1");
-        }
-        if (MonsterLife < fancyHellStage)
-        {
-            anim.SetTrigger("ToIdle2");
-        }
-        if (MonsterLife < standardHellStage)
-        {
-            anim.SetTrigger("ToIdle3");
-        }
-    }
+    //void SetAnimIdle()
+    //{
+    //    if (MonsterLife > fancyHellStage)
+    //    {
+    //        anim.SetTrigger("ToIdle1");
+    //    }
+    //    if (MonsterLife < fancyHellStage)
+    //    {
+    //        anim.SetTrigger("ToIdle2");
+    //    }
+    //    if (MonsterLife < standardHellStage)
+    //    {
+    //        anim.SetTrigger("ToIdle3");
+    //    }
+    //}
 
 }
