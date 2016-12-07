@@ -79,6 +79,7 @@ public class BulletManager : Singleton<BulletManager>
         GameObject bullet;
         if (type == WEAPON_TYPE.MONSTER)
         {
+
             bullet = ObjectPool.GetNextObject(GameDataManager.Instance.MonsterBullet, shooterTransform);
         }
         else
@@ -86,6 +87,14 @@ public class BulletManager : Singleton<BulletManager>
             bullet = ObjectPool.GetNextObject(GameDataManager.Instance.Bullet, shooterTransform);
         }
         
+        //if (type == WEAPON_TYPE.SNIPER)
+        //{
+        //    Quaternion rot = bullet.transform.rotation;
+        //    Debug.Log("rot :" + Vector3.Angle(this.transform.position, direction));
+        //    rot.z = Vector3.Angle(this.transform.position, direction);
+        //    bullet.transform.rotation = rot;
+        //}
+
         bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(direction.x * bulletSpeed, direction.y * bulletSpeed);
         bullet.GetComponent<Bullet>().SetWeaponType(type);
 

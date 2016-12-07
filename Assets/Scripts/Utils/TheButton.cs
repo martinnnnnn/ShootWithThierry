@@ -10,9 +10,14 @@ public class TheButton : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
-	}
+	void Update ()
+    {
+        if (Input.GetButton("Fire3"))
+        {
+            SceneManager.LoadScene("test1");
+        }
+
+    }
 
     public void OnClickOnTheButton()
     {

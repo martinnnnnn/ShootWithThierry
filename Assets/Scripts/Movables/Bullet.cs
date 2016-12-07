@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
     private float RocketExplosionTime;
 
     //private Rigidbody2D myRigidBody;
-    private SpriteRenderer myRenderer;
+    public SpriteRenderer myRenderer;
 
     private List<Vector2> rocketBulletsDirections;
 
@@ -41,7 +41,7 @@ public class Bullet : MonoBehaviour
     void Awake()
     {
         //myRigidBody = GetComponent<Rigidbody2D>();
-        myRenderer = GetComponent<SpriteRenderer>();
+        //myRenderer = GetComponent<SpriteRenderer>();
 
         rocketBulletsDirections = new List<Vector2>();
         rocketBulletsDirections.Add(new Vector2(0,1));
@@ -70,20 +70,24 @@ public class Bullet : MonoBehaviour
         switch (BulletType)
         {
             case WEAPON_TYPE.PISTOL:
+                myRenderer.transform.localScale = new Vector3(2, 2, 1);
                 BulletDamage = GameDataManager.Instance.PistolDamage;
                 break;
             case WEAPON_TYPE.SNIPER:
+                myRenderer.transform.localScale = new Vector3(1, 1, 1);
                 BulletDamage = GameDataManager.Instance.SniperDamage;
                 break;
             case WEAPON_TYPE.ROCKET:
+                myRenderer.transform.localScale = new Vector3(2, 2, 1);
                 BulletDamage = GameDataManager.Instance.RocketDamage;
                 RocketExplosionTime = Time.timeSinceLevelLoad + GameDataManager.Instance.RocketTimeBeforeExplosion;
                 break;
             case WEAPON_TYPE.MONSTER:
-                //gameObject.layer = LayerMask.NameToLayer("MonsterBullet");
+                myRenderer.transform.localScale = new Vector3(2, 2, 1);
                 BulletDamage = GameDataManager.Instance.MonsterBulletDamage;
                 break;
             case WEAPON_TYPE.FRAGMENT:
+                myRenderer.transform.localScale = new Vector3(5, 5, 1);
                 BulletDamage = GameDataManager.Instance.FragmentDamage;
                 break;
 

@@ -130,7 +130,7 @@ public class GameDataManager : Singleton<GameDataManager>
 
         Lava = Resources.Load("PREFABS/Lava") as GameObject;
         Bullet = Resources.Load("PREFABS/Bullet") as GameObject;
-        MonsterBullet = Resources.Load("PREFABS/FragmentBullet") as GameObject;
+        MonsterBullet = Resources.Load("PREFABS/MonsterBullet") as GameObject;
         Loot = Resources.Load("PREFABS/Loot") as GameObject;
         Commis = Resources.Load("PREFABS/ENEMIES/Commis") as GameObject;
         Plongeur = Resources.Load("PREFABS/ENEMIES/Plongeur") as GameObject;

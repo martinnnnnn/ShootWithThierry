@@ -25,6 +25,8 @@ public class Hero : MonoBehaviour
 
     private float currentFiringDelay;
 
+    public Animation death;
+
     void Start ()
     {
         HeroLife = GameDataManager.Instance.HeroStartingLife;
@@ -45,27 +47,6 @@ public class Hero : MonoBehaviour
 
             HandleAnim();
 
-            //if (vMove > 0 && Mathf.Abs(vMove) > Mathf.Abs(hMove))
-            //{
-            //    animArms.gameObject.SetActive(false);
-            //}
-            //else
-            //{
-            //    animArms.gameObject.SetActive(true);
-            //}
-            //animBody.SetFloat("hSpeed", Mathf.Abs(hMove));
-            //animBody.SetFloat("vSpeed", vMove);
-            //animArms.SetFloat("hSpeed", Mathf.Abs(hMove));
-            //animArms.SetFloat("vSpeed", vMove);
-
-            //if (hMove > 0 && facingLeft)
-            //{
-            //    Flip();
-            //}
-            //else if (hMove < 0 && !facingLeft)
-            //{
-            //    Flip();
-            //}
         }
     }
 
@@ -189,6 +170,7 @@ public class Hero : MonoBehaviour
         //HandleAnim(isAttacking);
     }
     
+    bool dead = false;
     public void ChangeLife(int amount)
     {
         
@@ -199,7 +181,12 @@ public class Hero : MonoBehaviour
         }
         if (HeroLife <= 0)
         {
-            SceneManager.LoadScene("testTime");
+            //SceneManager.LoadScene("testTime");
+            if (!dead)
+            {
+                dead = true;
+                StartCoroutine(Death());
+            }
         }
         if (amount < 0)
         {
@@ -210,6 +197,16 @@ public class Hero : MonoBehaviour
             SoundManager.Instance.PlaySound("Monster_Life_Up");
         }
         UIManager.Instance.SetHeroLife(HeroLife);
+
+    }
+
+    IEnumerator Death()
+    {
+        Debug.Log("death");
+        animArms.gameObject.SetActive(false);
+        animBody.SetTrigger("Death");
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("testTime");
 
     }
 

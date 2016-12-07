@@ -37,16 +37,18 @@ public class UIManager : Singleton<UIManager>
             }
             else
             {
+                Debug.Log("i::" + i);
                 MonsterJaugeColorSprites.Add(Resources.Load<Sprite>("HUD/MONSTER/jaugecolere_000" + i));
             }
         }
+        MonsterJaugeColorSprites.Reverse();
 
         MonsterFaceSprites = new List<Sprite>();
         for (int i = 0; i < 10; ++i)
         {
             MonsterFaceSprites.Add(Resources.Load<Sprite>("HUD/MONSTER/flan_0" + i));
-
         }
+        MonsterFaceSprites.Reverse();
 
         AmmoSprites = new List<Sprite>();
         for (int i = 0; i < 50; ++i)
@@ -92,12 +94,25 @@ public class UIManager : Singleton<UIManager>
 
     public void SetHeroLife(int value)
     {
-        HeroLife.sprite = HeroLifeSprites[value / 2];
+        if (value <= 4)
+        {
+            HeroLife.sprite = HeroLifeSprites[1];
+        }
+        else if (value > 8)
+        {
+            HeroLife.sprite = HeroLifeSprites[3];
+        }
+        else
+        {
+            HeroLife.sprite = HeroLifeSprites[2];
+        }
+
+        //HeroLife.sprite = HeroLifeSprites[value / 2];
     }
 
     public void SetMonsterLife(int value)
     {
-        MonsterJaugeColere.sprite = MonsterJaugeColorSprites[value/6];
+        MonsterJaugeColere.sprite = MonsterJaugeColorSprites[(value / 6 > 48) ? 48 : value / 6];
         MonsterFace.sprite = MonsterFaceSprites[value / 34];
     }
 

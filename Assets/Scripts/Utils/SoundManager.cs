@@ -18,14 +18,13 @@ public class SoundManager : Singleton<SoundManager>
     private AudioSource monsterPhase2Audio;
     private AudioSource monsterPhase3Audio;
 
-    void Start()
+    void Awake()
     {
         mainAudio = this.gameObject.GetComponent<AudioSource>();
         monsterPhase2Audio = gameObject.AddComponent<AudioSource>();
         monsterPhase3Audio = gameObject.AddComponent<AudioSource>();
         general = gameObject.AddComponent<AudioSource>();
         StartGameMusic();
-
     }
 
 
@@ -35,8 +34,8 @@ public class SoundManager : Singleton<SoundManager>
         PlaySound("Phase_2", timingPhase2);
         PlaySound("Phase_3", timingPhase3);
 
-        PlaySound("General");
-        PlaySound("Phase3_Loop", GetAudioClip("General").length);
+        //PlaySound("General");
+        //PlaySound("Phase3_Loop", GetAudioClip("General").length);
 
         AudioClip General = null;
         AudioClip Phase3_Loop = null;
@@ -77,10 +76,10 @@ public class SoundManager : Singleton<SoundManager>
 
         StartCoroutine(playSound(monsterPhase2Audio, Flan_Etat_2_Debut));
         StartCoroutine(playSound(monsterPhase2Audio, Flan_Etat_2_Loop, Flan_Etat_2_Debut.length, true));
-        monsterPhase2Audio.mute = false;
+        monsterPhase2Audio.mute = true;
         StartCoroutine(playSound(monsterPhase3Audio, Flan_Etat_3_Debut));
         StartCoroutine(playSound(monsterPhase2Audio, Flan_Etat_3_Loop, Flan_Etat_3_Debut.length, true));
-        monsterPhase3Audio.mute = false;
+        monsterPhase3Audio.mute = true;
 
     }
 

@@ -34,7 +34,7 @@ public class Monster : MonoBehaviour
     private float timeLastHell;
     private float cacRadius;
 
-    private int numberOfHellWaves = 25;
+    private int numberOfHellWaves = 10;
 
     private List<Transform> cacStagePlaces;
     public GameObject lavaPrefab;
@@ -45,6 +45,9 @@ public class Monster : MonoBehaviour
     public Animator anim;
     private float timeBetweenHitSounds = 2f;
     private float timeSinceLastHitSound = 0f;
+
+    public GameObject smokePrefab;
+
 
     void Awake()
     {
@@ -71,7 +74,7 @@ public class Monster : MonoBehaviour
         timeLastLava = 0f;
         timeLastHell = 0f;
 
-        SetCurrentStage();
+        //SetCurrentStage();
 
         anim.SetFloat("Life", MonsterLife);
     }
@@ -79,10 +82,14 @@ public class Monster : MonoBehaviour
     void Start()
     {
         UIManager.Instance.SetMonsterLife(MonsterLife);
+        SetCurrentStage();
     }
 
     private void CaCAttack()
     {
+        GameObject obj = CFX_SpawnSystem.GetNextObject(smokePrefab);
+        obj.transform.position = gameObject.transform.position;
+        obj.transform.localScale = new Vector3(500, 500, 1);
         anim.SetTrigger("Attack");
 
         Collider2D[] attackedObjects = Physics2D.OverlapCircleAll(transform.position, cacRadius);
@@ -95,12 +102,19 @@ public class Monster : MonoBehaviour
         }
     }
 
+    //bool temp = false;
     void Update()
     {
+
         Attack();
 
         timeSinceLastHitSound += Time.deltaTime;
 
+        //if (!temp)
+        //{
+        //    temp = true;
+        //    StartCoroutine(StandardHellAtatck());
+        //}
     }
 
     private void Attack()
@@ -161,8 +175,8 @@ public class Monster : MonoBehaviour
         //}
     }
     private float angle = 1f;
-    private int count = 20;
-    private float radius = 2f;
+    private int count = 10;
+    private float radius = 5f;
     private int mult = 1;
     private IEnumerator FancyHellAttack()
     {
@@ -178,15 +192,14 @@ public class Monster : MonoBehaviour
             }
             angle += 15;
 
-            yield return new WaitForSeconds(.15f);
+            yield return new WaitForSeconds(.5f);
         }
     }
 
 
     private IEnumerator StandardHellAtatck()
     {
-        //Vector3 localShotPos = new Vector3(0, -((new Vector2(transform.localScale.x * 8f,
-        //                            transform.localScale.y * 5f)).magnitude));
+
         anim.SetTrigger("Special");
         for (int i = 0; i < numberOfHellWaves; ++i)
         {
@@ -296,7 +309,8 @@ public class Monster : MonoBehaviour
             }
             else if (currentStage == MONSTER_STAGES.STAGE3)
             {
-                SoundManager.Instance.MuteMonsterStage("MonsterPhase2");
+                //SoundManager.Instance.MuteMonsterStage("MonsterPhase2");
+                SoundManager.Instance.UnmuteMonsterStage("MonsterPhase2");
                 SoundManager.Instance.UnmuteMonsterStage("MonsterPhase3");
             }
         }

@@ -22,7 +22,6 @@ GameObject:
   - 50: {fileID: 50000011941082324}
   - 114: {fileID: 114000010799684008}
   - 58: {fileID: 58000012935926904}
-  - 61: {fileID: 61000010690046964}
   m_Layer: 11
   m_Name: Commis
   m_TagString: Untagged
@@ -97,28 +96,14 @@ CircleCollider2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010423111518}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: -0.53}
-  serializedVersion: 2
-  m_Radius: 1.1
---- !u!61 &61000010690046964
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010423111518}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: -0.29, y: -1.36}
+  m_Offset: {x: -0.22, y: -0.85}
   serializedVersion: 2
-  m_Size: {x: 1.02, y: 0.45}
+  m_Radius: 0.86
 --- !u!95 &95000012767719834
 Animator:
   serializedVersion: 3
