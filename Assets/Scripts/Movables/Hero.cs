@@ -122,7 +122,8 @@ public class Hero : MonoBehaviour
         currentFiringDelay += Time.deltaTime;
         bool isAttacking = false;
 
-        if (Input.GetButton("Fire1") && BulletManager.Instance.CanFireGun(WEAPON_TYPE.PISTOL,currentFiringDelay))
+        //if (Input.GetButton("Fire1") && BulletManager.Instance.CanFireGun(WEAPON_TYPE.PISTOL,currentFiringDelay))
+        if (Input.GetAxis("Fire1") < 0 && BulletManager.Instance.CanFireGun(WEAPON_TYPE.PISTOL,currentFiringDelay))
         {
             currentFiringDelay = 0f;
             float horizontal = Input.GetAxis("Horizontal2");
@@ -137,9 +138,10 @@ public class Hero : MonoBehaviour
             }
         }
 
-        if (Input.GetButton("Fire2"))
-        {
-            if (BulletManager.Instance.CanFireGun(WEAPON_TYPE.SNIPER, currentFiringDelay))
+        //if (Input.GetButton("Fire2"))
+        if (Input.GetAxis("Fire2") > 0)
+            {
+                if (BulletManager.Instance.CanFireGun(WEAPON_TYPE.SNIPER, currentFiringDelay))
             {
                 currentFiringDelay = 0f;
                 float horizontal = Input.GetAxis("Horizontal2");
